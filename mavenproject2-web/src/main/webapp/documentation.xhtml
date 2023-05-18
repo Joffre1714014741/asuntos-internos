@@ -1,0 +1,1342 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Documentation</ui:define>
+
+    <ui:define name="breadcrumb">
+        <li><p:link outcome="/documentation">Documentation</p:link></li>
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div class="grid">
+            <div class="col-12">
+                <div class="card docs">
+                    <h4>Current Version</h4>
+                    <p>4.1.0 running on PrimeFaces 12.0.0</p>
+
+                    <h4>Getting Started</h4>
+                    <p>To begin with, you'd need SASS to compile CSS, proceed to <a href="https://sass-lang.com/install">SASS Installation</a> before beginning if you do not have SASS available in your command line.</p>
+                    <p>Demo project has an integrated jetty plugin so running the sample is easy as building the css first followed by the mvn jetty:run command.</p>
+<pre class="language-xml"><code>
+sass --update src/main/webapp/resources:src/main/webapp/resources --no-source-map
+mvn clean jetty:run
+
+</code></pre>  
+<small>*Note: The sass command above is supported by <b>Dart Sass</b>. Please use <a href="https://sass-lang.com/install">Dart Sass</a> instead of <a href="https://sass-lang.com/ruby-sass">Ruby Sass</a>.</small>
+<br /><br />
+                    <p>Navigate to http://localhost:8080/mirage to view the demos which is exactly same as the live version.</p>                 
+                    
+                    <h4>Template</h4>
+                    <p>Mirage utilizes <a href="http://docs.oracle.com/javaee/6/tutorial/doc/giqxp.html">JSF templating APIs</a> and provides a main template.xhtml along with additional <i>topbar</i>, <i>sidebar</i>, <i>rightpanel</i>, <i>breadcrumb</i> and <i>footer</i> fragments for the base layout.
+                        These xhtml files must be placed under WEB-INF folder and client pages should reference the template.xhtml as their template.
+                        Provided empty.xhtml is a sample content page using the main template.xhtml that defines "content" as the main ui:define placeholder. By default template defines 3 placeholders
+                        (page title, header content and actual content) to insert content and you can add more as per your requirements.</p>
+
+                    <p>Sample page below uses the main template from Mirage.</p>
+<pre class="language-xml"><code>
+&lt;ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml"&gt;
+
+    &lt;ui:define name="title"&gt;Test Page&lt;/ui:define&gt;
+
+    &lt;ui:define name="content"&gt;
+        Content goes here
+    &lt;/ui:define&gt;
+
+&lt;/ui:composition&gt;
+    
+</code></pre> 
+
+                    <p>Other required resources are the css, js and images that are located inside resources/mirage-layout folder, simply copy the mirage-layout folder to your %WEB-APP-FOLDER%/resources folder
+                        so that final path would be %WEB-APP-FOLDER%/resources/mirage-layout/. Please refer to demo app or maven project of the demo app as the reference.</p>
+
+                    <h4>GuestPreferences Bean</h4>
+                    <p>GuestPreferences is a simple session scoped bean to keep the user customizations of the layout, template xhtml files
+                    refer to this bean to dynamically change their behavior such as menu mode or theme. This bean is not necessary to run the Mirage
+                    and only used for demo purposes. For example template.xhtml includes layout color depending on a user preference using an EL expression.</p>
+<pre class="language-xml"><code>
+&lt;h:outputStylesheet name="css/layout-\#{guestPreferences.layout}.css" library="mirage-layout" /&gt;
+    
+</code></pre> 
+                    <p>In your application, you may also need a similar bean to make the template dynamic or choose a static color with;</p>
+
+<pre class="language-xml"><code>
+&lt;h:outputStylesheet name="css/layout-blue.css" library="mirage-layout" /&gt;
+    
+</code></pre> 
+
+                    <h4>Component Theme</h4>
+                    <p>Mirage provides 24 PrimeFaces themes out of the box featuring light and dark alternatives. Setup of a theme simple as including the theme jar in your classpath and defining primefaces.THEME context parameter in web.xml such as "primefaces-mirage-blue-light". Full list of
+                    available themes are;</p>
+
+                    <ul>
+                        <li>primefaces-mirage-blue-light</li>
+                        <li>primefaces-mirage-blue-dark</li>
+                        <li>primefaces-mirage-brown-light</li>
+                        <li>primefaces-mirage-brown-dark</li>
+                        <li>primefaces-mirage-cyan-light</li>
+                        <li>primefaces-mirage-cyan-dark</li>
+                        <li>primefaces-mirage-green-light</li>
+                        <li>primefaces-mirage-green-dark</li>
+                        <li>primefaces-mirage-indigo-light</li>
+                        <li>primefaces-mirage-indigo-dark</li>
+                        <li>primefaces-mirage-lime-light</li>
+                        <li>primefaces-mirage-lime-dark</li>
+                        <li>primefaces-mirage-magenta-light</li>
+                        <li>primefaces-mirage-magenta-dark</li>
+                        <li>primefaces-mirage-orange-light</li>
+                        <li>primefaces-mirage-orange-dark</li>
+                        <li>primefaces-mirage-purple-light</li>
+                        <li>primefaces-mirage-purple-dark</li>
+                        <li>primefaces-mirage-red-light</li>
+                        <li>primefaces-mirage-red-dark</li>
+                        <li>primefaces-mirage-teal-light</li>
+                        <li>primefaces-mirage-teal-dark</li>
+                        <li>primefaces-mirage-yellow-light</li>
+                        <li>primefaces-mirage-yellow-dark</li>
+                    </ul>
+
+                    <p>A custom theme can be developed by the following steps.</p>
+                    <ul>
+                        <li>Create a custom theme folder such as primefaces-mirage-myown under webapp/resources and place an empty theme.scss inside.</li>
+                        <li>Copy the sass folder from the distribution to webapp/resources.</li>
+                        <li>Define the variables listed below and import the <i>/sass/theme/_theme.scss</i> file.</li>
+                        <li>Build the scss to generate css.</li>
+                        <li>Set primefaces.THEME context parameter as <i>mirage-myown</i></li>
+                        <li>Either bundle the css in a jar file or serve from webapp/resources/primefaces-mirage-myown folder</li>
+                    </ul>
+
+                    <p>Here are the variables required to create a theme based on a light color scheme.</p>
+
+<pre class="language-css"><code>
+//main
+$primaryColor:#5E81AC;
+$primaryTextColor:#ffffff;
+
+//highlight
+$highlightBgColor:$primaryColor;
+$highlightTextColor:$primaryTextColor;
+
+//input
+$inputFocusBorderColor:#9EB3CD;
+$inputFocusBorderShadowColor:rgba(22,107,212,.25);
+
+//primary button
+$primaryButtonTextColor:#ffffff;
+$primaryButtonBgColor:#5E81AC;
+$primaryButtonBorderColor:#5E81AC;
+$primaryButtonHoverBgColor:#466489;
+$primaryButtonHoverBorderColor:#466489;
+$primaryButtonActiveBgColor:#263951;
+$primaryButtonActiveBorderColor:#263951;
+$primaryButtonFocusBorderShadow:rgba(22,107,212,.5);
+
+@import '../sass/variables/_theme_light';
+@import '../sass/theme/_theme';
+    
+</code></pre> 
+
+                    <p>Dark alternative needs to import the _theme_dark file instead.</p>
+
+<pre class="language-css"><code>
+//main
+$primaryColor:#5E81AC;
+$primaryTextColor:#ffffff;
+
+//highlight
+$highlightBgColor:$primaryColor;
+$highlightTextColor:$primaryTextColor;
+
+//input
+$inputFocusBorderColor:#9EB3CD;
+$inputFocusBorderShadowColor:rgba(22,107,212,.25);
+
+//primary button
+$primaryButtonTextColor:#ffffff;
+$primaryButtonBgColor:#5E81AC;
+$primaryButtonBorderColor:#5E81AC;
+$primaryButtonHoverBgColor:#466489;
+$primaryButtonHoverBorderColor:#466489;
+$primaryButtonActiveBgColor:#263951;
+$primaryButtonActiveBorderColor:#263951;
+$primaryButtonFocusBorderShadow:rgba(22,107,212,.5);
+
+@import '../sass/variables/_theme_dark';
+@import '../sass/theme/_theme';
+    
+</code></pre> 
+
+                    <p> An example sass command to compile the css would be;</p>
+
+<pre class="language-xml"><code>
+sass src/main/webapp/resources/primefaces-mirage-myown/theme.scss src/main/webapp/resources/primefaces-mirage-myown/theme.css  --sourcemap=none
+    
+</code></pre> 
+
+                    <p>Watch mode is handy to avoid compiling everytime when a change is made, instead use the following command
+                    so that sass generates the file whenever you make a customization. This builds all css files whenever a change is made to any scss file.</p>
+<pre class="language-xml"><code>
+sass -w src/main/webapp/resources/ --sourcemap=none
+    
+</code></pre> 
+
+                    <h4>Layout Theme</h4>
+                    <p>There are 24 layout colors in total with light and dark alternatives. The primary colors Configuring a layout color is easy as
+                    adding the css file to the template.xhtml where the choice can be left to the user with an EL expression.</p>
+<pre class="language-xml"><code>
+&lt;h:outputStylesheet name="css/layout-\#{guestPreferences.layout}.css" library="mirage-layout" /&gt;
+    
+</code></pre> 
+
+                    <p>Full list of available layout themes are.</p>
+
+                    <ul>
+                        <li>layout-blue-light</li>
+                        <li>layout-blue-dark</li>
+                        <li>layout-brown-light</li>
+                        <li>layout-brown-dark</li>
+                        <li>layout-cyan-light</li>
+                        <li>layout-cyan-dark</li>
+                        <li>layout-green-light</li>
+                        <li>layout-green-dark</li>
+                        <li>layout-indigo-light</li>
+                        <li>layout-indigo-dark</li>
+                        <li>layout-lime-light</li>
+                        <li>layout-lime-dark</li>
+                        <li>layout-magenta-light</li>
+                        <li>layout-magenta-dark</li>
+                        <li>layout-orange-light</li>
+                        <li>layout-orange-dark</li>
+                        <li>layout-purple-light</li>
+                        <li>layout-purple-dark</li>
+                        <li>layout-red-light</li>
+                        <li>layout-red-dark</li>
+                        <li>layout-teal-light</li>
+                        <li>layout-teal-dark</li>
+                        <li>layout-yellow-light</li>
+                        <li>layout-yellow-dark</li>
+                    </ul>
+
+                    <p>Creating a custom layout with the color scheme of your choice is similar to creating a custom theme.</p>
+                    <ul>
+                        <li>Choose a layout name such as layout-myown.</li>
+                        <li>Create an empty file named layout-myown.scss inside resources/mirage-layout/css folder.</li>
+                        <li>Copy the sass folder from the distribution to webapp/resources.</li>
+                        <li>Define the variables listed below and import the <i>/sass/layout/_layout.scss</i> file.</li>
+                        <li>Build the scss to generate css</li>
+                        <li>Serve the css by importing it using a link tag or h:outputStylesheet.</li>
+                    </ul>
+
+                    <p>Here are the variables required to create a layout.</p>
+
+<pre class="language-css"><code>
+$primaryColor:#5e81ac;
+$primaryLightColor:#809bbd;
+$primaryTextColor:#ffffff;
+
+@import '../../sass/variables/_layout_light';
+@import '../../sass/layout/_layout';
+    
+</code></pre> 
+
+                    <p>Dark alternative needs to import the _theme_dark file instead.</p>
+<pre class="language-css"><code>
+$primaryColor:#5e81ac;
+$primaryLightColor:#809bbd;
+$primaryTextColor:#ffffff;
+
+@import '../../sass/variables/_layout_dark';
+@import '../../sass/layout/_layout';
+    
+</code></pre> 
+
+                    <p>_layout_light.scss contains the shared variables of the layout themes with a light color scheme.</p>
+<pre class="language-css"><code>
+//general
+$fontSize:14px !default;
+$fontFamily:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$transitionDuration:.15s !default;
+$letterSpacing:normal !default;
+$borderRadius:4px !default;
+$mobileBreakpoint:991px !default;
+$phoneBreakpoint:576px !default;
+
+$bodyBgColor:#eceff4 !default;
+$textColor:#4c566a !default;
+$textSecondaryColor:#9199a9 !default;
+
+$topbarBgColor:#eceff4 !default;
+$breadcrumbBgColor:#d8dee9 !default;
+$contentBgColor:#ffffff !default;
+$contentAltBgColor:#f9fafb !default;
+$contentAltBorderColor:#e5e9f0 !default;
+$dividerColor:rgba(145,153,169,0.3) !default;
+$menuShadow:3px 0 5px 0 rgba(33, 35, 39, 0.15) !default;
+    
+</code></pre> 
+
+                    <p>_layout_dark.scss contains the shared variables of the layout themes with a light color scheme.</p>
+<pre class="language-css"><code>
+//general
+$fontSize:14px !default;
+$fontFamily:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$transitionDuration:.15s !default;
+$letterSpacing:normal !default;
+$borderRadius:4px !default;
+$mobileBreakpoint:991px !default;
+$phoneBreakpoint:576px !default;
+
+$bodyBgColor:#2e3440 !default;
+$textColor:#d8dee9 !default;
+$textSecondaryColor:#9199a9 !default;
+
+$topbarBgColor:#2e3440 !default;
+$breadcrumbBgColor:#20252e !default;
+$contentBgColor:#20252e !default;
+$contentAltBgColor:#2e3440 !default;
+$contentAltBorderColor:#434c5e !default;
+$dividerColor:rgba(90,101,124,0.3) !default;
+$menuShadow:3px 0 5px 0 rgba(33, 35, 39, 0.3) !default;
+
+</code></pre> 
+
+                    <p>_theme_light.scss contains the shared variables of the component themes with a light color scheme.</p>
+<div style="max-height: 400px; overflow:auto">
+<pre class="language-css"><code>
+$colors: (
+    "blue": #2196F3,
+    "green": #4caf50,
+    "yellow": #FBC02D,
+    "cyan": #00BCD4,
+    "pink": #E91E63,
+    "indigo": #3F51B5,
+    "teal": #009688,
+    "orange": #F57C00,
+    "bluegray": #607D8B,
+    "purple": #9C27B0,
+    "red": #DC3545,
+    "primary": $primaryColor
+) !default;
+
+//shades
+$shade000:#ffffff !default;//surface
+$shade100:#efefef !default;//header background
+$shade200:#e9ecef !default;//hover background
+$shade300:#dee2e6 !default;//border, divider
+$shade400:#ced4da !default;//input border
+$shade500:#adb5bd !default;//unused
+$shade600:#6c757d !default;//text secondary color
+$shade700:#495057 !default;//input text color
+$shade800:#343a40 !default;//unused
+$shade900:#212529 !default;//text color
+
+$hoverBg:$shade200 !default;
+
+//highlight
+$highlightBg:$primaryColor !default;
+$highlightTextColor:$primaryTextColor !default;
+
+//general
+$fontFamily:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$fontSize:1rem !default;
+$textColor:$shade900 !default;
+$textSecondaryColor:$shade600 !default;
+$borderRadius:4px !default;
+$transitionDuration:.15s !default;
+$transition: background-color $transitionDuration, color $transitionDuration, border-color $transitionDuration, box-shadow $transitionDuration !default;
+$actionIconTransition:background-color $transitionDuration, color $transitionDuration, box-shadow $transitionDuration, opacity $transitionDuration ease-in-out !default;
+$listItemTransition:box-shadow $transitionDuration !default;
+$inlineSpacing:.5rem !default;
+$disabledOpacity:.65 !default;
+$maskBg:rgba(0, 0, 0, 0.4) !default;
+$errorColor:#dc3545 !default;
+
+$animationDuration:.4s !default;
+$animationTimingFunction:cubic-bezier(.05,.74,.2,.99) !default;
+$letterSpacing:normal !default;
+$tabletBreakpoint:991px !default;
+$phoneBreakpoint:576px !default;
+$iconSize:1rem !default;
+
+//action icon
+$actionIconWidth:2rem !default;
+$actionIconHeight:2rem !default;
+$actionIconBg:transparent !default;
+$actionIconBorder:0 none !default;
+$actionIconColor:$shade600 !default;
+$actionIconHoverBg:transparent !default;
+$actionIconHoverBorderColor:transparent !default;
+$actionIconHoverColor:$shade700 !default;
+$actionIconBorderRadius:50% !default;
+
+//focus
+$focusOutlineColor:$primaryLightColor !default;
+$focusOutline:0 none !default;
+$focusOutlineOffset:0 !default;
+$focusShadow:0 0 0 0.2rem $focusOutlineColor !default;
+
+//input field
+$inputPadding:.5rem .75rem !default;
+$inputTextFontSize:1rem !default;
+$inputBg:$shade000 !default;
+$inputTextColor:$shade700 !default;
+$inputIconColor:$shade700 !default;
+$inputBorder:1px solid $shade400 !default;
+$inputHoverBorderColor:$shade400 !default;
+$inputFocusBorderColor:$primaryColor !default;
+$inputErrorBorderColor:$errorColor !default;
+$inputPlaceholderTextColor:$shade600 !default;
+$inputFocusShadow:0 0 0 .2rem $focusOutlineColor !default;
+$inputFilledBg:$shade100 !default;
+$inputFilledHoverBg:$shade100 !default;
+$inputFilledFocusBg:$shade100 !default;
+
+//groups
+$inputGroupBorderColor:$shade400 !default;
+$inputGroupBg:$shade200 !default;
+$inputGroupTextColor:$shade700 !default;
+$inputGroupIconColor:$shade700 !default;
+$inputGroupAddonMinWidth:2.357rem !default;
+
+//input lists
+$inputListMinWidth:12rem !default;
+$inputListBg:$shade000 !default;
+$inputListBorder:$inputBorder !default;
+$inputListPadding:.5rem 0 !default;
+$inputListItemPadding:.5rem 1.5rem !default;
+$inputListItemBg:transparent !default;
+$inputListItemTextColor:$shade900 !default;
+$inputListItemHoverBg:$shade200 !default;
+$inputListItemTextHoverColor:$shade900 !default;
+$inputListItemHighlightBg:$highlightBg !default;
+$inputListItemHighlightTextColor:$highlightTextColor !default;
+$inputListItemBorder:0 none !default;
+$inputListItemBorderRadius:0 !default;
+$inputListItemMargin:0 !default;
+$inputListItemFocusShadow:inset 0 0 0 .15rem $focusOutlineColor !default;
+$inputListHeaderPadding:.75rem 1.5rem !default;
+$inputListHeaderBg:$shade100 !default;
+$inputListHeaderTextColor:$shade900 !default;
+$inputListHeaderBorder:1px solid $shade300 !default;
+
+//inputs with panels (password, keyboard)
+$inputContentPanelPadding:1.25rem !default;
+$inputContentPanelBg:$shade000 !default;
+$inputContentPanelTextColor:$shade900 !default;
+
+//inputs with overlays
+$inputOverlayBorder:1px solid rgba(0,0,0,.15) !default;
+$inputOverlayShadow:none !default;
+
+//inputs with buttons
+$inputButtonWidth:2.357rem !default;
+
+//button
+$buttonTextOnlyPadding:.5rem .75rem !default;
+$buttonWithLeftIconPadding:.5rem .75rem .5rem 2rem !default;
+$buttonWithRightIconPadding:.5rem 2rem .5rem .75rem !default;
+$buttonIconOnlyPadding:.5rem 0 !default;
+$buttonIconOnlyWidth:2.357rem !default;
+
+$buttonBg:$primaryColor !default;
+$buttonBorder:1px solid $primaryColor !default;
+$buttonTextColor:$primaryTextColor !default;
+
+$buttonHoverBg:$primaryDarkColor !default;
+$buttonHoverBorderColor:$primaryDarkColor !default;
+$buttonTextHoverColor:$primaryTextColor !default;
+
+$buttonActiveBg:$primaryDarkerColor !default;
+$buttonActiveBorderColor:$primaryDarkerColor !default;
+$buttonTextActiveColor:$primaryTextColor !default;
+
+$buttonFocusOutline:0 none !default;
+$buttonFocusOutlineOffset:0 !default;
+$buttonFocusShadow:0 0 0 0.2rem $focusOutlineColor !default;
+$raisedButtonShadow:0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) !default;
+$roundedButtonBorderRadius:2rem !default;
+
+$textButtonHoverBgOpacity:.04 !default;
+$textButtonActiveBgOpacity:.16 !default;
+$outlinedButtonBorder:1px solid !default;
+$plainButtonTextColor:$textSecondaryColor !default;
+$plainButtonHoverBgColor:$shade200 !default;
+$plainButtonActiveBgColor:$shade300 !default;
+
+//button severities
+$secondaryButtonBg:#6c757d !default;
+$secondaryButtonTextColor:#ffffff !default;
+$secondaryButtonBorder:1px solid #6c757d !default;
+$secondaryButtonHoverBg:#5a6268 !default;
+$secondaryButtonTextHoverColor:#ffffff !default;
+$secondaryButtonHoverBorderColor:#5a6268 !default;
+$secondaryButtonActiveBg:#545b62 !default;
+$secondaryButtonTextActiveColor:#ffffff !default;
+$secondaryButtonActiveBorderColor:#4e555b !default;
+$secondaryButtonFocusShadow:0 0 0 0.2rem rgba(130,138,145,.5) !default;
+
+$infoButtonBg:#17a2b8 !default;
+$infoButtonTextColor:#ffffff !default;
+$infoButtonBorder:1px solid #17a2b8 !default;
+$infoButtonHoverBg:#138496 !default;
+$infoButtonTextHoverColor:#ffffff !default;
+$infoButtonHoverBorderColor:#117a8b !default;
+$infoButtonActiveBg:#138496 !default;
+$infoButtonTextActiveColor:#ffffff !default;
+$infoButtonActiveBorderColor:#117a8b !default;
+$infoButtonFocusShadow:0 0 0 0.2rem rgba(58,176,195,.5) !default;
+
+$successButtonBg:#28a745 !default;
+$successButtonTextColor:#ffffff !default;
+$successButtonBorder:1px solid #28a745 !default;
+$successButtonHoverBg:#218838 !default;
+$successButtonTextHoverColor:#ffffff !default;
+$successButtonHoverBorderColor:#1e7e34 !default;
+$successButtonActiveBg:#1e7e34 !default;
+$successButtonTextActiveColor:#ffffff !default;
+$successButtonActiveBorderColor:#1c7430 !default;
+$successButtonFocusShadow:0 0 0 0.2rem rgba(72,180,97,.5) !default;
+
+$warningButtonBg:#ffc107 !default;
+$warningButtonTextColor:#212529 !default;
+$warningButtonBorder:1px solid #ffc107 !default;
+$warningButtonHoverBg:#e0a800 !default;
+$warningButtonTextHoverColor:#212529 !default;
+$warningButtonHoverBorderColor:#d39e00 !default;
+$warningButtonActiveBg:#d39e00 !default;
+$warningButtonTextActiveColor:#212529 !default;
+$warningButtonActiveBorderColor:#c69500 !default;
+$warningButtonFocusShadow:0 0 0 0.2rem rgba(222,170,12,.5) !default;
+
+$helpButtonBg:#6f42c1 !default;
+$helpButtonTextColor:#ffffff !default;
+$helpButtonBorder:1px solid #6f42c1 !default;
+$helpButtonHoverBg:#633bad !default;
+$helpButtonTextHoverColor:#ffffff !default;
+$helpButtonHoverBorderColor:#58349a !default;
+$helpButtonActiveBg:#58349a !default;
+$helpButtonTextActiveColor:#ffffff !default;
+$helpButtonActiveBorderColor:#4d2e87 !default;
+$helpButtonFocusShadow:0 0 0 0.2rem #d3c6ec !default;
+
+$dangerButtonBg:#dc3545 !default;
+$dangerButtonTextColor:#ffffff !default;
+$dangerButtonBorder:1px solid #dc3545 !default;
+$dangerButtonHoverBg:#c82333 !default;
+$dangerButtonTextHoverColor:#ffffff !default;
+$dangerButtonHoverBorderColor:#bd2130 !default;
+$dangerButtonActiveBg:#bd2130 !default;
+$dangerButtonTextActiveColor:#ffffff !default;
+$dangerButtonActiveBorderColor:#b21f2d !default;
+$dangerButtonFocusShadow:0 0 0 0.2rem rgba(225,83,97,.5) !default;
+
+$linkButtonColor:$primaryColor !default;
+$linkButtonHoverColor:$primaryDarkColor !default;
+$linkButtonTextHoverDecoration:underline !default;
+$linkButtonFocusShadow:0 0 0 0.2rem $focusOutlineColor !default;
+
+//checkbox
+$checkboxBorderWidth:2px !default;
+$checkboxWidth:20px !default;
+$checkboxHeight:20px !default;
+$checkboxActiveBorderColor:$primaryColor !default;
+$checkboxActiveBg:$primaryColor !default;
+$checkboxActiveHoverBg:$primaryDarkerColor !default;
+$checkboxTextActiveColor:$primaryTextColor !default;
+$checkboxFocusShadow:0 0 0 0.2rem $focusOutlineColor !default;
+
+//radiobutton
+$radiobuttonBorderWidth:2px !default;
+$radiobuttonWidth:20px !default;
+$radiobuttonHeight:20px !default;
+$radiobuttonIconSize:12px !default;
+$radiobuttonActiveBorderColor:$primaryColor !default;
+$radiobuttonActiveBg:$primaryColor !default;
+$radiobuttonActiveHoverBg:$primaryDarkerColor !default;
+$radiobuttonTextActiveColor:$primaryTextColor !default;
+$radiobuttonFocusShadow:0 0 0 0.2rem $focusOutlineColor !default;
+
+//togglebutton
+$toggleButtonBg:#6c757d !default;
+$toggleButtonBorder:1px solid #6c757d !default;
+$toggleButtonTextColor:#ffffff !default;
+$toggleButtonIconColor:#ffffff !default;
+$toggleButtonHoverBg:#5a6268 !default;
+$toggleButtonHoverBorderColor:#545b62 !default;
+$toggleButtonTextHoverColor:#ffffff !default;
+$toggleButtonHoverIconColor:#ffffff !default;
+$toggleButtonActiveBg:#545b62 !default;
+$toggleButtonActiveBorderColor:#4e555b !default;
+$toggleButtonTextActiveColor:#ffffff !default;
+$toggleButtonActiveIconColor:#ffffff !default;
+$toggleButtonActiveHoverBg:#545b62 !default;
+$toggleButtonActiveHoverBorderColor:#4e555b !default;
+$toggleButtonActiveTextHoverColor:#ffffff !default;
+$toggleButtonActiveHoverIconColor:#ffffff !default;
+
+//inplace
+$inplacePadding:$inputPadding !default;
+$inplaceHoverBg:$shade200 !default;
+$inplaceTextHoverColor:$shade900 !default;
+
+//rating
+$ratingCancelIconColor:#dc3545 !default;
+$ratingCancelHoverIconColor:#dc3545 !default;
+$ratingIconWidth:1.25rem !default;
+$ratingIconHeight:1.25rem !default;
+$ratingIconFontSize:1.143rem !default;
+$ratingStarIconColor:$shade700 !default;
+$ratingStarIconHoverColor:$primaryColor !default;
+$ratingStarActiveIconColor:$primaryColor !default;
+
+//slider
+$sliderBg:$shade200 !default;
+$sliderHeight:.286rem !default;
+$sliderWidth:.286rem !default;
+$sliderHandleWidth:1.143rem !default;
+$sliderHandleHeight:1.143rem !default;
+$sliderHandleBg:$primaryColor !default;
+$sliderHandleBorder:2px solid $primaryColor !default;
+$sliderHandleBorderRadius:$borderRadius !default;
+$sliderHandleHoverBorderColor:$primaryDarkColor !default;
+$sliderHandleHoverBg:$primaryDarkColor !default;
+$sliderRangeBg:$primaryColor !default;
+
+//calendar
+$calendarPadding:0 !default;
+$calendarTitlePadding:.75rem !default;
+$calendarTitleBg:$shade100 !default;
+$calendarTitleTextColor:$shade900 !default;
+$calendarTitleBorder:solid $shade300 !default;
+$calendarTitleBorderWidth:0 0 1px 0 !default;
+$calendarTableMargin:.5rem 0 !default;
+$calendarCellPadding:.5rem !default;
+$calendarCellDateTextColor:$shade900 !default;
+$calendarCellDateWidth:2.5rem !default;
+$calendarCellDateHeight:2.5rem !default;
+$calendarCellDateBorder:1px solid transparent !default;
+$calendarCellDateHoverBg:$shade200 !default;
+$calendarCellDateHoverBorderColor:transparent !default;
+$calendarCellDateBorderRadius:$borderRadius !default;
+$calendarCellDateSelectedBg:$highlightBg !default;
+$calendarCellDateSelectedTextColor:$highlightTextColor !default;
+$calendarCellDateSelectedBorder:1px solid transparent !default;
+$calendarCellDateTodayBg:$shade400 !default;
+$calendarCellDateTodayTextColor:$shade900 !default;
+$calendarCellDateTodayBorder:1px solid transparent !default;
+
+$calendarButtonBarPadding:1rem 0 !default;
+$calendarTimePickerMargin:.857em 0 !default;
+$calendarTimePickerLabelPadding:0 !default;
+$calendarTimePickerInputPadding:.5em 0 !default;
+$calendarTimePickerInputMargin:0 .714em .714em 40% !default;
+
+//keyboard
+$keyboardButtonPadding:.5rem !default;
+$keyboardButtonMargin:2px !default;
+$keyboardButtonBorder:$inputBorder !default;
+$keyboardButtonBg:$inputBg !default;
+$keyboardButtonTextColor:$shade700 !default;
+$keyboardButtonHoverBorderColor:$shade400 !default;
+$keyboardButtonHoverBg:#ebebef !default;
+$keyboardButtonTextHoverColor:$shade700 !default;
+$keyboardButtonActiveBorderColor:$buttonActiveBorderColor !default;
+$keyboardButtonActiveBg:$buttonActiveBg !default;
+$keyboardButtonTextActiveColor:$shade000 !default;
+
+//switch
+$inputSwitchOffBg:$shade400 !default;
+$inputSwitchHandleOffBg:$shade000 !default;
+$inputSwitchHandleOffTextColor:$shade900 !default;
+$inputSwitchHandleOffBorder:1px solid $shade600 !default;
+$inputSwitchOnBg:$primaryColor !default;
+$inputSwitchHandleOnBg:$shade000 !default;
+$inputSwitchHandleOnTextColor:$shade900 !default;
+$inputSwitchHandleOnBorderColor:$primaryDarkerColor !default;
+$inputSwitchHandleBorderRadius:$borderRadius !default;
+$inputSwitchHandleShadow:0 !default;
+$inputSwitchBorder:solid transparent !default;
+$inputSwitchBorderWidth:2px !default;
+$inputSwitchBorderRadius:$borderRadius !default;
+
+//panel common
+$panelHeaderBorder:1px solid $shade300 !default;
+$panelHeaderBg:$shade100 !default;
+$panelHeaderTextColor:$shade900 !default;
+$panelHeaderFontWeight:600 !default;
+$panelHeaderPadding:1rem 1.25rem !default;
+$panelContentBorder:1px solid $shade300 !default;
+$panelContentBg:$shade000 !default;
+$panelContentTextColor:$shade900 !default;
+$panelContentPadding:1.25rem !default;
+$panelFooterBorder:1px solid $shade300 !default;
+$panelFooterBg:$shade000 !default;
+$panelFooterTextColor:$shade900 !default;
+$panelFooterPadding:.5rem 1.25rem !default;
+
+$panelHeaderHoverBg:$shade200 !default;
+$panelHeaderHoverBorderColor:$shade300 !default;
+$panelHeaderTextHoverColor:$shade900 !default;
+$panelHeaderHoverIconColor:$shade900 !default;
+
+//accordion
+$accordionSpacing:0 !default;
+$accordionHeaderBorder:$panelHeaderBorder !default;
+$accordionHeaderBg:$panelHeaderBg !default;
+$accordionHeaderTextColor:$panelHeaderTextColor !default;
+$accordionHeaderFontWeight:$panelHeaderFontWeight !default;
+$accordionHeaderPadding:$panelHeaderPadding !default;
+
+$accordionHeaderHoverBg:$shade200 !default;
+$accordionHeaderHoverBorderColor:$shade300 !default;
+$accordionHeaderTextHoverColor:$shade900 !default;
+
+$accordionHeaderActiveBg:$panelHeaderBg !default;
+$accordionHeaderActiveBorderColor:$shade300 !default;
+$accordionHeaderTextActiveColor:$shade900 !default;
+
+$accordionHeaderActiveHoverBg:$shade200 !default;
+$accordionHeaderActiveHoverBorderColor:$shade300 !default;
+$accordionHeaderTextActiveHoverColor:$shade900 !default;
+
+$accordionContentBorder:$panelContentBorder !default;
+$accordionContentBg:$panelContentBg !default;
+$accordionContentTextColor:$panelContentTextColor !default;
+$accordionContentPadding:$panelContentPadding !default;
+
+//tabview
+$tabsHeaderSpacing:0 !default;
+$tabsNavBorderWidth:1px !default;
+$tabsNavBorder:1px solid #dee2e6 !default;
+$tabsNavBg:transparent !default;
+
+$tabsHeaderBg:$shade000 !default;
+$tabsHeaderTextColor:$shade600 !default;
+$tabsHeaderFontWeight:$panelHeaderFontWeight !default;
+$tabsHeaderPadding:.75rem 1rem !default;
+
+$tabsHeaderHoverBg:$shade000 !default;
+$tabsHeaderHoverBorderColor:#dee2e6 !default;
+$tabsHeaderTextHoverColor:$shade600 !default;
+
+$tabsHeaderActiveBg:$shade000 !default;
+$tabsHeaderActiveBorderColor:#dee2e6 !default;
+$tabsHeaderTextActiveColor:$shade700 !default;
+
+$tabsContentBorder:0 none !default;
+$tabsContentBg:$panelContentBg !default;
+$tabsContentTextColor:$panelContentTextColor !default;
+$tabsContentPadding:$panelContentPadding !default;
+
+//action icon
+$tabsScrollerButtonBg:$shade000 !default;
+$tabsScrollerButtonIconColor:$shade600 !default;
+$tabsScrollerButtonHoverBg:$shade200 !default;
+$tabsScrollerButtonIconHoverColor:$shade700 !default;
+
+//scrollpanel
+$scrollPanelHandleBg:$shade100 !default;
+$scrollPanelTrackBorder:0 none !default;
+$scrollPanelTrackBg:$shade000 !default;
+
+//paginator
+$paginatorBg:$shade000 !default;
+$paginatorBorder:solid $shade300 !default;
+$paginatorBorderWidth:0 !default;
+$paginatorIconColor:$primaryColor !default;
+$paginatorPadding:.75rem !default;
+$paginatorElementWidth:$buttonIconOnlyWidth !default;
+$paginatorElementHeight:$buttonIconOnlyWidth !default;
+$paginatorElementHoverBg:$shade200 !default;
+$paginatorElementHoverIconColor:$primaryColor !default;
+$paginatorElementMargin:0 0 0 -1px !default;
+$paginatorElementBorder:1px solid #dee2e6 !default;
+$paginatorElementHoverBorderColor:#dee2e6 !default;
+$paginatorElementBorderRadius:0 !default;
+
+//datatable
+$datatableHeaderBorder:solid #dee2e6 !default;
+$datatableHeaderBorderWidth:1px 0 0 0 !default;
+$datatableHeaderBg:$shade100 !default;
+$datatableHeaderTextColor:$shade900 !default;
+$datatableHeaderFontWeight:600 !default;
+$datatableHeaderPadding:1rem 1rem !default;
+
+$datatableHeaderCellPadding:1rem 1rem !default;
+$datatableHeaderCellBg:$shade000 !default;
+$datatableHeaderCellTextColor:$shade900 !default;
+$datatableHeaderCellFontWeight:600 !default;
+$datatableHeaderCellBorder:1px solid #dee2e6 !default;
+$datatableHeaderCellBorderWidth:1px 0 2px 0 !default;
+$datatableHeaderCellHoverBg:$shade200 !default;
+$datatableHeaderCellTextHoverColor:$shade900 !default;
+$datatableHeaderCellHighlightBg:$shade000 !default;
+$datatableHeaderCellHighlightTextColor:$primaryColor !default;
+$datatableHeaderCellHighlightHoverBg:$shade200 !default;
+$datatableHeaderCellHighlightTextHoverColor:$primaryColor !default;
+$datatableSortableColumnBadgeSize:1.143rem !default;
+$datatableBodyRowBg:$shade000 !default;
+$datatableBodyRowTextColor:$shade900 !default;
+$datatableBodyRowBorder:1px solid #dee2e6 !default;
+$datatableBodyRowOddBg:rgba(0,0,0,.05) !default;
+$datatableBodyRowHoverBg:$shade200 !default;
+$datatableBodyRowTextHoverColor:$shade900 !default;
+$datatableBodyCellPadding:1rem 1rem !default;
+$datatableBodyCellBorderWidth:1px 0 0 0 !default;
+$datatableFooterBorderWidth:1px 0 1px 0 !default;
+$datatableFooterCellPadding:1rem 1rem !default;
+$datatableFooterCellBg:$shade000 !default;
+$datatableFooterCellTextColor:$shade900 !default;
+$datatableFooterCellFontWeight:600 !default;
+$datatableFooterCellBorder:1px solid #dee2e6 !default;
+$datatableFooterCellBorderWidth:1px 0 1px 0 !default;
+$datatableResizerHelperBg:$primaryColor !default;
+
+$datatableFooterBorder:1px solid #dee2e6 !default;
+$datatableFooterBorderWidth:1px 0 1px 0 !default;
+$datatableFooterBg:$shade100 !default;
+$datatableFooterTextColor:$shade900 !default;
+$datatableFooterFontWeight:600 !default;
+$datatableFooterPadding:1rem 1rem !default;
+
+$datatableTopPaginatorBorderWidth:1px 0 0 0 !default;
+$datatableBottomPaginatorBorderWidth:1px 0 0 0 !default;
+
+$datatableScaleSm:0.5 !default;
+$datatableScaleLg:1.25 !default;
+
+//dataview
+$dataViewContentPadding:0 !default;
+$dataViewContentBorder:0 none !default;
+$dataViewListItemBorder:1px solid $shade300 !default;
+$dataViewListItemBorderWidth:1px 0 0 0 !default;
+
+//orderlist, picklist
+$orderListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
+$pickListDropPlaceholderBg:scale-color($highlightBg, $lightness: -20%) !default;
+
+//schedule
+$scheduleCellBorderColor:$shade300 !default;
+$scheduleTodayBg:$primaryLightColor !default;
+$scheduleEventBg:$primaryDarkColor !default;
+$scheduleEventBorder:1px solid $primaryDarkColor !default;
+$scheduleEventTextColor:$primaryTextColor !default;
+
+//tree
+$treeNodePadding:0.143rem !default;
+$treeNodeLabelPadding:.5rem !default;
+
+//messages
+$messagesMargin:1rem 0 !default;
+$messagesPadding:1rem 1.25rem !default;
+$messagesIconFontSize:1.5rem !default;
+$messagesBorderWidth:1px !default;
+$messagesFontWeight:500 !default;
+$infoMessageBg:#cce5ff !default;
+$infoMessageBorder:solid #b8daff !default;
+$infoMessageTextColor:#004085 !default;
+$infoMessageIconColor:#004085 !default;
+$warnMessageBg:#fff3cd !default;
+$warnMessageBorder:solid #ffeeba !default;
+$warnMessageTextColor:#856404 !default;
+$warnMessageIconColor:#856404 !default;
+$errorMessageBg:#f8d7da !default;
+$errorMessageBorder:solid #f5c6cb !default;
+$errorMessageTextColor:#721c24 !default;
+$errorMessageIconColor:#721c24 !default;
+$growlIconFontSize:2rem !default;
+$growlMargin:0 0 1rem 0 !default;
+$growlPadding:1rem !default;
+$messageBorderWidth:1px !default;
+
+//overlays
+$overlayContentBorder:1px solid rgba(0,0,0,.2) !default;
+$overlayContainerShadow:none !default;
+
+//dialog
+$dialogHeaderBorder:1px solid $shade200 !default;
+$dialogHeaderBg:$shade000 !default;
+$dialogHeaderTextColor:$shade900 !default;
+$dialogHeaderFontWeight:600 !default;
+$dialogHeaderFontSize:1.25rem !default;
+$dialogHeaderPadding:1rem !default;
+$dialogContentBorder:0 none !default;
+$dialogContentBg:$shade000 !default;
+$dialogContentTextColor:$shade900 !default;
+$dialogContentPadding:1rem !default;
+$dialogFooterBorder:1px solid $shade200 !default;
+$dialogFooterBg:$shade000 !default;
+$dialogFooterTextColor:$shade900 !default;
+$dialogFooterPadding:1rem !default;
+
+$confirmDialogContentPadding:1rem !default;
+$confirmDialogIconFontSize:$iconSize * 2 !default;
+
+//overlay panel
+$overlayPanelCloseIconBg:$primaryColor !default;
+$overlayPanelCloseIconColor:$primaryTextColor !default;
+$overlayPanelCloseIconHoverBg:$primaryDarkColor !default;
+$overlayPanelCloseIconHoverColor:$primaryTextColor !default;
+
+//tooltip
+$tooltipBg:$shade900 !default;
+$tooltipTextColor:$shade000 !default;
+
+//steps
+$stepsItemTextColor:$shade600 !default;
+$stepsItemNumberBorder:1px solid $shade300 !default;
+$stepsItemNumberColor:$shade900 !default;
+$stepsItemNumberBg:transparent !default;
+$stepsItemNumberFontSize:1.143rem !default;
+$stepsItemNumberWidth:2rem !default;
+$stepsItemNumberHeight:2rem !default;
+$stepsItemNumberBorderRadius:$borderRadius !default;
+
+//progressbar
+$progressBarHeight:1.5rem !default;
+$progressBarBorder:0 none !default;
+$progressBarBg:$shade200 !default;
+$progressBarValueBg:$primaryColor !default;
+
+//menu
+$verticalMenuPadding:.5rem 0 !default;
+$menuBg:$shade000 !default;
+$menuBorder:1px solid $shade300 !default;
+$menuitemTextColor:$shade900 !default;
+$menuitemIconColor:$shade900 !default;
+$menuitemHoverBg:$shade200 !default;
+$menuitemTextHoverColor:$shade900 !default;
+$menuitemHoverIconColor:$shade900 !default;
+$menuitemPadding:.75rem 1rem !default;
+$menuitemMargin:0 !default;
+$menuitemBorderRadius:0 !default;
+$menuSeparatorMargin:.5rem 0 !default;
+
+$breadcrumbPadding:1rem !default;
+$breadcrumbBg:$shade100 !default;
+$breadcrumbItemIconColor:$primaryColor !default;
+$breadcrumbItemTextColor:$primaryColor !default;
+$breadcrumbLastItemIconColor:$shade600 !default;
+$breadcrumbLastItemTextColor:$shade600 !default;
+$breadcrumbSeparatorColor:$shade600 !default;
+$breadcrumbBorder:0 none !default;
+
+$submenuHeaderMargin:0 !default;
+$submenuHeaderPadding:.75rem 1rem !default;
+$submenuHeaderBg:$shade000 !default;
+$submenuHeaderBorder:0 none !default;
+$submenuHeaderTextColor:$shade900 !default;
+$submenuHeaderFontWeight:600 !default;
+$submenuHeaderFontSize:1rem !default;
+
+$horizontalMenuPadding:.5rem 1rem !default;
+$horizontalMenuBg:$shade100 !default;
+
+$overlayMenuShadow: none !default;
+
+//upload
+$fileItemPadding:1rem !default;
+
+//badge and tag
+$badgeBg:$primaryColor !default;
+$badgeTextColor:$primaryTextColor !default;
+$badgeMinWidth:1.5rem !default;
+$badgeHeight:1.5rem !default;
+$badgeFontWeight:700 !default;
+$badgeFontSize:.75rem !default;
+
+$tagPadding:.25rem .4rem !default;
+
+//card
+$cardBodyPadding:1.5rem !default;
+$cardTitleFontSize:1.5rem !default;
+$cardTitleFontWeight:700 !default;
+$cardSubTitleFontWeight:400 !default;
+$cardSubTitleColor:$shade600 !default;
+$cardContentPadding:1rem 0 !default;
+$cardFooterPadding:1rem 0 0 0 !default;
+$cardShadow:0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12) !default;
+
+//editor
+$editorToolbarBg:$panelHeaderBg !default;
+$editorToolbarBorder:$panelHeaderBorder !default;
+$editorToolbarPadding:$panelHeaderPadding !default;
+$editorToolbarIconColor:$textSecondaryColor !default;
+$editorToolbarIconHoverColor:$textColor !default;
+$editorIconActiveColor:$primaryColor !default;
+$editorContentBorder:$panelContentBorder !default;
+$editorContentBg:$panelContentBg !default;
+
+//divider
+$dividerHorizontalMargin:1rem 0 !default;
+$dividerHorizontalPadding:0 1rem !default;
+$dividerVerticalMargin:0 1rem !default;
+$dividerVerticalPadding:1rem 0 !default;
+$dividerSize:1px !default;
+$dividerColor:$shade300 !default;
+
+//avatar
+$avatarBg:$shade300 !default;
+$avatarTextColor:$textColor !default;
+
+//chip
+$chipBg:$shade300 !default;
+$chipTextColor:$textColor !default;
+$chipBorderRadius: 16px !default;
+
+//scrollTop
+$scrollTopBg:rgba(0,0,0,0.7) !default;
+$scrollTopHoverBg:rgba(0,0,0,0.8) !default;
+$scrollTopWidth:3rem !default;
+$scrollTopHeight:3rem !default;
+$scrollTopBorderRadius:$borderRadius !default;
+$scrollTopFontSize:1.5rem !default;
+$scrollTopTextColor:$shade100 !default;
+
+//skeleton
+$skeletonBg:$shade200 !default;
+$skeletonAnimationBg:rgba(255,255,255,0.4) !default;
+
+//splitter
+$splitterGutterBg:$shade100 !default;
+$splitterGutterHandleBg:$shade300 !default;
+
+//chronoline
+$chronolineVerticalEventContentPadding:0 1rem !default;
+$chronolineHorizontalEventContentPadding:1rem 0 !default;
+$chronolineEventMarkerWidth:1rem !default;
+$chronolineEventMarkerHeight:1rem !default;
+$chronolineEventMarkerBorderRadius:50% !default;
+$chronolineEventMarkerBorder:0 none !default;
+$chronolineEventMarkerBackground:$primaryColor !default;
+$chronolineEventConnectorSize:2px !default;
+$chronolineEventColor:$shade300 !default;
+
+//confirmpopup
+$confirmPopupContentPadding:$panelContentPadding !default;
+$confirmPopupFooterPadding:.5rem 1.25rem !default;
+
+//speeddial
+$speedDialButtonWidth: 4rem !default;
+$speedDialButtonHeight: 4rem !default;
+$speedDialButtonIconFontSize: 1.3rem !default;
+$speedDialActionWidth: 3rem !default;
+$speedDialActionHeight: 3rem !default;
+$speedDialActionBg: $shade700 !default;
+$speedDialActionHoverBg: $shade800 !default;
+$speedDialActionTextColor: #fff !default;
+$speedDialActionTextHoverColor: #fff !default;
+
+//carousel
+$carouselIndicatorsPadding:1rem !default;
+$carouselIndicatorBg:$shade200 !default;
+$carouselIndicatorHoverBg:$shade300 !default;
+$carouselIndicatorBorderRadius:0 !default;
+$carouselIndicatorWidth:2rem !default;
+$carouselIndicatorHeight:.5rem !default;
+
+//galleria
+$galleriaMaskBg:rgba(0,0,0,0.9) !default;
+$galleriaCloseIconMargin:.5rem !default;
+$galleriaCloseIconFontSize:2rem !default;
+$galleriaCloseIconBg:transparent !default;
+$galleriaCloseIconColor:$shade100 !default;
+$galleriaCloseIconHoverBg:rgba(255,255,255,0.1) !default;
+$galleriaCloseIconHoverColor:$shade100 !default;
+$galleriaCloseIconWidth:4rem !default;
+$galleriaCloseIconHeight:4rem !default;
+$galleriaCloseIconBorderRadius:$borderRadius !default;
+
+$galleriaItemNavigatorBg:transparent !default;
+$galleriaItemNavigatorColor:$shade100 !default;
+$galleriaItemNavigatorMargin:0 .5rem !default;
+$galleriaItemNavigatorFontSize:2rem !default;
+$galleriaItemNavigatorHoverBg:rgba(255,255,255,0.1) !default;
+$galleriaItemNavigatorHoverColor:$shade100 !default;
+$galleriaItemNavigatorWidth:4rem !default;
+$galleriaItemNavigatorHeight:4rem !default;
+$galleriaItemNavigatorBorderRadius:$borderRadius !default;
+
+$galleriaCaptionBg:rgba(0,0,0,.5) !default;
+$galleriaCaptionTextColor:$shade100 !default;
+$galleriaCaptionPadding:1rem !default;
+
+$galleriaIndicatorsPadding:1rem !default;
+$galleriaIndicatorBg:$shade200 !default;
+$galleriaIndicatorHoverBg:$shade300 !default;
+$galleriaIndicatorBorderRadius:$borderRadius !default;
+$galleriaIndicatorWidth:1rem !default;
+$galleriaIndicatorHeight:1rem !default;
+$galleriaIndicatorsBgOnItem:rgba(0,0,0,.5) !default;
+$galleriaIndicatorBgOnItem:rgba(255,255,255,.4) !default;
+$galleriaIndicatorHoverBgOnItem:rgba(255,255,255,.6) !default;
+
+$galleriaThumbnailContainerBg:rgba(0,0,0,.9) !default;
+$galleriaThumbnailContainerPadding:.8rem .25rem !default;
+$galleriaThumbnailContentMargin:.2rem !default;
+$galleriaThumbnailNavigatorBg:transparent !default;
+$galleriaThumbnailNavigatorColor:$shade100 !default;
+$galleriaThumbnailNavigatorHoverBg:rgba(255,255,255,0.1) !default;
+$galleriaThumbnailNavigatorHoverColor:$shade100 !default;
+$galleriaThumbnailNavigatorBorderRadius:$borderRadius !default;
+$galleriaThumbnailNavigatorWidth:2rem !default;
+$galleriaThumbnailNavigatorHeight:2rem !default;
+
+:root {
+    --surface-a:\#{$shade000};
+    --surface-b:\#{$shade100};
+    --surface-c:\#{$shade200};
+    --surface-d:\#{$shade300};
+    --surface-e:\#{$shade000};
+    --surface-f:\#{$shade000};
+    --text-color:\#{$shade900};
+    --text-color-secondary:\#{$shade600};
+    --primary-color:\#{$primaryColor};
+    --primary-color-text:\#{$primaryTextColor};
+    --font-family:\#{$fontFamily};
+    --surface-0: #ffffff;
+    --surface-50: #f9fafb;
+    --surface-100: #f8f9fa;
+    --surface-200: #e9ecef;
+    --surface-300: #dee2e6;
+    --surface-400: #ced4da;
+    --surface-500: #adb5bd;
+    --surface-600: #6c757d;
+    --surface-700: #495057;
+    --surface-800: #343a40;
+    --surface-900: #212529;
+    --gray-50: #f9fafb;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --content-padding:\#{$panelContentPadding};
+    --inline-spacing:\#{$inlineSpacing};
+    --border-radius:\#{$borderRadius};
+    --surface-ground:#efefef;
+    --surface-section:#ffffff;
+    --surface-card:#ffffff;
+    --surface-overlay:#ffffff;
+    --surface-border:#dee2e6;
+    --surface-hover:#e9ecef;
+    --maskbg: \#{$maskBg};
+    --focus-ring: \#{$focusShadow};
+}    
+
+</code></pre> 
+</div>
+
+                    <h4>Menu</h4>
+                    <p>Menu is a regular JSF component that supports PrimeFaces MenuModel API allowing both declarative and programmatic approaches.</p>
+<pre class="language-xml"><code>
+xmlns:pm="http://primefaces.org/mirage"
+
+&lt;pm:menu&gt;
+&lt;/pm:menu&gt;
+    
+</code></pre> 
+                    <p>Menu has 3 modes; overlay and horizontal. Layout wrapper element in template.xhtml is used to define which mode to use by adding specific classes. Default
+                    is overlay and adding "layout-horizontal" enables horizontal mode.</p>
+
+                    <ul>
+                        <li>Overlay (Default): "layout-wrapper"</li>
+                        <li>Horizontal: "layout-wrapper layout-horizontal"</li>
+                    </ul>
+
+                    <p>Layout mode can be dynamic using an EL expression as well using an example bean called userPreferences.</p>
+<pre class="language-xml"><code>
+&lt;div class="layout-wrapper \#{guestPreferences.horizontalMenu ? 'layout-horizontal' ? ''}"&gt;
+...
+&lt;/div&gt;
+    
+</code></pre> 
+
+                    <h4>Menu Themes</h4>
+                    <p>Menu theme is defined at the main container element, template below uses the default light menus. Full list of menu themes are the following, note that layout-menu- prefix needs to be added to apply the style such as layout-menu-dark.</p>
+<pre class="language-xml"><code>
+&lt;div class="layout-wrapper layout-menu-dark"&gt;
+...
+&lt;/div&gt;
+    
+</code></pre> 
+
+                    <p>Light and Dark menus utilize the primary color of the chosen layout whereas custom menu themes listed below define their own style. Apply
+                        the following style classes for a custom menu theme.
+                    </p>
+                    <ul>
+                        <li>layout-menu-chile</li>
+                        <li>layout-menu-naples</li>
+                        <li>layout-menu-georgia</li>
+                        <li>layout-menu-infinity</li>
+                        <li>layout-menu-chicago</li>
+                        <li>layout-menu-majesty</li>
+                        <li>layout-menu-fish</li>
+                        <li>layout-menu-dawn</li>
+                        <li>layout-menu-record</li>
+                        <li>layout-menu-pool</li>
+                        <li>layout-menu-metal</li>
+                        <li>layout-menu-china</li>
+                        <li>layout-menu-table</li>
+                        <li>layout-menu-panorama</li>
+                        <li>layout-menu-barcelona</li>
+                        <li>layout-menu-underwater</li>
+                        <li>layout-menu-symmetry</li>
+                        <li>layout-menu-rain</li>
+                        <li>layout-menu-utah</li>
+                        <li>layout-menu-wave</li>
+                        <li>layout-menu-flora</li>
+                        <li>layout-menu-speed</li>
+                        <li>layout-menu-canopy</li>
+                        <li>layout-menu-sanpaolo</li>
+                        <li>layout-menu-basketball</li>
+                        <li>layout-menu-misty</li>
+                        <li>layout-menu-summit</li>
+                        <li>layout-menu-snow</li>
+                        <li>layout-menu-wall</li>
+                        <li>layout-menu-ferris</li>
+                        <li>layout-menu-ship</li>
+                        <li>layout-menu-ny</li>
+                        <li>layout-menu-cyan</li>
+                        <li>layout-menu-violet</li>
+                        <li>layout-menu-red</li>
+                        <li>layout-menu-blue</li>
+                        <li>layout-menu-porsuk</li>
+                        <li>layout-menu-pink</li>
+                        <li>layout-menu-purple</li>
+                        <li>layout-menu-orange</li>
+                    </ul>
+
+<pre class="language-xml"><code>
+&lt;div class="layout-wrapper layout-menu-chile"&gt;
+...
+&lt;/div&gt;
+    
+</code></pre> 
+
+                    <p>Creating a custom menu theme with the color scheme of your choice required the following steps.</p>
+                    <ul>
+                        <li>Choose a menu theme such as myown.</li>
+                        <li>Create an empty file named myown.scss inside resources/sass/layout/menu/themes/ folder.</li>
+                        <li>Define the variables listed below and import the <i>/sass/layout/_layout.scss</i> file.</li>
+                        <li>Import <i>_menu_theme.scss</i> file.</li>
+                        <li>Import your file at resources/sass/layout/menu/_menu file.</li>.
+                    </ul>
+
+                    <p>Here are the variables required to create a layout.</p>
+<pre class="language-css"><code>
+.layout-menu-violet {
+    $menuBgColor:#4A4358;
+    $rootMenuitemTextColor:#ffffff;
+    $rootMenuitemIconColor:#ffffff;
+    $rootMenuitemHoverBgColor:rgba(255, 255, 255, 0.24);
+    $activeRootMenuitemBgColor:#F8C869;
+    $activeRootMenuitemTextColor:#343a40;
+    $activeRootMenuitemIconColor:#343a40;
+    $submenuBgColor:rgba(255, 255, 255, 0.12);
+    $horizontalSubmenuBgColor:#2e3440;
+    $submenuItemTextColor:#ffffff;
+    $submenuItemIconColor:#ffffff;
+    $submenuItemHoverBgColor:rgba(0, 0, 0, 0.36);
+    $activeSubmenuItemTextColor:#F8C869;
+    $activeSubmenuItemIconColor:#F8C869;
+    $appNameTextColor:#ffffff;
+    $pinBgColor:#ffffff;
+    $pinIconColor:#2e3440;
+
+    @import '../_menu_theme';
+}
+    
+</code></pre> 
+
+                    <p>An image can be used as the background of the menu using the menuBgImage variable.</p>
+<pre class="language-css"><code>
+.layout-menu-ferris {
+    $menuBgColor: #262B33;
+    $menuBgImage:'ferris.jpg';
+    $horizontalMenuBgImage:'ferris-horizontal.jpg';
+    $rootMenuitemTextColor:#eceff4;
+    $rootMenuitemIconColor:#eceff4;
+    $rootMenuitemHoverBgColor:rgba(255, 255, 255, 0.24);
+    $activeRootMenuitemBgColor:#A3BE8C;
+    $activeRootMenuitemTextColor:#3b4252;
+    $activeRootMenuitemIconColor:#2e3440;
+    $submenuBgColor:rgba(255, 255, 255, 0.12);
+    $horizontalSubmenuBgColor:#2e3440;
+    $submenuItemTextColor:#eceff4;
+    $submenuItemIconColor:#eceff4;
+    $submenuItemHoverBgColor:rgba(0, 0, 0, 0.32);
+    $activeSubmenuItemTextColor:#A3BE8C;
+    $activeSubmenuItemIconColor:#A3BE8C;
+    $appNameTextColor:#ffffff;
+    $pinBgColor:#ffffff;
+    $pinIconColor:#2e3440;
+
+    @import '../_menu_theme';
+}
+    
+</code></pre>
+                    <h4>Icons</h4>
+                    <p>Mirage Layout uses PrimeIcons v5.0 for layout which is included in the resources and no configuration is required.</p>
+
+                    <h4>Outlined vs Filled</h4>
+                    <p>Input fields come in two styles, default is outlined with borders around the field whereas filled alternative adds a background color to the field. Applying <b>ui-input-filled</b> to an ancestor of an input enables the filled style.
+                        If you prefer to use filled inputs in the entire application, use a global container such as document body or the application element to apply the style class.</p>
+                    <pre class="language-xml"><code>
+&lt;div class="ui-input-filled"&gt;
+    &lt;p:inputText type="text" /&gt;
+&lt;/div&gt;
+
+</code></pre>
+
+                    <h4>Card</h4>
+                    <p>Card is a section to group content and layout provides a built-in css for it. Apply .card style class to your container to use it. If the
+                        card has a title defined with h1 tag, add card-w-title to adjust paddings.</p>
+                    <pre class="language-xml"><code>
+&lt;div class="card"&gt;
+    Content here
+&lt;/div&gt;
+
+&lt;div class="card card-w-title"&gt;
+    &lt;h1&gt;Card with Title&lt;h1&gt;
+    Content here
+&lt;/div&gt;
+
+</code></pre>
+                    <h4>Overrides</h4>
+                    <p>The best practice when adding your own extensions is using the scss files under the <b>sass/overrides</b> folder. <b>_layout_variables</b> and <b>_theme_variables</b> files allow
+                        overriding the default variables whereas <b>_layout_styles</b> and <b>_theme_styles</b> files can be used to include additional styling.
+                        This approach allows seamless updates so your changes are not overriden with the maintenance updates from PrimeTek.
+                    </p>
+
+                    <h4>Tips</h4>
+                    <ul>
+                        <li>Familiarity with <a href="http://sass-lang.com/">SASS</a> is required to make customizations to the layout and theme.</li>
+                        <li>Demo application war and the maven project tag are included in distribution however you don't necessarily need them to install Mirage, the actual artifacts required are the layout zip file and the theme jar.</li>
+                        <li>Sample demo application war includes the JSF libraries so it is suggested to remove them from the war file when you deploy to an appserver.</li>
+                        <li>When running the maven project, you need to build the sass with (sass --update src/main/webapp/resources:src/main/webapp/resources --no-source-map) command.</li>
+                    </ul>
+
+                    <h4>Migration Guide</h4>
+                    <p>Every change is included in <b>CHANGELOG.md</b> file at the root folder of the distribution along with the instructions to update.</p>
+
+                </div>
+            </div>
+        </div>
+
+    </ui:define>
+
+</ui:composition>
