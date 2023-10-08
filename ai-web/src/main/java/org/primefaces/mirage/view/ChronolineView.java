@@ -31,10 +31,10 @@ public class ChronolineView {
     @PostConstruct
     public void init() {
         events = new ArrayList<>();
-        events.add(new Event("Ordered", "15/1/2021 10:30", "pi pi-shopping-cart", "#9C27B0", "game-controller.jpg"));
-        events.add(new Event("Processing", "15/1/2021 14:00", "pi pi-cog", "#673AB7"));
-        events.add(new Event("Shipped", "15/1/2021 16:15", "pi pi-envelope", "#FF9800"));
-        events.add(new Event("Delivered", "16/1/2021 10:00", "pi pi-check", "#607D8B"));
+        events.add(new Event("Información de la Solicitud", "Paso 1", "pi pi-shopping-cart", "#9C27B0", "El ciudadano ingresará el número de predio del proyecto y seleccionará el tipo de permiso/certificado deseado."));
+        events.add(new Event("Datos Generales del Proyecto", "Paso 2", "pi pi-cog", "#673AB7", "Se completará un formulario con la información básica del proyecto y se adjuntará al documentación necesaria."));
+        events.add(new Event("Formulario Declarativo", "Paso 3", "pi pi-envelope", "#FF9800", "Se registrará la información de la solicitud en un checklist"));
+        events.add(new Event("Registro de la Solicitud", "Paso 4", "pi pi-check", "#607D8B", "Se remitirá la solicitud mediante el Sistema Declarativo del AT"));
 
         events2 = new ArrayList<>();
         events2.add("2021");
@@ -57,6 +57,7 @@ public class ChronolineView {
         String icon;
         String color;
         String image;
+        String info;
 
         public Event() {
         }
@@ -68,12 +69,12 @@ public class ChronolineView {
             this.color = color;
         }
 
-        public Event(String status, String date, String icon, String color, String image) {
+        public Event(String status, String date, String icon, String color, String info) {
             this.status = status;
             this.date = date;
             this.icon = icon;
             this.color = color;
-            this.image = image;
+            this.info = info;
         }
 
         public String getStatus() {
@@ -114,6 +115,14 @@ public class ChronolineView {
 
         public void setImage(String image) {
             this.image = image;
+        }
+        
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
         }
     }
 
