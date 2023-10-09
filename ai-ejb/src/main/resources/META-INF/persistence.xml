@@ -16,22 +16,7 @@
     limitations under the License.
 -->
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="         http://xmlns.jcp.org/xml/ns/persistence         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="primary">
-    <!-- If you are running in a production environment, add a managed 
-         data source, this example data source is just for development and testing! -->
-    <!-- The datasource is deployed as <EAR>/META-INF/mavenproject2-ds.xml, you
-         can find it in the source at ear/src/main/application/META-INF/mavenproject2-ds.xml -->
-    <jta-data-source>java:jboss/datasources/mavenproject2DS</jta-data-source>
-    <class>ec.bomberosquito.ai.entidades.Causas</class>
-    <class>ec.bomberosquito.ai.entidades.Documentos</class>
-    <class>ec.bomberosquito.ai.entidades.Usuarios</class>
-    <class>ec.bomberosquito.ai.entidades.Personas</class>
-    <class>ec.bomberosquito.ai.entidades.Casos</class>
-    <class>ec.bomberosquito.ai.entidades.Eventos</class>
-    <properties>
-      <!-- Properties for Hibernate -->
-      <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-      <property name="hibernate.show_sql" value="false"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="primary">
+        <jta-data-source>jdbc/asuntosinternos</jta-data-source>
+    </persistence-unit>
 </persistence>
