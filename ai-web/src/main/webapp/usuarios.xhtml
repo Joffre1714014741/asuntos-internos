@@ -1,0 +1,196 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Usuarios</ui:define>
+
+    <ui:define name="viewname">
+        <li>Pages</li>
+        <li><i class="pi pi-angle-right"/></li>
+        <li>
+            <p:link outcome="/usuarios">Usuarios</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="grid crud-demo">
+                <div class="col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true" />
+
+                        <p:toolbar styleClass="mb-4">
+                            <p:toolbarGroup>
+                                <p:commandButton value="Nuevo" 
+                                                 icon="pi pi-plus" 
+                                                 actionListener="#{usuariosBean.personaNueva()}" 
+                                                 update="panel-persona-contenido" 
+                                                 oncomplete="PF('dialogoGestionPersona').show()" 
+                                                 styleClass="ui-button-success" 
+                                                 style="margin-right: .5rem" />
+                                <p:commandButton id="boton-eliminar-personas" 
+                                                 value="#{usuariosBean.mensajeBotonEliminar}" 
+                                                 icon="pi pi-trash" 
+                                                 actionListener="#{usuariosBean.eliminarPersonasSeleccionadas()}" 
+                                                 styleClass="ui-button-danger" 
+                                                 disabled="#{!usuariosBean.hayPersonasSeleccionadas()}" 
+                                                 update="@this">
+                                    <p:confirm header="Confirmación" 
+                                               message="¿Está seguro de eliminar los perfiles?" 
+                                               icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <p:dataTable id="dt-personas" 
+                                     widgetVar="dtPersonas" 
+                                     var="persona" 
+                                     value="#{usuariosBean.listaPersonas}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     selection="#{usuariosBean.listaPersonasSeleccionadas}" 
+                                     rowKey="#{persona.id}" 
+                                     paginator="true" 
+                                     rows="10" 
+                                     rowSelectMode="add" 
+                                     paginatorPosition="bottom">
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Administración de Personas</span>
+
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtPersonas').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <p:ajax event="rowToggle" listener="#{usuariosBean.onRowToggle}" />
+                            <p:ajax event="rowSelect" update=":form:boton-eliminar-personas" />
+                            <p:ajax event="rowUnselect" update=":form:boton-eliminar-personas" />
+                            <p:ajax event="rowSelectCheckbox" update=":form:boton-eliminar-personas" />
+                            <p:ajax event="rowUnselectCheckbox" update=":form:boton-eliminar-personas" />
+                            <p:ajax event="toggleSelect" update=":form:boton-eliminar-personas" />
+
+                            <p:column selectionMode="multiple" exportable="false"></p:column>
+                            
+                            <p:column headerText="Id" sortBy="#{persona.id}" filterBy="#{persona.id}">
+                                <h:outputText value="#{persona.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="Apellidos" sortBy="#{persona.apellidos}" filterBy="#{persona.apellidos}">
+                                <h:outputText value="#{persona.apellidos}" />
+                            </p:column>
+                            
+                            <p:column headerText="Nombres" sortBy="#{persona.nombres}" filterBy="#{persona.nombres}">
+                                <h:outputText value="#{persona.nombres}" />
+                            </p:column>
+                            
+                            <p:column headerText="Cédula" sortBy="#{persona.cedula}" filterBy="#{persona.cedula}">
+                                <h:outputText value="#{persona.cedula}" />
+                            </p:column>
+                            
+                            <p:column exportable="false">
+                                <p:commandButton icon="pi pi-pencil" 
+                                                 update=":form:panel-persona-contenido" 
+                                                 oncomplete="PF('dialogoGestionPersona').show()" 
+                                                 styleClass="edit-button rounded-button ui-button-success" 
+                                                 process="@this">
+                                    <f:setPropertyActionListener value="#{persona}" 
+                                                                 target="#{usuariosBean.persona}" />
+                                </p:commandButton>
+                                <p:commandButton class="ui-button-warning rounded-button" 
+                                                 icon="pi pi-trash" 
+                                                 process="@this" 
+                                                 oncomplete="PF('dialogoEliminarPersona').show()" >
+                                    <f:setPropertyActionListener value="#{persona}" 
+                                                                 target="#{usuariosBean.persona}" />
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:rowExpansion>
+                                <p:outputPanel class="ui-fluid">
+                                    <div class="field">
+                                        <p:outputLabel value="Apellidos"/>
+                                        <p:outputLabel value="#{usuariosBean.persona.apellidos}"/>
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel value="Nombres"/>
+                                        <p:outputLabel value="#{usuariosBean.persona.nombres}"/>
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel value="Cédula"/>
+                                        <p:outputLabel value="#{usuariosBean.persona.cedula}"/>
+                                    </div>
+                                </p:outputPanel>
+                            </p:rowExpansion>
+                        </p:dataTable>
+
+                        <p:dialog header="Información" 
+                                  showEffect="fade" 
+                                  modal="true" 
+                                  widgetVar="dialogoGestionPersona" 
+                                  responsive="true">
+                            <p:outputPanel id="panel-persona-contenido" class="ui-fluid">
+                                <p:outputPanel rendered="#{not empty usuariosBean.persona}">
+                                    <div class="field">
+                                        <p:outputLabel for="apellidos">Apellidos</p:outputLabel>
+                                        <p:inputText id="apellidos" value="#{usuariosBean.persona.apellidos}" required="true" />
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="nombres">Nombres</p:outputLabel>
+                                        <p:inputText id="nombres" value="#{usuariosBean.persona.nombres}" required="true" />
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="cedula">Cédula</p:outputLabel>
+                                        <p:inputText id="cedula" value="#{usuariosBean.persona.cedula}" required="true" />
+                                    </div>
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Guardar" 
+                                                 icon="pi pi-check" 
+                                                 actionListener="#{usuariosBean.guardarPersona}" 
+                                                 update="panel-persona-contenido" 
+                                                 process="panel-persona-contenido @this" />
+                                <p:commandButton value="Cancelar" 
+                                                 icon="pi pi-times" 
+                                                 onclick="PF('dialogoGestionPersona').hide()" 
+                                                 class="ui-button-secondary" />
+                            </f:facet>
+                        </p:dialog> 
+
+                        <p:confirmDialog widgetVar="dialogoEliminarPersona" 
+                                         showEffect="fade" 
+                                         width="300" 
+                                         message="¿Está seguro de eliminar el perfil de la persona?" 
+                                         header="Confirmación" 
+                                         severity="warn">
+                            <p:commandButton value="Sí" 
+                                             icon="pi pi-check" 
+                                             actionListener="#{usuariosBean.eliminarPersona()}" 
+                                             process="@this" 
+                                             oncomplete="PF('dialogoEliminarPersona').hide()"/>
+                            <p:commandButton value="No" 
+                                             type="button" 
+                                             styleClass="ui-button-secondary" 
+                                             icon="pi pi-times" 
+                                             onclick="PF('dialogoEliminarPersona').hide()" />
+                        </p:confirmDialog>
+
+                        <p:confirmDialog global="true" showEffect="fade" width="300">
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary" icon="pi pi-times" />
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
