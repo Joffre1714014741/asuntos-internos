@@ -188,6 +188,162 @@
                         </p:confirmDialog>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="card">
+
+                        <p:toolbar styleClass="mb-4">
+                            <p:toolbarGroup>
+                                <p:commandButton value="Nuevo Usuario" 
+                                                 icon="pi pi-plus" 
+                                                 actionListener="#{usuariosBean.usuarioNuevo()}" 
+                                                 update="panel-usuario-contenido" 
+                                                 oncomplete="PF('dialogoGestionUsuario').show()" 
+                                                 styleClass="ui-button-success" 
+                                                 style="margin-right: .5rem" />
+                                <p:commandButton id="boton-eliminar-usuarios" 
+                                                 value="#{usuariosBean.mensajeBotonEliminarUsuario}" 
+                                                 icon="pi pi-trash" 
+                                                 actionListener="#{usuariosBean.eliminarUsuariosSeleccionados()}" 
+                                                 styleClass="ui-button-danger" 
+                                                 disabled="#{!usuariosBean.hayUsuariosSeleccionados()}" 
+                                                 update="@this">
+                                    <p:confirm header="Confirmación" 
+                                               message="¿Está seguro de eliminar los usuarios?" 
+                                               icon="pi pi-exclamation-triangle" />
+                                </p:commandButton>
+                            </p:toolbarGroup>
+                        </p:toolbar>
+
+                        <!-- Tabla para listar Usuarios -->
+                        <p:dataTable id="dt-usuarios" 
+                                     widgetVar="dtUsuarios" 
+                                     var="usuario" 
+                                     value="#{usuariosBean.listaUsuarios}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     selection="#{usuariosBean.listaUsuariosSeleccionados}" 
+                                     rowKey="#{usuario.id}" 
+                                     paginator="true" 
+                                     rows="10" 
+                                     rowSelectMode="add" 
+                                     paginatorPosition="bottom">
+                            
+                             <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Administración de Usuarios</span>
+
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtUsuarios').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>
+                            <!-- Encabezados de columnas y definiciones -->
+                            <p:column selectionMode="multiple" exportable="false"></p:column>
+                            <p:column headerText="ID" sortBy="#{usuario.id}" filterBy="#{usuario.id}">
+                                <h:outputText value="#{usuario.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="Persona" sortBy="#{usuario.persona.nombres}">
+                                <h:outputText value="#{usuario.persona.nombres} #{usuario.persona.apellidos}" />
+                            </p:column>
+
+                            <p:column headerText="Nombre de Usuario" sortBy="#{usuario.nombreusuario}">
+                                <h:outputText value="#{usuario.nombreusuario}" />
+                            </p:column>
+                            
+                            <!-- Agrega botones para editar y eliminar Usuarios -->
+                            <p:column exportable="false">
+                                <p:commandButton icon="pi pi-pencil" 
+                                                 update=":form:panel-usuario-contenido" 
+                                                 oncomplete="PF('dialogoGestionUsuario').show()" 
+                                                 styleClass="edit-button rounded-button ui-button-success" 
+                                                 process="@this">
+                                    <f:setPropertyActionListener value="#{usuario}" 
+                                                                 target="#{usuariosBean.usuario}" />
+                                </p:commandButton>
+                                <p:commandButton class="ui-button-warning rounded-button" 
+                                                 icon="pi pi-trash" 
+                                                 process="@this" 
+                                                 oncomplete="PF('dialogoEliminarUsuario').show()" >
+                                    <f:setPropertyActionListener value="#{usuario}" 
+                                                                 target="#{usuariosBean.usuario}" />
+                                </p:commandButton>
+                            </p:column>
+
+                            <!-- Detalles desplegables si es necesario -->
+                        </p:dataTable>
+
+                        <!-- Dialogo para CRUD de Usuarios -->
+                        <p:dialog header="Información" 
+                                  showEffect="fade" 
+                                  modal="true" 
+                                  widgetVar="dialogoGestionUsuario" 
+                                  responsive="true">
+                            <p:messages id="messagesDialog" showDetail="true" closable="true" />
+                            <p:outputPanel id="panel-usuario-contenido" class="ui-fluid">
+                                <p:outputPanel rendered="#{not empty usuariosBean.usuario}">
+                                    <!-- Campos de edición para Usuarios -->
+                                    <div class="field">
+                                        <p:outputLabel for="nombreUsuario">Nombre de Usuario</p:outputLabel>
+                                        <p:inputText id="nombreUsuario" value="#{usuariosBean.usuario.nombreusuario}" required="true" />
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="contrasena">Contraseña</p:outputLabel>
+                                        <p:password id="contrasena" value="#{usuariosBean.usuario.contrasena}" required="true" />
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="tipoUsuario">Tipo</p:outputLabel>
+                                        <p:selectOneMenu id="tipoUsuario" value="#{usuariosBean.usuario.tipo}">
+                                            <f:selectItem itemLabel="Director" itemValue="Director" />
+                                            <f:selectItem itemLabel="Investigador" itemValue="Investigador" />
+                                            <!-- Agregar más tipos según sea necesario -->
+                                        </p:selectOneMenu>
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="listaPersonas" value="Seleccionar Persona" />
+                                        <p:selectOneMenu id="listaPersonas" value="#{usuariosBean.usuario.persona}" converter="personaConverter">
+                                            <f:selectItem itemLabel="-- Seleccionar Persona --" itemValue="#{null}" />
+                                            <f:selectItems value="#{usuariosBean.listaPersonas}" var="persona" itemValue="#{persona}" itemLabel="#{persona.nombres} #{persona.apellidos}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Guardar" 
+                                                 icon="pi pi-check" 
+                                                 actionListener="#{usuariosBean.guardarUsuario}" 
+                                                 update="panel-usuario-contenido" 
+                                                 process="panel-usuario-contenido @this" />
+                                <p:commandButton value="Cancelar" 
+                                                 icon="pi pi-times" 
+                                                 onclick="PF('dialogoGestionUsuario').hide()" 
+                                                 class="ui-button-secondary" />
+                            </f:facet>
+                        </p:dialog> 
+
+                        <!-- Confirmación de eliminación de Usuarios -->
+                        <p:confirmDialog widgetVar="dialogoEliminarUsuario" 
+                                         showEffect="fade" 
+                                         width="300" 
+                                         message="¿Está seguro de eliminar el usuario?" 
+                                         header="Confirmación" 
+                                         severity="warn">
+                            <p:commandButton value="Sí" 
+                                             icon="pi pi-check" 
+                                             actionListener="#{usuariosBean.eliminarUsuario()}" 
+                                             process="@this" 
+                                             oncomplete="PF('dialogoEliminarUsuario').hide()"/>
+                            <p:commandButton value="No" 
+                                             type="button" 
+                                             styleClass="ui-button-secondary" 
+                                             icon="pi pi-times" 
+                                             onclick="PF('dialogoEliminarUsuario').hide()" />
+                        </p:confirmDialog>
+
+                    </div>
+                </div>
             </div>
         </h:form>
 

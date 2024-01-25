@@ -38,4 +38,10 @@
         </renderer>
     </render-kit>
     
+    <converter>
+        <converter-id>personaConverter</converter-id>
+            <converter-for-class>ec.bomberosquito.ai.entidades.Personas</converter-for-class>}
+            <converter-class>ec.bomberosquito.ai.converters.PersonasConverter</converter-class>
+    </converter>
+    
 </faces-config>

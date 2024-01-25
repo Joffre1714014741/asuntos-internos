@@ -25,6 +25,7 @@ public class UsuariosBean implements Serializable {
     private List<Personas> listaPersonas;
     private List<Personas> listaPersonasSeleccionadas;
     private List<Usuarios> listaUsuarios;
+    private List<Usuarios> listaUsuariosSeleccionados;
     @EJB
     private PersonasFacade ejbPersonas;
     @EJB
@@ -33,6 +34,7 @@ public class UsuariosBean implements Serializable {
     @PostConstruct
     public void init() {
        listaPersonas = ejbPersonas.findAll();
+       listaUsuarios = ejbUsuarios.findAll();
     }
     
     public void personaNueva() {
@@ -89,6 +91,72 @@ public class UsuariosBean implements Serializable {
             Personas persona = (Personas) event.getData();
         }
     }
+    
+    public void usuarioNuevo() {
+        usuario = new Usuarios();
+    }
+
+//    public void guardarUsuario() {
+//        if (usuario.getId() == null) {
+//            ejbUsuarios.create(usuario);
+//            listaUsuarios.add(usuario);
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario creado"));
+//        } else {
+//            ejbUsuarios.edit(usuario);
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario actualizado"));
+//        }
+//
+//        PrimeFaces.current().executeScript("PF('dialogoGestionUsuario').hide()");
+//        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+//    }
+   
+    public void guardarUsuario() {
+        if (usuario.getId() == null) {
+            if (usuario.getPersona() == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debes seleccionar una persona.", null));
+                return; // Detiene el proceso de guardado si no se ha seleccionado una persona.
+            }
+            ejbUsuarios.create(usuario);
+            listaUsuarios.add(usuario);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario creado"));
+        } else {
+            ejbUsuarios.edit(usuario);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario actualizado"));
+        }
+
+        PrimeFaces.current().executeScript("PF('dialogoGestionUsuario').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+    }
+
+    public boolean hayUsuariosSeleccionados() {
+        return this.listaUsuariosSeleccionados != null && !this.listaUsuariosSeleccionados.isEmpty();
+    }
+
+    public String getMensajeBotonEliminarUsuario() {
+        if (hayUsuariosSeleccionados()) {
+            int size = this.listaUsuariosSeleccionados.size();
+            return size > 1 ? size + " usuarios seleccionados" : "1 usuario seleccionado";
+        }
+        return "Eliminar";
+    }
+
+    public void eliminarUsuariosSeleccionados() {
+        for (Usuarios usuario : listaUsuariosSeleccionados) {
+            ejbUsuarios.remove(usuario);
+        }
+        this.listaUsuarios.removeAll(this.listaUsuariosSeleccionados);
+        this.listaUsuariosSeleccionados = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuarios eliminados"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+    }
+
+    public void eliminarUsuario() {
+        ejbUsuarios.remove(usuario);
+        this.listaUsuarios.remove(this.usuario);
+        this.listaUsuariosSeleccionados = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario eliminado"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
+    }
 
     public Personas getPersona() {
         return persona;
@@ -128,6 +196,18 @@ public class UsuariosBean implements Serializable {
 
     public void setListaPersonasSeleccionadas(List<Personas> listaPersonasSeleccionadas) {
         this.listaPersonasSeleccionadas = listaPersonasSeleccionadas;
+    }
+
+    public List<Usuarios> getListaUsuariosSeleccionados() {
+        return listaUsuariosSeleccionados;
+    }
+
+    public void setListaUsuariosSeleccionados(List<Usuarios> listaUsuariosSeleccionados) {
+        this.listaUsuariosSeleccionados = listaUsuariosSeleccionados;
+    }
+
+    public PersonasFacade getEjbPersonas() {
+        return ejbPersonas;
     }
     
 }
