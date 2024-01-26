@@ -95,20 +95,6 @@ public class UsuariosBean implements Serializable {
     public void usuarioNuevo() {
         usuario = new Usuarios();
     }
-
-//    public void guardarUsuario() {
-//        if (usuario.getId() == null) {
-//            ejbUsuarios.create(usuario);
-//            listaUsuarios.add(usuario);
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario creado"));
-//        } else {
-//            ejbUsuarios.edit(usuario);
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario actualizado"));
-//        }
-//
-//        PrimeFaces.current().executeScript("PF('dialogoGestionUsuario').hide()");
-//        PrimeFaces.current().ajax().update("form:messages", "form:dt-usuarios");
-//    }
    
     public void guardarUsuario() {
         if (usuario.getId() == null) {

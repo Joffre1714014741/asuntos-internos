@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Creación de Casos</ui:define>
+
+    <ui:define name="content">
+        
+        <h:form id="formCasos">
+            
+            <div class="card" style="width: 100%">
+                <h5>Datos de la Persona</h5>
+                <div class="grid ui-fluid mt-3 floatlabel-demo">
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputText id="nombres" value="#{casosBean.persona.nombres}" required="true" />
+                                <p:outputLabel for="nombres" value="Nombres:"/>
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputText id="apellidos" value="#{casosBean.persona.apellidos}" required="true" />
+                                <p:outputLabel for="apellidos" value="Apellidos:" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputText id="cedula" value="#{casosBean.persona.cedula}" required="true" />
+                                <p:outputLabel for="cedula" value="Cédula:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="width: 100%">
+                <h5>Datos del Caso</h5>
+                <div class="grid ui-fluid mt-3 floatlabel-demo">
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="detalleCausa" value="#{casosBean.caso.detallecausa}" autoResize="true" required="true"/>
+                                <p:outputLabel for="detalleCausa" value="Detalle:" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 md:col-6">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:datePicker id="fechaIncidente" value="#{casosBean.caso.fechadeincidente}"/>
+                                <p:outputLabel for="fechaIncidente" value="Fecha del Incidente:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Creación de Casos -->
+<!--            <p:panel header="Datos del Caso">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="fechaIncidente" value="Fecha del Incidente:" />
+                    <p:calendar id="fechaIncidente" value="#{casosBean.caso.fechadeincidente}" showOn="button"/>
+
+                    <p:outputLabel for="detalleCausa" value="Detalle:" />
+                    <p:inputTextarea id="detalleCausa" value="#{casosBean.caso.detallecausa}" autoResize="true" required="true"/>
+                </h:panelGrid>
+            </p:panel>-->
+
+            <!-- Botón para Guardar Caso -->
+            <p:commandButton value="Guardar Caso" actionListener="#{casosBean.generarCaso}" oncomplete="PF('confirmDialog').show()" styleClass="ui-button-success mr-2 mb-2" />
+
+            <!-- Diálogo de Confirmación -->
+            <p:confirmDialog widgetVar="confirmDialog" 
+                             showEffect="fade" 
+                             width="300" 
+                             message="¿Finalizar la creación del caso?" 
+                             header="Confirmación" 
+                             severity="warn">
+                <p:commandButton value="Sí" 
+                                 icon="pi pi-check" 
+                                 actionListener="#{casosBean.confirmarCaso}"
+                                 update="formCasos" 
+                                 oncomplete="PF('confirmDialog').hide()"/>
+                <p:commandButton value="No" 
+                                 type="button" 
+                                 styleClass="ui-button-secondary" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('confirmDialog').hide()" />
+            </p:confirmDialog>
+
+            <!-- Mensajes de Confirmación -->
+            <p:growl id="messages" showDetail="true" />
+            
+        </h:form>
+        
+    </ui:define>
+
+</ui:composition>
