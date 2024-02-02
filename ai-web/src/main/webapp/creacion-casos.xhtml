@@ -64,17 +64,34 @@
                 </div>
             </div>
             
-            <!-- Sección de Creación de Casos -->
-<!--            <p:panel header="Datos del Caso">
-                <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel for="fechaIncidente" value="Fecha del Incidente:" />
-                    <p:calendar id="fechaIncidente" value="#{casosBean.caso.fechadeincidente}" showOn="button"/>
+            <div class="card" style="width: 100%">
+                <h5>Anexos del Caso</h5>
+                <div class="col-12">
+                    <p:fileUpload listener="#{casosBean.subirDocumento}"
+                                  mode="advanced"
+                                  update="documentosTable"
+                                  sizeLimit="10000000"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
+                                  multiple="true"/>
 
-                    <p:outputLabel for="detalleCausa" value="Detalle:" />
-                    <p:inputTextarea id="detalleCausa" value="#{casosBean.caso.detallecausa}" autoResize="true" required="true"/>
-                </h:panelGrid>
-            </p:panel>-->
-
+                    <!-- Tabla para listar Documentos -->
+                    <p:dataTable id="documentosTable"
+                                 var="documento"
+                                 value="#{casosBean.documentosTemporales}"
+                                 emptyMessage="No hay documentos subidos">
+                        <p:column headerText="Nombre del Documento">
+                            <h:outputText value="#{documento.nombredocumento}" />
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton icon="pi pi-times"
+                                             title="Eliminar"
+                                             actionListener="#{casosBean.eliminarDocumento(documento)}"
+                                             update="documentosTable"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            
             <!-- Botón para Guardar Caso -->
             <p:commandButton value="Guardar Caso" actionListener="#{casosBean.generarCaso}" oncomplete="PF('confirmDialog').show()" styleClass="ui-button-success mr-2 mb-2" />
 
