@@ -8,10 +8,12 @@ import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Documentos;
+import ec.bomberosquito.ai.entidades.Eventos;
 import ec.bomberosquito.ai.facades.PersonasFacade;
 import ec.bomberosquito.ai.facades.UsuariosFacade;
 import ec.bomberosquito.ai.facades.CasosFacade;
 import ec.bomberosquito.ai.facades.DocumentosFacade;
+import ec.bomberosquito.ai.facades.EventosFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,6 +56,9 @@ public class CasosBean implements Serializable {
     
     @EJB
     private DocumentosFacade ejbDocumentos;
+    
+    @EJB
+    private EventosFacade ejbEventos;
 
     @PostConstruct
     public void init() {
@@ -123,6 +128,13 @@ public class CasosBean implements Serializable {
         listaDocumentos = new ArrayList<>(documentosTemporales);
         documentosTemporales.clear();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos creados exitosamente"));
+        
+        Eventos eventoCreacion = new Eventos();
+        eventoCreacion.setCaso(caso);
+        eventoCreacion.setAccionrealizada("Usuario crea un caso");
+        eventoCreacion.setEstado("CASO_CREADO");
+        eventoCreacion.setFechahora(new Date());
+        ejbEventos.create(eventoCreacion);
 
         // Reiniciar los objetos para nuevos registros
         init();
