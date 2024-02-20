@@ -1,0 +1,165 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Asignar Casos</ui:define>
+
+    <ui:define name="viewname">
+        <li>Pages</li>
+        <li><i class="pi pi-angle-right"/></li>
+        <li>
+            <p:link outcome="/asignar-casos">Asignar Casos</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="grid crud-demo">
+                <div class="col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true" />
+
+                        <!-- Tabla para listar Casos -->
+                        <p:dataTable id="dt-casos" 
+                                     widgetVar="dtCasos" 
+                                     var="caso" 
+                                     value="#{casosAsignacionBean.listaCasos}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     rowKey="#{caso.id}" 
+                                     paginator="true" 
+                                     rows="10" 
+                                     paginatorPosition="bottom">
+
+                            <f:facet name="header">
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Asignación de Casos</span>
+                                    
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtCasos').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <!-- Encabezados de columnas y definiciones -->
+                            
+                            
+                            <p:column headerText="Descripción" sortBy="#{caso.detallecausa}" filterBy="#{caso.detallecausa}">
+                                <h:outputText value="#{caso.detallecausa}" />
+                            </p:column>
+                            
+                            <p:column headerText="ID" sortBy="#{caso.id}" filterBy="#{caso.id}">
+                                <h:outputText value="#{caso.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="Estado" sortBy="#{caso.estado}" filterBy="#{caso.estado}">
+                                <h:outputText value="#{caso.estado}" />
+                            </p:column>
+
+                            <p:column headerText="Fecha de Incidente" sortBy="#{caso.fechadeincidente}" filterBy="#{caso.fechadeincidente}">
+                                <h:outputText value="#{caso.fechadeincidente}">
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Fecha de Realización" sortBy="#{caso.fechaderealizacion}" filterBy="#{caso.fechaderealizacion}">
+                                <h:outputText value="#{caso.fechaderealizacion}">
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column headerText="Lugar de Trabajo" sortBy="#{caso.lugardetrabajo}" filterBy="#{caso.lugardetrabajo}">
+                                <h:outputText value="#{caso.lugardetrabajo}" />
+                            </p:column>
+
+                            <p:column headerText="Medio de Ingreso" sortBy="#{caso.mediodeingreso}" filterBy="#{caso.mediodeingreso}">
+                                <h:outputText value="#{caso.mediodeingreso}" />
+                            </p:column>
+
+                            <p:column headerText="Lugar de Incidente" sortBy="#{caso.lugardeincidente}" filterBy="#{caso.lugardeincidente}">
+                                <h:outputText value="#{caso.lugardeincidente}" />
+                            </p:column>
+
+                            <p:column exportable="false">
+                                <p:commandButton icon="pi pi-pencil" 
+                                                 update=":form:panel-caso-contenido" 
+                                                 oncomplete="PF('dialogoGestionCaso').show()" 
+                                                 styleClass="edit-button rounded-button ui-button-success" 
+                                                 process="@this">
+                                    <f:setPropertyActionListener value="#{caso}" 
+                                                                 target="#{casosAsignacionBean.caso}" />
+                                </p:commandButton>
+                                <p:commandButton class="ui-button-warning rounded-button" 
+                                                 icon="pi pi-trash" 
+                                                 process="@this" 
+                                                 oncomplete="PF('dialogoArchivarCaso').show()" >
+                                    <f:setPropertyActionListener value="#{caso}" 
+                                                                 target="#{casosAsignacionBean.caso}" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>
+
+                        <!-- Dialogo para la edición de Casos -->
+                        <p:dialog header="Editar Caso" 
+                                  showEffect="fade" 
+                                  modal="true" 
+                                  widgetVar="dialogoGestionCaso" 
+                                  responsive="true">
+                            <p:messages id="messagesDialog" showDetail="true" closable="true" />
+                            <p:outputPanel id="panel-caso-contenido" class="ui-fluid">
+                                <p:outputPanel rendered="#{not empty casosAsignacionBean.caso}">
+                                    <!-- Campos de edición para Casos -->
+                                    <div class="field">
+                                        <p:outputLabel for="responsable">Responsable</p:outputLabel>
+                                        <p:selectOneMenu id="responsable" value="#{casosAsignacionBean.responsable}" converter="usuarioConverter">
+                                            <f:selectItem itemLabel="-- Seleccionar Responsable --" itemValue="#{null}" />
+                                            <f:selectItems value="#{casosAsignacionBean.listaResponsables}" var="usuario" itemValue="#{usuario}" itemLabel="#{usuario.persona.nombres} #{usuario.persona.apellidos}" />
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Guardar" 
+                                                 icon="pi pi-check" 
+                                                 actionListener="#{casosAsignacionBean.guardarCaso}" 
+                                                 update="panel-caso-contenido" 
+                                                 process="panel-caso-contenido @this" />
+                                <p:commandButton value="Cancelar" 
+                                                 icon="pi pi-times" 
+                                                 onclick="PF('dialogoGestionCaso').hide()" 
+                                                 class="ui-button-secondary" />
+                            </f:facet>
+                        </p:dialog> 
+                        
+                        <p:confirmDialog widgetVar="dialogoArchivarCaso" 
+                                         showEffect="fade" 
+                                         width="300" 
+                                         message="¿Está seguro de archivar el caso?" 
+                                         header="Confirmación" 
+                                         severity="warn">
+                            <p:commandButton value="Sí" 
+                                             icon="pi pi-check" 
+                                             actionListener="#{casosAsignacionBean.archivarCaso()}" 
+                                             process="@this" 
+                                             oncomplete="PF('dialogoArchivarCaso').hide()"/>
+                            <p:commandButton value="No" 
+                                             type="button" 
+                                             styleClass="ui-button-secondary" 
+                                             icon="pi pi-times" 
+                                             onclick="PF('dialogoArchivarCaso').hide()" />
+                        </p:confirmDialog>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

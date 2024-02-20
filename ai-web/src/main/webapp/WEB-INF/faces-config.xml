@@ -44,4 +44,10 @@
             <converter-class>ec.bomberosquito.ai.converters.PersonasConverter</converter-class>
     </converter>
     
+    <converter>
+        <converter-id>usuarioConverter</converter-id>
+            <converter-for-class>ec.bomberosquito.ai.entidades.Usuarios</converter-for-class>}
+            <converter-class>ec.bomberosquito.ai.converters.UsuariosConverter</converter-class>
+    </converter>
+    
 </faces-config>

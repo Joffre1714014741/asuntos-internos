@@ -5,6 +5,11 @@
 package ec.bomberosquito.ai.facades;
 
 import ec.bomberosquito.ai.entidades.Casos;
+import ec.bomberosquito.ai.excepciones.ConsultarException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +31,15 @@ public class CasosFacade extends AbstractFacade<Casos> {
 
     public CasosFacade() {
         super(Casos.class);
+    }
+
+    public List<Casos> obtenerCasosPorEstado(String estado) throws ConsultarException {
+        List<Casos> listaCasos = new ArrayList<>();
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put(";where", "o.estado=:estado");
+        parametros.put("estado", estado);
+        listaCasos = encontrarParametros(parametros);
+        return listaCasos;
     }
     
 }
