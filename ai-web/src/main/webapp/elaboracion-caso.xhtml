@@ -1,0 +1,452 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"  
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content"> 
+        <h:form id="formCasos">
+            <div style="text-align: center"> 
+                <h5>DIRECCION DE ASUNTOS INTERNOS</h5>
+                <h5> INFORME DE INVESTIGACIÓN </h5>
+                <h5> DAJ-UI-CBDMQ-2024</h5>
+            </div>
+
+            <div class="card" style="width: 100%;">
+                <h5>I. DATOS GENERALES</h5> 
+                <div class="grid ui-fluid mt-3 floatlabel-demo">
+                    <div class="col-12 md:col-8">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <h5>Funcionario(s) Involucrado(s)</h5>
+                                <h:outputText value="NOMBRES:   " style="font-weight: bold;" />
+                                <h:outputText value="#{atencionCasosBean.caso.involucrado.nombres}" />
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label"  >
+                                <h:outputText value="APELLIDOS:   " style="font-weight: bold;"/>
+                                <h:outputText value="#{atencionCasosBean.caso.involucrado.apellidos}" />
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label"  >
+                                <p:inputText id="lugardetrabajo" value="#{atencionCasosBean.caso.lugardetrabajo}" />
+                                <p:outputLabel for="lugardetrabajo" value="UNIDAD A LA QUE PERTENECE:" />
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputText id="lugardeincidente" value="#{atencionCasosBean.caso.lugardeincidente}" />
+                                <p:outputLabel for="lugardeincidente" value="LUGAR DEL INCIDENTE:" />
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:datePicker id="fechaIncidente" value="#{atencionCasosBean.caso.fechadeincidente}"/>
+                                <p:outputLabel for="fechaIncidente" value="FECHA DEL INCIDENTE:" />
+                            </span>
+                        </div>
+
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:datePicker id="fechaElaboracion" value="#{atencionCasosBean.caso.fechadeasignacion}"/>
+                                <p:outputLabel for="fechaElaboracion" value="FECHA INFORMADA:   " />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>II. ANTECEDENTES</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="antecedentes" value="#{atencionCasosBean.caso.antecedentes}"  />
+                                <p:outputLabel for="antecedentes" value="Ingrese los antecedentes del caso:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>III. CALIFICACIÓN</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="calificacion" value="#{atencionCasosBean.caso.calificacion}"  />
+                                <p:outputLabel for="calificacion" value="Ingrese la calificación:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>IV. BASE LEGAL</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div style="text-align: center;">
+                            <p>CONSTITUCIÓN DE LA REPÚBLICA DEL ECUADOR</p>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div style="text-align: justify;">
+                            <p>“Art. 76.- En todo proceso en el que se determinen derechos y obligaciones de cualquier orden, se asegurará el derecho al debido proceso que incluirá las siguientes garantías básicas:
+                                <br/>
+                                <br/>
+                                1.	Corresponde a toda autoridad administrativa o judicial, garantizar el cumplimiento de las normas y los derechos de las partes.
+                                <br/>
+                                <br/>
+                                2. Se presumirá la inocencia de toda persona, y será tratada como tal, mientras no se declare su responsabilidad mediante resolución firme o sentencia ejecutoriada.” (énfasis fuera de texto original).
+                                <br/>
+                                <br/>
+                                Art. 54.- Las personas o entidades que presten servicios públicos o que produzcan o comercialicen bienes de consumo, serán responsables civil y penalmente por la deficiente prestación del servicio, por la calidad defectuosa del producto, o cuando sus condiciones no estén de acuerdo con la publicidad efectuada o con la descripción que incorpore. 
+                                <br/>
+                                <br/>
+                                Las personas serán responsables por la mala práctica en el ejercicio de su profesión, arte u oficio, en especial aquella que ponga en riesgo la integridad o la vida de las personas.
+                                <br/>
+                                <br/>
+                                Art. 83.- Son deberes y responsabilidades de las ecuatorianas y los ecuatorianos, sin perjuicio de otros previstos en la Constitución y la ley:<br/>
+                                <br/>
+                                (…)11. Asumir las funciones públicas como un servicio a la colectividad y rendir    cuentas a la sociedad y a la autoridad, de acuerdo con la ley.
+                                <br/>
+                                <br/>
+                                12. Ejercer la profesión u oficio con sujeción a la ética (…)
+                                <br/>
+                                <br/>
+                                Art. 226. - Las instituciones del Estado, sus organismos, dependencias, las servidoras o servidores públicos y las personas que actúen en virtud de una potestad estatal ejercerán solamente las competencias y facultades que les sean atribuidas en la Constitución y la ley. Tendrán el deber de coordinar acciones para el cumplimiento de sus fines y hacer efectivo el goce y ejercicio de los derechos reconocidos en la Constitución.
+                                <br/>
+                                <br/>
+                                Art. 227.- La administración pública constituye un servicio a la colectividad que se rige por los principios de eficacia, eficiencia, calidad, jerarquía, desconcentración, descentralización, coordinación, participación, planificación, transparencia y evaluación.
+                                <br/>
+                                <br/>
+                                Art. 233.- Ninguna servidora ni servidor público estará exento de responsabilidades por los actos realizados en el ejercicio de sus funciones, o por sus omisiones, y serán responsables administrativa, civil y penalmente por el manejo y administración de fondos, bienes o recursos públicos”.
+                                <br/>
+                                <br/>
+                                <div style="text-align: center;">
+                                    <p>LEY ORGANICA DE SERVICIO PUBLICO, LOSEP</p>
+                                    <p>TITULO III DEL REGIMEN INTERNO DE ADMINISTRACION DEL TALENTO HUMANO</p> 
+                                    <p>CAPITULO 1 DE LOS DEBERES, DERECHOS Y PROHIBICIONES</p>
+                                </div>
+                                <br/>
+                                <br/>
+                                Art. 22.- Deberes de las o los servidores públicos. - Son deberes de las y los servidores públicos:
+                                <br/><br/>
+                                e) Velar por la economía y recursos del Estado y por la conservación de los documentos, útiles, equipos, muebles y bienes en general confiados a su guarda, administración o utilización de conformidad con la ley y las normas secundarias; (negrita y subrayado me corresponde) 
+                                <br/><br/>
+                                Art. 42.- De las faltas disciplinarias. - Se considera faltas disciplinarias aquellas acciones u omisiones de las servidoras o servidores públicos que contravengan las disposiciones del ordenamiento jurídico vigente en la República y esta ley, en lo atinente a derechos y prohibiciones constitucionales o legales.
+                                <br/><br/>
+                                Serán sancionadas por la autoridad nominadora o su delegado. Para efectos de la aplicación de esta ley, las faltas se clasifican en leves y graves.
+                                <br/><br/>
+                                a.- Faltas leves. - Son aquellas acciones u omisiones realizadas por descuidos o desconocimientos leves, siempre que no alteren o perjudiquen gravemente el normal desarrollo y desenvolvimiento del servicio público.
+                                <br/><br/>
+                                Art. 43.- Sanciones disciplinarias. – Las sanciones disciplinarias por orden de gravedad son las siguientes: 
+                                <br/><br/>
+                                a) Amonestación verbal; <br/>
+                                <br/>
+                                b) Amonestación escrita;<br/>
+                                <br/>
+                                c) Sanción pecuniaria administrativa; <br/>
+                                <br/>
+                                d) Suspensión temporal sin goce de remuneración; y, <br/>
+                                <br/>
+                                e) Destitución. <br/>
+                                <br/>
+                                La amonestación escrita se impondrá cuando la servidora o servidor haya recibido, durante un mismo mes calendario, dos o más amonestaciones verbales.
+                                <br/><br/>
+                                La sanción pecuniaria administrativa o multa no excederá el monto del diez por ciento de la remuneración, y se impondrá por reincidencia en faltas leves en el cumplimiento de sus deberes. En caso de reincidencia, la servidora o servidor será destituido con sujeción a la ley. Las sanciones se impondrán de acuerdo a la gravedad de las faltas.
+                                <br/><br/>
+                                <div style="text-align: center;">
+                                    <p>CÓDIGO ORGÁNICO INTEGRAL PENAL, COIP</p>
+                                </div>
+                                <br/><br/>
+                                SECCIÓN SEGUNDA
+                                <br/><br/>
+                                Delitos culposos de tránsito
+                                <br/><br/>
+                                “Art. 380.- Daños materiales. - La persona que como consecuencia de un accidente de tránsito cause daños materiales cuyo costo de reparación sea mayor a dos salarios y no exceda de seis salarios básicos unificados del trabajador en general, será sancionada con multa de dos salarios básicos unificados del trabajador en general y reducción de seis puntos en su licencia de conducir, sin perjuicio de la responsabilidad civil para con terceros a que queda sujeta por causa de la infracción…” 
+                                <br/><br/>
+                                <div style="text-align: center;">
+                                    <p>CÓDIGO ORGÁNICO ADMINISTRATIVO (COA)</p>
+                                </div>
+                                <br/><br/>
+                                ¨…Art. 89.- Actividad de las Administraciones Públicas. Las actuaciones administrativas son:
+                                <br/><br/>
+                                1. Acto administrativo<br/>
+                                <br/>
+                                2. Acto de simple administración<br/>
+                                <br/>
+                                3. Contrato administrativo<br/>
+                                <br/>
+                                4. Hecho administrativo<br/>
+                                <br/>
+                                5. Acto normativo de carácter administrativo<br/>
+                                <br/>
+                                Las administraciones públicas pueden, excepcionalmente, emplear instrumentos de derecho privado, para el ejercicio de sus competencias.
+                                <br/>
+                                <br/>   
+                                Art. 120.- Acto de simple administración. Acto de simple administración es toda declaración unilateral de voluntad, interna o entre órganos de la administración, efectuada en ejercicio de la función administrativa que produce efectos jurídicos individuales y de forma indirecta.
+                                <br/><br/>
+                                Art. 123.- Alcance del dictamen o informe. El dictamen o informe se referirá a los aspectos objeto de la consulta o del requerimiento; a las materias objeto de la competencia del órgano emisor y a los aspectos que incumben a la profesión, arte u oficio, de los servidores públicos que lo suscriben...”
+                                <br/><br/>
+                                <div style="text-align: center;">
+                                    <p>CODIGO CIVIL</p>
+                                </div>
+                                <br/><br/>
+                                Art. 30.- Se llama FUERZA MAYOR o caso fortuito, el imprevisto a que no es posible resistir, como un naufragio, un terremoto, el apresamiento de enemigos, los actos de autoridad ejercidos por un funcionario público, etc.
+                                <br/><br/>
+                                <div style="text-align: center;">
+                                    <p>REGLAMENTO ADMINISTRATIVO Y CONTROL DE BIENES DEL SECTOR PÚBLICO</p>
+                                </div>
+                                <br/><br/>
+                                Art. 20.- Usuario Final. - Será el responsable del cuidado, buen uso, custodia y conservación de los bienes e inventarios a él asignados para el desempeño de sus funciones y los que por delegación expresa se agreguen a su cuidado, conforme a las disposiciones legales y reglamentarias correspondientes.
+                                <br/><br/>
+                                Art. 49.- Daño, pérdida o destrucción de bienes e inventarios.- La máxima autoridad, o su delegado sustentado en los respectivos informes técnicos y demás documentos administrativos y/o judiciales, dispondrá la reposición de bienes nuevos de similares o superiores características; o, el pago al valor actual de mercado, al Usuario Final; terceros que de cualquier manera tengan acceso al bien cuando realicen acciones de mantenimiento o reparación por requerimiento de la institución; o, a la persona causante de la afectación al bien siempre y cuando se compruebe su identidad. Si sobre la base del informe técnico y demás documentos administrativos señalados en el inciso anterior se desprende que el bien ha sufrido daños que no afecten el normal funcionamiento, estando en posesión del Usuario Final, será responsabilidad del mismo:
+                                <br/><br/>
+                                a)Cubrir los valores que se desprendan por la reparación o restitución del bien afectado.<br/>
+                                <br/>
+
+                                b)Efectuar personalmente las gestiones necesarias para obtener del o los terceros que hayan afectado al bien, la reparación o restitución parcial del mismo.<br/>
+                                <br/>
+                                c) Gestionar con la Unidad Administrativa de Bienes e Inventarios el mantenimiento o reparación a través de terceros que hayan sido contratados por la Institución para efectuar tales labores, en cuyo caso cubrirá los valores resultantes de la reparación o mantenimiento por el daño ocasionado al bien.
+                                <br/><br/>
+                                La Unidad de Administración de Bienes e Inventarios gestionará con las unidades pertinentes, a fin de realizar la verificación y recepción del bien a conformidad.
+                                <br/><br/>
+                                Sin perjuicio de lo dispuesto en las letras a), b) y c) de este artículo, será responsabilidad de los Usuarios Finales el cuidado, buen uso, custodia y conservación de los bienes e inventarios asignados, así como cualquier afectación que recaiga sobre aquellos. En los casos de pérdida o desaparición de los bienes por hurto, robo, abigeato, fuerza mayor o caso fortuito se estará a lo previsto en los artículos 146 y 150 de este Reglamento, según corresponda.
+                                <br/><br/>
+                                <div style="text-align: center;">
+                                    <p>PROCEDIMIENTO PARA LA INDEMNIZACIÓN DEL SEGURO DE LOS VEHICULOS INSTITUCIONALES</p>
+                                </div>
+                                <br/><br/>
+                                VII. PROCEDIMIENTO…No. 3 Notificar el siniestro ocurrido mediante un Informe del Siniestro dirigido a su jefe inmediato en máximo 24 horas con respaldo fotográfico. (Servidor(a) responsable del vehículo).
+                                <br/><br/>
+                                POLÍTICAS DE OPERACIÓN 
+                                <br/><br/>
+                                1. La notificación del siniestro deberá ser efectuada, a través del sistema, en un plazo máximo de 72 horas ocurrido el mismo. 
+                                <br/><br/>
+                                2. El informe al jefe inmediato deberá ser notificado mediante los gestores documentales y deberán tener el respaldo fotográfico de los daños causados que tiene el vehículo.
+                                .</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>V. ACTIVIDADES REALIZADAS</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="actividades" value="#{atencionCasosBean.caso.actividadesrealizadas}"  />
+                                <p:outputLabel for="actividades" value="Ingrese los antecedentes del caso:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>VI. RESUMEN DEL CASO</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="resumen" value="#{atencionCasosBean.caso.relaciondehechos}"  />
+                                <p:outputLabel for="resumen" value="Relación de los hechos:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>VII. CONCLUSIONES</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="conclusion" value="#{atencionCasosBean.caso.conclusiones}"  />
+                                <p:outputLabel for="conclusion" value="Ingrese las conclusiones:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>VIII. RECOMENDACIÓN</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="recomendacion" value="#{atencionCasosBean.caso.recomendaciones}"  />
+                                <p:outputLabel for="recomendacion" value="Ingrese la recomendación:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>COMENTARIO:</h5>
+                <div class="grid ui-fluid mt-1 floatlabel-demo">
+                    <div class="col-12 md:col-12">
+                        <div class="field">
+                            <span class="ui-float-label">
+                                <p:inputTextarea id="comentario" value="#{atencionCasosBean.caso.observaciones}"  />
+                                <p:outputLabel for="comentario" value="Ingrese la recomendación:" />
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="width: 100%">
+                <h5>Anexos del Caso</h5>
+                <div class="col-12">
+                    <p:fileUpload listener="#{casosBean.subirDocumento}"
+                                  mode="advanced"
+                                  update="documentosTable"
+                                  sizeLimit="10000000"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
+                                  multiple="true"/>
+
+                    <!-- Tabla para listar Documentos -->
+                    <p:dataTable id="documentosTable"
+                                 var="documento"
+                                 value="#{casosBean.documentosTemporales}"
+                                 emptyMessage="No hay documentos subidos">
+                        <p:column headerText="Nombre del Documento">
+                            <h:outputText value="#{documento.nombredocumento}" />
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton icon="pi pi-times"
+                                             title="Eliminar"
+                                             actionListener="#{casosBean.eliminarDocumento(documento)}"
+                                             update="documentosTable"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+
+            <!-- Botón para Guardar Caso -->
+
+            <p:commandButton value="Guardar Informe" oncomplete="PF('confirmDialoguardar').show()" styleClass="ui-button-success mr-2 mb-2" />
+
+            <!-- Diálogo de Confirmación -->
+            <p:confirmDialog widgetVar="confirmDialoguardar" 
+                             showEffect="fade" 
+                             width="300" 
+                             message="¿Guardar el progreso del informe?" 
+                             header="Confirmación" 
+                             severity="warn">
+                <p:commandButton value="Sí" 
+                                 icon="pi pi-check" 
+                                 actionListener="#{atencionCasosBean.guardarCaso()}"
+                                 update="formCasos" 
+                                 oncomplete="PF('confirmDialoguardar').hide()"/>
+                <p:commandButton value="No" 
+                                 type="button" 
+                                 styleClass="ui-button-secondary" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('confirmDialoguardar').hide()" />
+            </p:confirmDialog>
+
+            <!-- Botón para Enviar a revisión de Informe -->
+
+            <p:commandButton value="Enviar a revisón" oncomplete="PF('confirmDialogrevision').show()" styleClass="ui-button-success mr-3 mb-3" />
+
+            <!-- Diálogo de Confirmación -->
+            <p:confirmDialog widgetVar="confirmDialogrevision" 
+                             showEffect="fade" 
+                             width="300" 
+                             message="¿Estas seguro de enviar el Informe para su revisión?" 
+                             header="Confirmación" 
+                             severity="warn">
+                <p:commandButton value="Sí" 
+                                 icon="pi pi-check" 
+                                 actionListener="#{atencionCasosBean.revisarInforme()}" 
+                                 update="formCasos" 
+                                 oncomplete="PF('confirmDialogrevision').hide()"/>
+                <p:commandButton value="No" 
+                                 type="button" 
+                                 styleClass="ui-button-secondary" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('confirmDialogrevision').hide()" />
+            </p:confirmDialog>
+
+            <!-- Mensajes de Confirmación -->
+            <p:growl id="messagesrevision" showDetail="true" />
+
+            <!-- Botón para Finalizar Caso -->
+
+            <p:commandButton value="Finalizar Informe" oncomplete="PF('confirmDialogfinalizar').show()" styleClass="ui-button-success mr-34 mb-4"  rendered="#{atencionCasosBean.caso.estado eq 'APROBADO'}" />
+
+            <!-- Diálogo de Confirmación -->
+            <p:confirmDialog widgetVar="confirmDialogfinalizar" 
+                             showEffect="fade" 
+                             width="300" 
+                             message="¿Desea finalizar el informe?" 
+                             header="Confirmación" 
+                             severity="warn">
+                <p:commandButton value="Sí" 
+                                 icon="pi pi-check" 
+                                 actionListener="#{atencionCasosBean.concluirInforme()}" 
+                                 update="formCasos" 
+                                 oncomplete="PF('confirmDialogfinalizar').hide()"/>
+                <p:commandButton value="No" 
+                                 type="button" 
+                                 styleClass="ui-button-secondary" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('confirmDialogfinalizar').hide()" />
+            </p:confirmDialog>
+
+            <p:commandButton value="Generar PDF" 
+                             actionListener="#{atencionCasosBean.generarPdf()}" 
+                             oncomplete="PF('dlgPdf').show()" 
+                             update="pdfDialog" 
+                             styleClass="ui-button-success mr-2 mb-2" />
+
+            <!-- Diálogo de PrimeFaces -->
+           
+            <!-- Diálogo de Confirmación -->
+            <p:confirmDialog widgetVar="confirmDialogpdf" 
+                             showEffect="fade" 
+                             width="300" 
+                             message="¿Deseas generar Pdf?" 
+                             header="Confirmación" 
+                             severity="warn">
+                <p:commandButton value="Sí" 
+                                 icon="pi pi-check" 
+                                 actionListener="#{atencionCasosBean.guardarCaso()}"
+                                 update="formCasos" 
+                                 oncomplete="PF('confirmDialogpdf').hide()"/>
+                <p:commandButton value="No" 
+                                 type="button" 
+                                 styleClass="ui-button-secondary" 
+                                 icon="pi pi-times" 
+                                 onclick="PF('confirmDialogpdf').hide()" />
+            </p:confirmDialog>
+
+            <!-- Mensajes de Confirmación -->
+            <p:growl id="messagespdf" showDetail="true" />
+
+        </h:form>
+         <p:dialog id="pdfDialog" header="PDF Document" widgetVar="dlgPdf" modal="true" width="700px" height="900px" resizable="false">
+                <!-- Componente Media para mostrar el PDF -->
+                <object data="#{atencionCasosBean.pathpdfSolicitud}" type="application/pdf" width="800" height="600"></object>
+            </p:dialog>
+    </ui:define>
+</ui:composition>

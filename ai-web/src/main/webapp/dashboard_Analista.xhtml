@@ -1,0 +1,257 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template_2.xhtml">
+
+    <ui:define name="title">Menu</ui:define>
+    <ui:define name="viewname">
+        <li>Menu</li>
+        <li><i class="pi pi-angle-right"/></li>
+        <li>
+            <p:link outcome="/dashboard_Analista">Cosas por Hacer</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="head">
+        <h:outputScript name="js/chart.js" library="demo" />
+        <script type="text/javascript">
+            $(function () {
+                var newsrow = $('.news-row');
+                $('.point').on('click', function (e) {
+                    var point = $(this);
+
+                    point.siblings('.active-point').removeClass('active-point');
+                    point.addClass('active-point');
+
+                    if (point.hasClass('point-1')) {
+                        newsrow.css('transform', 'translate3d(0, 0, 0)');
+                    } else if (point.hasClass('point-2')) {
+                        newsrow.css('transform', 'translate3d(-100%, 0, 0)');
+                    } else if (point.hasClass('point-3')) {
+                        newsrow.css('transform', 'translate3d(-200%, 0, 0)');
+                    }
+
+                    e.preventDefault();
+                });
+
+                var ctx = document.getElementById("dashboard-chart").getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
+                        datasets: [{
+                                data: [20, 7, 9, 3, 30, 7, 15],
+                                borderColor: [
+                                    '#45b0d5'
+                                ],
+                                borderWidth: 3,
+                                fill: false
+                            }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        fontFamily: "'Candara', 'Calibri', 'Courier', 'serif'",
+                        hover: {
+                            mode: 'index'
+                        },
+                        scales: {
+                            xAxes: [{
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        fontColor: '#9199a9'
+                                    }
+                                }],
+                            yAxes: [{
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        fontColor: '#9199a9'
+                                    }
+                                }]
+                        },
+                        legend: {
+                            display: true,
+                            labels: {
+                                fontColor: '#9199a9'
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="grid layout-dashboard">
+
+                <div class="col-12 xl:col-3 md:col-6" >
+                    <div class="grid grid-nogutter overview-box overview-box-2">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Notificacion.jpg" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text">
+                            <h5>Notificaciones</h5>
+                            <span>Tienes Casos por revisar</span>
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            2
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-3">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Elaboracion.png" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text">
+                            <h5>En Elaboración</h5>
+                            <span>Casos pendientes por realizar</span>
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            5
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-4">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Finalizado.jpg" library="mirage-layout" />
+                        </div>
+                        <div class="col-3 overview-box-text">
+                            <h5>Casos Aprobados</h5>
+                            <span>Realizados hasta el momento</span>
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            60
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 lg:col-3 md:col-6">
+                    <div class="card tasks">
+                        <div class="grid grid-nogutter">
+                            <div class="col-6 title" style="text-align: center">
+                                <h5>TAREAS</h5>
+                            </div>
+                            <div class="col-6 task-info">
+                                <span>Tienes</span><span class="highlighted"> 3 tareas</span><span> para hoy</span>
+                            </div>
+                        </div>
+                        <ul class="checkboxes">
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunión Comandancia</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time">Hoy</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Entrega de actividades mensuales</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time">Hoy</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Registro seguimiento de casos</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Hoy</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunión Operaciones</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Mañana</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Elaboración del plan estratégico</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">jueves</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Examenes médicos Institucional</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">jueves</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunion de Área</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Viernes</span>
+                                        <i class="pi pi-tag"/>
+                                        <i class="pi pi-calendar"/>
+                                        <i class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

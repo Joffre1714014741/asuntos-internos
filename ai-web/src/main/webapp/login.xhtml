@@ -1,6 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+
+<html 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <f:facet name="first">
@@ -9,7 +14,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
-        <title>PrimeFaces Mirage</title>
+        <title>Asuntos Internos</title>
         <h:outputScript name="js/layout.js" library="mirage-layout" />
 
         <script type="text/javascript">
@@ -41,30 +46,32 @@
             <div class="login-panel">
                 <div class="login-panel-content">
                     <div class="logo">
-                        <p:graphicImage name="images/logo-mirage@2x.png" library="mirage-layout" />
+                        <p:graphicImage name="images/bomberos2.jpg" library="mirage-layout" />
                     </div>
-                    <h1>Sign in to Mirage</h1>
-                    <p>Welcome, please use the form to sign-in Mirage network</p>
+                    <p:growl id="messages" showDetail="true"/>
+                    <p>DASI</p>
+                    <p>DIRECCIÓN DE ASUNTOS INTERNOS</p>
+                    <p>Sistema de Elaboración de Informes</p>
+                    
                     <h:form styleClass="forms">
                         <div class="login-input-wrapper">
-                            <p:outputLabel for="username" value="Username" />
-                            <p:inputText id="username" placeholder="Type your username..." />
-                            <i class="pi pi-user"/>
+                            <p:outputLabel for="Usuario" value="Usuario" />
+                            <p:inputText id="Usuario" placeholder="Ingresa tu usuario" value="#{seguridad.usuario}"/>
+                            <strong class="pi pi-user"/>
                         </div>
 
                         <div class="login-input-wrapper">
-                            <p:outputLabel for="password" value="Password" />
-                            <p:password id="password" placeholder="Type your password" feedback="false" />
-                            <i class="pi pi-lock"/>
+                            <p:outputLabel for="Contraseña" value="Contraseña" />
+                            <p:password id="Contraseña" placeholder="Ingrese su contraseña" feedback="false" value="#{seguridad.password}" />
+                            <strong class="pi pi-lock"/>
                         </div>
 
                         <p:selectManyCheckbox layout="responsive" columns="1">
-                            <f:selectItem itemLabel="Remember me" itemValue="SaveInfo" />
+                            <f:selectItem itemLabel="Recordar" itemValue="SaveInfo" />
                         </p:selectManyCheckbox>
 
-                        <div class="buttons">
-                            <p:commandButton value="Login" />
-                            <p:commandButton value="Forget password" styleClass="ui-button-secondary" />
+                        <div style="text-align: center;">
+                            <p:commandButton value="INGRESAR" action="#{seguridad.probar()}" update="messages"/>
                         </div>
                     </h:form>
                 </div>

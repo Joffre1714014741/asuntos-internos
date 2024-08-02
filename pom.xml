@@ -40,7 +40,7 @@
         <dependencies>
 
             <!-- Define the version of the EJB jar so that we don't need 
-                to repeat ourselves in every module -->
+            to repeat ourselves in every module -->
             <dependency>
                 <groupId>ec.gob.bomberosquito</groupId>
                 <artifactId>ai-ejb</artifactId>
@@ -49,7 +49,7 @@
             </dependency>
             
             <!-- Define the version of the WAR so that we don't need to repeat 
-                ourselves in every module -->
+            ourselves in every module -->
             <dependency>
                 <groupId>ec.gob.bomberosquito</groupId>
                 <artifactId>ai-web</artifactId>
@@ -72,10 +72,10 @@
         <pluginManagement>
             <plugins>
                 <!-- The WildFly plugin deploys your ear to a local JBoss
-                    AS container -->
+                AS container -->
                 <!-- Due to Maven's lack of intelligence with EARs we need 
-                    to configure the wildfly maven plugin to skip deployment for all modules.
-                    We then enable it specifically in the ear module. -->
+                to configure the wildfly maven plugin to skip deployment for all modules.
+                We then enable it specifically in the ear module. -->
                 <plugin>
                     <groupId>org.wildfly.plugins</groupId>
                     <artifactId>wildfly-maven-plugin</artifactId>

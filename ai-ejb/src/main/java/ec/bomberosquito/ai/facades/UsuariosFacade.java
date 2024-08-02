@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Stateless
 public class UsuariosFacade extends AbstractFacade<Usuarios> {
@@ -42,4 +42,4 @@ public class UsuariosFacade extends AbstractFacade<Usuarios> {
         return listaUsuarios;
     }
     
-}
+    }

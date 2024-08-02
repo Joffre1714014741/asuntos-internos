@@ -1,5 +1,6 @@
 package ec.bomberosquito.ai.beans;
 
+import ec.bomberosquito.ai.converters.Codificador;
 import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.facades.PersonasFacade;
@@ -9,17 +10,18 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.Visibility;
 
-@Named
+@ManagedBean(name = "usuariosBean")
 @ViewScoped
 public class UsuariosBean implements Serializable {
-
+    Codificador c = new Codificador();  
     private Personas persona;
     private Usuarios usuario;
     private List<Personas> listaPersonas;
@@ -78,6 +80,10 @@ public class UsuariosBean implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-personas");
     }
     
+    public Usuarios traer(Integer id){
+        return ejbUsuarios.find(id);
+    }
+    
     public void eliminarPersona() {
         ejbPersonas.remove(persona);
         this.listaPersonas.remove(this.persona);
@@ -102,6 +108,7 @@ public class UsuariosBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debes seleccionar una persona.", null));
                 return; // Detiene el proceso de guardado si no se ha seleccionado una persona.
             }
+            usuario.setContrasena(c.getEncoded(usuario.getContrasena(), "MD5"));
             ejbUsuarios.create(usuario);
             listaUsuarios.add(usuario);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario creado"));

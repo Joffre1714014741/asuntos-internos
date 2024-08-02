@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Entity
 @Table(name = "causas")

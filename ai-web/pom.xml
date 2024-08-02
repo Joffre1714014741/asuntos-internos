@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-   <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-   <parent>
-      <artifactId>ai</artifactId>
-      <groupId>ec.gob.bomberosquito</groupId>
-      <version>1.0</version>
-   </parent>
+    <parent>
+        <artifactId>ai</artifactId>
+        <groupId>ec.gob.bomberosquito</groupId>
+        <version>1.0</version>
+    </parent>
 
-   <artifactId>ai-web</artifactId>
-   <packaging>war</packaging>
+    <artifactId>ai-web</artifactId>
+    <packaging>war</packaging>
 
-   <name>ai: WAR Module</name>
+    <name>ai: WAR Module</name>
 
-   <url>http://wildfly.org</url>
-   <licenses>
-      <license>
-         <name>Apache License, Version 2.0</name>
-         <distribution>repo</distribution>
-         <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-      </license>
-   </licenses>
+    <url>http://wildfly.org</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
    
-   <properties>
+    <properties>
         <owb.version>2.0.20</owb.version>
         <mojarra.version>2.3.14</mojarra.version>
         <open-pdf.version>1.3.24</open-pdf.version>
@@ -31,41 +31,47 @@
         <packaging.type>war</packaging.type>
     </properties>
 
-   <dependencies>
+    <dependencies>
+        
+        <!-- Dependency on the EJB module so we can use it's services if needed -->
+        <dependency>
+            <groupId>ec.gob.bomberosquito</groupId>
+            <artifactId>ai-ejb</artifactId>
+            <type>ejb</type>
+            <scope>provided</scope>
+        </dependency>
 
-      <!-- Dependency on the EJB module so we can use it's services if needed -->
-      <dependency>
-         <groupId>ec.gob.bomberosquito</groupId>
-         <artifactId>ai-ejb</artifactId>
-         <type>ejb</type>
-         <scope>provided</scope>
-      </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>12.0.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+        </dependency>
+        
+        <dependency>
+             <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
 
-      <dependency>
-           <groupId>org.primefaces</groupId>
-           <artifactId>primefaces</artifactId>
-           <version>12.0.0</version>
-       </dependency>
-       
-       <dependency>
-           <groupId>javax</groupId>
-           <artifactId>javaee-api</artifactId>
-       </dependency>
+    </dependencies>
 
-   </dependencies>
-
-   <build>
-      <finalName>${project.artifactId}</finalName>
-      <plugins>
-         <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>${version.war.plugin}</version>
-            <configuration>
-               <!-- Java EE 7 doesn't require web.xml, Maven needs to catch up! -->
-               <failOnMissingWebXml>false</failOnMissingWebXml>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${version.war.plugin}</version>
+                <configuration>
+                    <!-- Java EE 7 doesn't require web.xml, Maven needs to catch up! -->
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

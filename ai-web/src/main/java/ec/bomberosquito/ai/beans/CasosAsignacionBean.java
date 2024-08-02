@@ -50,12 +50,12 @@ public class CasosAsignacionBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            listaCasos = ejbCasos.obtenerCasosPorEstado("CREADO");
+            listaCasos = ejbCasos.obtenerCasosPorEstado("INICIO");
         } catch (ConsultarException ex) {
             Logger.getLogger(CasosAsignacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            listaResponsables = ejbUsuarios.obtenerUsuariosPorTipo("INVESTIGADOR");
+            listaResponsables = ejbUsuarios.obtenerUsuariosPorTipo("ANALISTA");
         } catch (ConsultarException ex) {
             Logger.getLogger(CasosAsignacionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,7 +121,7 @@ public class CasosAsignacionBean implements Serializable {
         this.responsable = responsable;
     }
 
-    public List<Usuarios> getListaResponsables() {
+        public List<Usuarios> getListaResponsables() {
         return listaResponsables;
     }
 

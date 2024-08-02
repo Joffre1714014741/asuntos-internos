@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Entity
 @Table(name = "personas")
@@ -59,6 +59,21 @@ public class Personas implements Serializable {
     private String cedula;
     @OneToMany(mappedBy = "persona")
     private List<Usuarios> usuariosList;
+
+    @Size(min = 1, max = 100)
+    @Column(name = "mail")
+    private String mail;
+
+    @Size(min = 1, max = 25)
+    @Column(name = "contacto")
+    private String contacto;
+
+    @Size(min = 1, max = 25)
+    @Column(name = "tipo")
+    private String tipo;
+    
+    @OneToMany(mappedBy = "involucrado")
+    private List<Casos> casosList1;
 
     public Personas() {
     }
@@ -135,9 +150,42 @@ public class Personas implements Serializable {
         return true;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    @XmlTransient
+    public List<Casos> getCasosList1() {
+        return casosList1;
+    }
+
+    public void setCasosList1(List<Casos> casosList1) {
+        this.casosList1 = casosList1;
+    }
+
     @Override
     public String toString() {
         return "ec.bomberosquito.ai.entidades.Personas[ id=" + id + " ]";
     }
-    
+
 }

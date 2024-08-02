@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Stateless
 public class NewSessionBean {

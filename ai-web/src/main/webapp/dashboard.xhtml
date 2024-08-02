@@ -1,13 +1,17 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" 
+    template="/WEB-INF/template.xhtml">
 
-    <ui:define name="title">Dashboard</ui:define>
+ 
     <ui:define name="viewname">
-        <li>Dashboard</li>
-        <li><i class="pi pi-angle-right"/></li>
+        <li>Menu</li>
+        <li><strong class="pi pi-angle-right"/></li>
         <li>
-            <p:link outcome="/dashboard">Control Center</p:link>
+            <p:link outcome="/dashboard">Cosas por Hacer</p:link>
         </li>
     </ui:define>
 
@@ -37,25 +41,15 @@
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio' ,'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                         datasets: [{
-                            label: 'Sapphire',
-                            data: [1, 2, 5, 3, 12, 7, 15],
-                            borderColor: [
-                                '#45b0d5'
-                            ],
-                            borderWidth: 3,
-                            fill: false
-                        },
-                        {
-                            label: 'Roma',
-                            data: [3, 7, 2, 17, 15, 13, 19],
-                            borderColor: [
-                                '#d08770'
-                            ],
-                            borderWidth: 3,
-                            fill: false
-                        }]
+                                data: [20, 7, 9, 3, 30, 7, 15, 5, 50, 60, 100, 25],
+                                borderColor: [
+                                    '#45b0d5'
+                                ],
+                                borderWidth:2,
+                                fill: false
+                            }]
                     },
                     options: {
                         responsive: true,
@@ -66,21 +60,21 @@
                         },
                         scales: {
                             xAxes: [{
-                                gridLines: {
-                                    display: false
-                                },
-                                ticks: {
-                                    fontColor: '#9199a9'
-                                }
-                            }],
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        fontColor: '#9199a9'
+                                    }
+                                }],
                             yAxes: [{
-                                gridLines: {
-                                    display: false
-                                },
-                                ticks: {
-                                    fontColor: '#9199a9'
-                                }
-                            }]
+                                    gridLines: {
+                                        display: false
+                                    },
+                                    ticks: {
+                                        fontColor: '#9199a9'
+                                    }
+                                }]
                         },
                         legend: {
                             display: true,
@@ -95,1190 +89,233 @@
     </ui:define>
 
     <ui:define name="content">
-        <div class="grid layout-dashboard">
-            <div class="col-12 xl:col-3 md:col-6">
-                <div class="grid grid-nogutter overview-box overview-box-1">
-                    <div class="col-3 overview-box-icon">
-                        <p:graphicImage name="images/dashboard/icon-messages.svg" library="mirage-layout" />
-                    </div>
-                    <div class="col-6 overview-box-text">
-                        <h5>Messages</h5>
-                        <span>24 new since last visit</span>
-                    </div>
-                    <div class="col-3 overview-box-status">
-                        440
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 xl:col-3 md:col-6">
-                <div class="grid grid-nogutter overview-box overview-box-2">
-                    <div class="col-3 overview-box-icon">
-                        <p:graphicImage name="images/dashboard/icon-checkins.svg" library="mirage-layout" />
-                    </div>
-                    <div class="col-6 overview-box-text">
-                        <h5>Check-ins</h5>
-                        <span>48 new since last visit</span>
-                    </div>
-                    <div class="col-3 overview-box-status">
-                        532
+        <h:form id="form">
+            <div class="grid layout-dashboard">
+                <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-2">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Notificacion.jpg" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text">
+                            <p>Notificaciones</p>
+                            <span>Tienes Casos por revisar</span>
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            #{dashboardBean.cantidadCasos()}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 xl:col-3 md:col-6">
-                <div class="grid grid-nogutter overview-box overview-box-3">
-                    <div class="col-3 overview-box-icon">
-                        <p:graphicImage name="images/dashboard/icon-filessynced.svg" library="mirage-layout" />
-                    </div>
-                    <div class="col-6 overview-box-text">
-                        <h5>Files Synced</h5>
-                        <span>32,56 / 250 GB</span>
-                    </div>
-                    <div class="col-3 overview-box-status">
-                        28
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 xl:col-3 md:col-6">
-                <div class="grid grid-nogutter overview-box overview-box-4">
-                    <div class="col-3 overview-box-icon">
-                        <p:graphicImage name="images/dashboard/icon-usersonline.png" library="mirage-layout" />
-                    </div>
-                    <div class="col-6 overview-box-text">
-                        <h5>Users Online</h5>
-                        <span>72 new user this week</span>
-                    </div>
-                    <div class="col-3 overview-box-status">
-                        256
+                <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-3">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Elaboracion.png" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text">
+                            <p>En Elaboración</p>
+                            <span>Casos pendientes por realizar</span>
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            #{dashboardBean.cantidadElaborados()}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 lg:col-6 ">
-                <div class="grid flex-column grid-nogutter">
-                    <div class="col-12 ">
-                        <div class="card statistics">
-                            <div class="grid">
-                                <div class="col-6 md:col-8">
-                                    <h5>Statistics</h5>
+                <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-4">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Finalizado.jpg" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text" style="align-content: center">
+                            <p>Casos Aprobados</p> 
+                            <span>Realizados hasta el momento</span> 
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            #{dashboardBean.cantidadFinalizados()}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 lg:col-6 ">
+                    <div class="grid flex-column grid-nogutter">
+                        <div class="col-12 ">
+                            <div class="card statistics">
+                                <div class="grid">
+                                    <div class="col-2 md:col-10 dropdown">
+                                        <p:selectOneMenu id="Causas">
+                                            <f:selectItem itemLabel="Robo" itemValue="Robo" />
+                                            <f:selectItem itemLabel="Perdida" itemValue="Perdida" />
+                                            <f:selectItem itemLabel="Daño" itemValue="Perdida" />
+                                            <f:selectItem itemLabel="Accidente de Tránsito" itemValue="Accidente de Tránsito" />
+                                            <f:selectItem itemLabel="Faltas Leves" itemValue="Faltas Leves" />
+                                            <f:selectItem itemLabel="Faltas Graves" itemValue="Faltas Graves" />
+                                            <f:selectItem itemLabel="Faltas muy Graves" itemValue="Faltas muy Graves" />
+                                        </p:selectOneMenu>
+                                    </div>
                                 </div>
-                                <div class="col-6 md:col-4 dropdown">
-                                    <p:selectOneMenu id="yearMenu">
-                                        <f:selectItem itemLabel="2019" itemValue="2019" />
-                                        <f:selectItem itemLabel="2018" itemValue="2018" />
-                                        <f:selectItem itemLabel="2017" itemValue="2017" />
-                                        <f:selectItem itemLabel="2016" itemValue="2016" />
-                                        <f:selectItem itemLabel="2015" itemValue="2015" />
-                                        <f:selectItem itemLabel="2014" itemValue="2014" />
+                                <div class="col-2 md:col-4 dropdown">
+                                    <p:selectOneMenu id="Estaciones" style="align-items: center">
+                                        <f:selectItem itemLabel="Estación X-1" itemValue="Estación X-1" />
+                                        <f:selectItem itemLabel="Estación X-2" itemValue="Estación X-2" />
+                                        <f:selectItem itemLabel="Estación X-3" itemValue="Estación X-3" />
+                                        <f:selectItem itemLabel="Estación X-4" itemValue="Estación X-4" />
+                                        <f:selectItem itemLabel="Estación X-5" itemValue="Estación X-5" />
+                                        <f:selectItem itemLabel="Estación X-6" itemValue="Estación X-6" />
+                                        <f:selectItem itemLabel="Estación X-7" itemValue="Estación X-7" />
+                                        <f:selectItem itemLabel="Estación X-8" itemValue="Estación X-8" />
+                                        <f:selectItem itemLabel="Estación X-9" itemValue="Estación X-9" />
+                                        <f:selectItem itemLabel="Estación X-10" itemValue="Estación X-10" />
+                                        <f:selectItem itemLabel="Estación X-11" itemValue="Estación X-11" />
+                                        <f:selectItem itemLabel="Estación X-12" itemValue="Estación X-12" />
+                                        <f:selectItem itemLabel="Estación X-13" itemValue="Estación X-13" />
+                                        <f:selectItem itemLabel="Estación X-14" itemValue="Estación X-14" />
+                                        <f:selectItem itemLabel="Estación X-15" itemValue="Estación X-15" />
+                                        <f:selectItem itemLabel="Estación X-16" itemValue="Estación X-16" />
+                                        <f:selectItem itemLabel="Estación X-17" itemValue="Estación X-17" />
+                                        <f:selectItem itemLabel="Estación X-18" itemValue="Estación X-18" />
+                                        <f:selectItem itemLabel="Estación X-19" itemValue="Estación X-19" />
+                                        <f:selectItem itemLabel="Estación X-20" itemValue="Estación X-20" />
+                                        <f:selectItem itemLabel="Estación X-21" itemValue="Estación X-21" />
+                                        <f:selectItem itemLabel="Estación X-22" itemValue="Estación X-22" />
+                                        <f:selectItem itemLabel="Estación X-23" itemValue="Estación X-23" />
+                                        <f:selectItem itemLabel="Estación X-24" itemValue="Estación X-24" />
+                                        <f:selectItem itemLabel="Estación X-25" itemValue="Estación X-25" />
                                     </p:selectOneMenu>
                                 </div>
-                            </div>
-
-                            <canvas id="dashboard-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-12 news-row-wrapper">
-                        <div class="news-row">
-                            <div class="card news news-1 active-news">
-                                <div class="news-title">
-                                    <h5>NEWS</h5>
-                                </div>
-                                <h6>3D-printed robot hand plays the piano</h6>
-                                <p>Scientists have developed a 3D-printed robotic hand which can play simple musical
-                                    phrases
-                                    on the piano by just moving its wrist</p>
-                                <div class="grid link">
-                                    <div class="col-9">
-                                        <a href="">Learn more at Mirage News Central<i class="pi pi-arrow-right"/></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card news news-2">
-                                <div class="news-title">
-                                    <h5>NEWS</h5>
-                                </div>
-                                <h6>Scientists are trying to open a portal to a parallel universe</h6>
-                                <p>Does a mysterious mirror world lurk in the shadows of perceived reality? Could 2019
-                                    be
-                                    the year humans open the first portal to a shadowy dimension which mirrors our own
-                                    world?</p>
-                                <div class="grid link">
-                                    <div class="col-9">
-                                        <a href="">Learn more at Independent<i class="pi pi-arrow-right"/></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card news news-3">
-                                <div class="news-title">
-                                    <h5>NEWS</h5>
-                                </div>
-                                <h6>Another mysterious deep space signal traced to the other side of the universe</h6>
-                                <p>Fast radio bursts suddenly seem to be everywhere in the news, but they're still
-                                    coming
-                                    from very far away.</p>
-                                <div class="grid link">
-                                    <div class="col-9">
-                                        <a href="">Learn more at CNET <i class="pi pi-arrow-right"/></a>
-                                    </div>
-                                </div>
+                                <canvas id="dashboard-chart"></canvas>
                             </div>
                         </div>
-                        <div class="link-points">
-                            <div class="grid points">
-                                <div class="col-4 point point-1 active-point"></div>
-                                <div class="col-4 point point-2 "></div>
-                                <div class="col-4 point point-3 "></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-6">
-                <div class="grid">
-                    <div class="col-12">
-                        <div class="card timeline">
-                            <h5>Timeline</h5>
-                            <div class="timeline-row">
-                                <div class="grid grid-nogutter">
-                                    <div class="col-1">
-                                        <div class="timeline-icon camera-icon">
-                                            <i class="pi pi-camera"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-11">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-10 timeline-content">
-                                                <h6>Katherine May</h6>
-                                                <span>Lorem ipsun dolor amet</span>
-                                            </div>
-                                            <div class="col-2 timeline-time">
-                                                <span>5 mins</span>
-                                            </div>
-                                            <div class="col-12 timeline-images">
-                                                <div class="grid ">
-                                                    <div class="col-6 lg:col-3">
-                                                        <p:graphicImage name="images/dashboard/photo-1.png"
-                                                            library="mirage-layout" />
-                                                    </div>
-                                                    <div class="col-6 lg:col-3">
-                                                        <p:graphicImage name="images/dashboard/photo-2.png"
-                                                            library="mirage-layout" />
-                                                    </div>
-                                                    <div class="col-6 lg:col-3">
-                                                        <p:graphicImage name="images/dashboard/photo-3.png"
-                                                            library="mirage-layout" />
-                                                    </div>
-                                                    <div class="col-6 lg:col-3">
-                                                        <p:graphicImage name="images/dashboard/photo-4.png"
-                                                            library="mirage-layout" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-row">
-                                <div class="grid grid-nogutter">
-                                    <div class="col-1">
-                                        <div class="timeline-icon comment-icon">
-                                            <i class="pi pi-comment"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-11">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-10 timeline-content">
-                                                <h6>Brandon Williams</h6>
-                                                <span>Ab nobis, magnam sunt eum. Laudantium, repudiandae,
-                                                    similique!</span>
-                                            </div>
-                                            <div class="col-2 timeline-time">
-                                                <span>8 mins</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-row">
-                                <div class="grid grid-nogutter">
-                                    <div class="col-1">
-                                        <div class="timeline-icon chart-icon">
-                                            <i class="pi pi-chart-line"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-11">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-10 timeline-content">
-                                                <h6>Katherine May</h6>
-                                                <span>Omnis veniam quibusdam ratione est repellat qui nam quisquam ab
-                                                    mollitia dolores ullam voluptates, similique, disnissimos.</span>
-                                            </div>
-                                            <div class="col-2 timeline-time">
-                                                <span>14 mins</span>
-                                            </div>
-                                            <div class="col-12 timeline-images">
-                                                <div class="grid ">
-                                                    <div class="col-12 ">
-                                                        <div class="new">
-                                                            New!
-                                                        </div>
-                                                        <p:graphicImage name="images/dashboard/photo-5.png"
-                                                            library="mirage-layout" style="min-height: 150px;" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-row">
-                                <div class="grid grid-nogutter">
-                                    <div class="col-1">
-                                        <div class="timeline-icon comment-icon">
-                                            <i class="pi pi-comment"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-11">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-10 timeline-content">
-                                                <h6>Lara Cohen</h6>
-                                                <span>Quibusdam ratione est repellat qui nam quisquam veniam quibusdam
-                                                    ratione</span>
-                                            </div>
-                                            <div class="col-2 timeline-time">
-                                                <span>1 day</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-12 news-row-wrapper">
+                            <div class="link-points">
+                                <div class="grid points">
+                                    <div class="col-4 point point-1 active-point"></div>
+                                    <div class="col-4 point point-2 "></div>
+                                    <div class="col-4 point point-3 "></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 lg:col-4 md:col-6">
-                <div class="card tasks">
-                    <div class="grid grid-nogutter">
-                        <div class="col-6 title">
-                            <h5>Tasks</h5>
+
+                <div class="col-12 lg:col-4 md:col-6">
+                    <div class="card tasks">
+                        <div class="grid grid-nogutter">
+                            <div class="col-6 title">
+                                <p>TAREAS </p> 
+                            </div>
+                            <div class="col-6 task-info">
+                                <span>Tienes</span><span class="highlighted"> 3 tareas</span><span> para hoy</span>
+                            </div>
                         </div>
-                        <div class="col-6 task-info">
-                            <span>You have</span><span class="highlighted"> 2 tasks</span><span> today</span>
-                        </div>
+                        <ul class="checkboxes">
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunión Comandancia</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time">Hoy</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Entrega de actividades mensuales</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time">Hoy</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Registro seguimiento de casos</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Hoy</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunión Operaciones</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Mañana</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Elaboración del plan estratégico</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">jueves</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row even">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Examenes médicos Institucional</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">jueves</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="checkbox-row">
+                                <div class="grid">
+                                    <div class="col-6 checkbox">
+                                        <p:selectBooleanCheckbox />
+                                        <p>Reunion de Área</p>
+                                    </div>
+                                    <div class="col-6 checkbox-row-info">
+                                        <span class="time later">Viernes</span>
+                                        <strong class="pi pi-tag"/>
+                                        <strong class="pi pi-calendar"/>
+                                        <strong class="pi pi-bookmark"/>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
                     </div>
-                    <ul class="checkboxes">
-                        <li class="checkbox-row">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Sales Report</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time">Today</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row even">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Pay Invoices</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time">Today</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Customer Meeting</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row even">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Expense Reports</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Plane tickets</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row even">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Dinner with Tony</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Dentist</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row even">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Lunch with John</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="checkbox-row">
-                            <div class="grid">
-                                <div class="col-6 checkbox">
-                                    <p:selectBooleanCheckbox />
-                                    <p>Customer service</p>
-                                </div>
-                                <div class="col-6 checkbox-row-info">
-                                    <span class="time later">Later</span>
-                                    <i class="pi pi-tag"/>
-                                    <i class="pi pi-calendar"/>
-                                    <i class="pi pi-bookmark"/>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-            <div class="col-12 lg:col-4 md:col-6">
-                <div class="card support-request">
-                    <div class="grid grid-nogutter">
-                        <div class="col-6 title">
-                            <h5>Support Request</h5>
-                        </div>
-                        <div class="col-6 support-info">
-                            <p>⏰ Estimated wait time</p>
-                            <span class="highlighted">21 minutes</span>
-                        </div>
-                    </div>
-
-                    <p:outputLabel for="resolution-username" value="Username" />
-                    <p:inputText id="resolution-username" placeholder="Type your username..." />
-
-                    <p:outputLabel for="resolution-message" value="Message" />
-                    <p:inputTextarea id="resolution-message" rows="8" placeholder="Type your username..."
-                        autoResize="false" />
-
-                    <div class="resolution-button-bar">
-                        <p:button value="Send Request" icon="pi pi-star" />
-                        <p:button value="Save as Draft" styleClass="ui-button-secondary" />
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-12 lg:col-4">
-                <div class="card team">
-                    <h5>Team Members</h5>
-                    <ul>
-                        <li>
-                            <div class="grid member">
-                                <div class="col-7 team-box">
-                                    <div class="profile-image">
-                                        <p:graphicImage name="images/dashboard/avatar-carmelita.png"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div>
-                                        <h6 class="team-member">Carmelita Marsham</h6>
-                                        <span class="team-member-role">Sales</span>
-                                    </div>
-                                </div>
-                                <div class="col-5 icons">
-                                    <div class="icon icon-hastag">
-                                        <i class="pi pi-bookmark"/>
-                                    </div>
-                                    <div class="icon icon-twitter">
-                                        <i class="pi pi-share-alt"/>
-                                    </div>
-                                    <div class="icon icon-prime">
-                                        <p:graphicImage name="images/dashboard/icon-prime.svg"
-                                            library="mirage-layout" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid member">
-                                <div class="col-7 team-box">
-                                    <div class="profile-image">
-                                        <p:graphicImage name="images/dashboard/avatar-govzden.png"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div>
-                                        <h6 class="team-member">Gvozden Boskovsky</h6>
-                                        <span class="team-member-role">Marketing</span>
-                                    </div>
-                                </div>
-                                <div class="col-5 icons">
-                                    <div class="icon icon-hastag">
-                                        <i class="pi pi-bookmark"/>
-                                    </div>
-                                    <div class="icon icon-twitter">
-                                        <i class="pi pi-share-alt"/>
-                                    </div>
-                                    <div class="icon icon-prime">
-                                        <p:graphicImage name="images/dashboard/icon-prime.svg"
-                                            library="mirage-layout" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid member">
-                                <div class="col-7 team-box">
-                                    <div class="profile-image">
-                                        <p:graphicImage name="images/dashboard/avatar-athar.png"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div>
-                                        <h6 class="team-member">Athar Makakooti</h6>
-                                        <span class="team-member-role">Marketing</span>
-                                    </div>
-                                </div>
-                                <div class="col-5 icons">
-                                    <div class="icon icon-hastag">
-                                        <i class="pi pi-bookmark"/>
-                                    </div>
-                                    <div class="icon icon-twitter">
-                                        <i class="pi pi-share-alt"/>
-                                    </div>
-                                    <div class="icon icon-prime">
-                                        <p:graphicImage name="images/dashboard/icon-prime.svg"
-                                            library="mirage-layout" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid member">
-                                <div class="col-7 team-box">
-                                    <div class="profile-image">
-                                        <p:graphicImage name="images/dashboard/avatar-tokunaga.png"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div>
-                                        <h6 class="team-member">Tokunaga Yae</h6>
-                                        <span class="team-member-role">Unknown</span>
-                                    </div>
-                                </div>
-                                <div class="col-5 icons">
-                                    <div class="icon icon-hastag">
-                                        <i class="pi pi-bookmark"/>
-                                    </div>
-                                    <div class="icon icon-twitter">
-                                        <i class="pi pi-share-alt"/>
-                                    </div>
-                                    <div class="icon icon-prime">
-                                        <p:graphicImage name="images/dashboard/icon-prime.svg"
-                                            library="mirage-layout" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid member">
-                                <div class="col-7 team-box">
-                                    <div class="profile-image">
-                                        <p:graphicImage name="images/dashboard/avatar-olisha.png"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div>
-                                        <h6 class="team-member">Olisha Farmer</h6>
-                                        <span class="team-member-role">Design</span>
-                                    </div>
-                                </div>
-                                <div class="col-5 icons">
-                                    <div class="icon icon-hastag">
-                                        <i class="pi pi-bookmark"/>
-                                    </div>
-                                    <div class="icon icon-twitter">
-                                        <i class="pi pi-share-alt"/>
-                                    </div>
-                                    <div class="icon icon-prime">
-                                        <p:graphicImage name="images/dashboard/icon-prime.svg"
-                                            library="mirage-layout" />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-
-            </div>
-            <div class="col-12 lg:col-8">
-                <div class="card store-items">
-                    <div class="grid grid-nogutter">
-                        <div class="col-6 title">
-                            <h5>Store Items</h5>
-                        </div>
-                        <div class="col-6 store-info">
-                            <div class="info-item add"><i class="pi pi-plus"/> Add Item</div>
-                            <div class="info-item library">
-                                <p:graphicImage name="images/dashboard/icon-library.svg" library="mirage-layout" />
-                                Library</div>
-                        </div>
-                    </div>
-
-                    <div class="store-cards-container">
-                        <div class="grid store-cards">
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-sugar.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Sugar</h5>
-                                        <span>Collector's Edition</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-seed.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Seed</h5>
-                                        <span>Pretty rare type</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-egg.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Egg</h5>
-                                        <span>Chicken babies</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-americano.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Americano</h5>
-                                        <span>Best coffee type</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-orange-slice.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Orange</h5>
-                                        <span>Slice of slice</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-espresso.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Espresso</h5>
-                                        <span>Quic awakening</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-brussel.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Brussels Sprouts</h5>
-                                        <span>For soups</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-cherry.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Cherry</h5>
-                                        <span>Summer fruit</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-americano.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Americano</h5>
-                                        <span>Best coffee type</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-egg.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Egg</h5>
-                                        <span>Chicken babies</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-seed.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Seed</h5>
-                                        <span>Pretty rare type</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6 lg:col-3 md:col-4">
-                                <div class="store-card">
-                                    <div class="store-card-icons">
-                                        <div class="grid grid-nogutter">
-                                            <div class="col-4">
-                                                <i class="pi pi-heart"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-pencil"/>
-                                            </div>
-                                            <div class="col-4">
-                                                <i class="pi pi-trash"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="store-card-image">
-                                        <p:graphicImage name="images/dashboard/asset-image-sugar.jpg"
-                                            library="mirage-layout" />
-                                    </div>
-                                    <div class="store-card-content">
-                                        <h5>Sugar</h5>
-                                        <span>Collector's Edition</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="list-effect"></div>
-
-                </div>
-
-            </div>
-            <div class="col-12 lg:col-4">
-                <div class="card download-files">
-                    <div class="grid grid-nogutter">
-                        <div class="col-6 title">
-                            <h5>Download Files</h5>
-                        </div>
-                        <div class="col-6 files-info">
-                            <span>Download All</span>
-                        </div>
-                    </div>
-                    <ul>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-sapphire.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Sapphire Documentation</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-mirage.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-8 file-name">
-                                    <h6 class="name">Mirage Marketing Asset</h6>
-                                </div>
-                                <div class="col-2 new">
-                                    <div class="new-tag">
-                                        New
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-primefaces.svg"
-                                        library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">PrimeFaces Elite Report 2019-Q3</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-ngconf.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">NG-Conf 2020 Presentation</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-internship.svg"
-                                        library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Internship Reviews</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-design.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Design Team | Spring 021</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-art.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">M02-Feedback Session</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-process.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">.gitignore</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-cd.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Mirage Playlist on Spotify</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-movie.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Launch Movie</h6>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="grid list-item">
-                                <div class="col-2 icon">
-                                    <p:graphicImage name="images/dashboard/icon-padlock.svg" library="mirage-layout" />
-                                </div>
-                                <div class="col-10 file-name">
-                                    <h6 class="name">Keychain 00279.88</h6>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="list-effect"></div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-3 md:col-6">
-                <div class="card card-graph graph-1">
-                    <div class="graph-header">
-                        <h5>Orders</h5>
-                        <div class="graph">
-                            <div class="graph-border">
-                                <div class="graph-block"></div>
-                            </div>
-                            <div class="graph-center"></div>
-                        </div>
-                    </div>
-                    <div class="graph-content">
-                        <div class="graph-icon">
-                            <p:graphicImage name="images/dashboard/primeicons-apple.svg" library="mirage-layout" />
-                        </div>
-                        <div class="graph-content-text">
-                            <h5>49.2k</h5>
-                            <hr />
-                            <span><i class="pi pi-arrow-up"/> 42% more than last month</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-3 md:col-6">
-                <div class="card card-graph graph-2">
-                    <div class="graph-header">
-                        <h5>Graph Type 2</h5>
-                        <div class="graph">
-                            <div class="graph-border"></div>
-                            <div class="graph-center"></div>
-                        </div>
-                    </div>
-                    <div class="graph-content">
-                        <div class="graph-icon">
-                            <p:graphicImage name="images/dashboard/primeicons-camera.svg" library="mirage-layout" />
-                        </div>
-                        <div class="graph-content-text">
-                            <h5>62.291</h5>
-                            <hr />
-                            <span><i class="pi pi-arrow-up"/> 33% more than last month</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-3 md:col-6">
-                <div class="card card-graph graph-3">
-                    <div class="graph-header">
-                        <h5>Graph Type 3</h5>
-                        <div class="graph">
-                            <div class="graph-border"></div>
-                            <div class="graph-center"></div>
-                        </div>
-                    </div>
-                    <div class="graph-content">
-                        <div class="graph-icon">
-                            <p:graphicImage name="images/dashboard/primeicons-sitemap.svg" library="mirage-layout" />
-                        </div>
-                        <div class="graph-content-text">
-                            <h5>18.7k</h5>
-                            <hr />
-                            <span><i class="pi pi-arrow-up"/> 7% more than last month</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-3 md:col-6">
-                <div class="card card-graph graph-4">
-                    <div class="graph-header">
-                        <p:graphicImage name="images/dashboard/asset-bars-all.svg" library="mirage-layout" />
-                        <div class="title-tag">Graph Type 4</div>
-                    </div>
-                    <div class="graph-content">
-                        <div class="graph-icon">
-                            <p:graphicImage name="images/dashboard/primeicons-chart-bar.svg" library="mirage-layout" />
-                        </div>
-                        <div class="graph-content-text">
-                            <h5>5.0k</h5>
-                            <hr />
-                            <span class="jun">Jun</span>
-                            <span><i class="pi pi-arrow-up"/> 36% more than last month</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 lg:col-8">
-                <div class="card orders-table">
-                    <h5>Orders Table</h5>
-                    <p:dataTable value="#{dashboardView.products}" var="product" reflow="true"
-                                 paginator="true" paginatorPosition="bottom" rows="5">
-
-                        <p:column headerText="Logo">
-                            <p:graphicImage name="demo/images/product/#{product.image}"
-                                            alt="#{product.image}" width="50" />
-                        </p:column>
-
-                        <p:column headerText="Name" sortBy="#{product.name}">
-                            <h:outputText value="#{product.name}" />
-                        </p:column>
-
-                        <p:column headerText="Category" sortBy="#{product.category}">
-                            <h:outputText value="#{product.category}" />
-                        </p:column>
-
-                        <p:column headerText="Price" sortBy="#{product.price}">
-                            <h:outputText value="$#{product.price}" />
-                        </p:column>
-
-                        <p:column headerText="View" style="width: 10em">
-                            <p:button icon="pi pi-search" styleClass="ui-button-success mr-2 mb-1" />
-                            <p:button icon="pi pi-times" styleClass="ui-button-danger mb-1" />
-                        </p:column>
-                    </p:dataTable>
 
                 </div>
             </div>
-            <div class="col-12 lg:col-4">
-                <div class="card map">
-                    <div class="map-image">
-                        <p:graphicImage name="images/dashboard/mask-map.png" library="mirage-layout" />
-                    </div>
-
-
-                    <div class="map-info">
-                        <div class="grid grid-nogutter map-info-header">
-                            <div class="col-6">
-                                <h6>Vondelpark</h6>
-                                <span>Amsterdam | Netherlands</span>
-                            </div>
-                            <div class="col-6 location-change">
-                                <i class="pi pi-map-maker"/>
-                                <span>Change Location</span>
-                            </div>
-                        </div>
-                        <div class="grid grid-nogutter map-info-bar">
-                            <div class="col-4 info">
-                                <div class="location-point point-1"></div>
-                                <span>Location 1</span>
-                            </div>
-                            <div class="col-4 info">
-                                <div class="location-point point-2"></div>
-                                <span>Location 2</span>
-                            </div>
-
-                            <div class="col-4 info">
-                                <div class="location-point point-3"></div>
-                                <span>Location 3</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        </h:form>
     </ui:define>
 
 </ui:composition>

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Entity
 @Table(name = "usuarios")
@@ -66,8 +66,6 @@ public class Usuarios implements Serializable {
     private Date fechaultimoingreso;
     @OneToMany(mappedBy = "director")
     private List<Casos> casosList;
-    @OneToMany(mappedBy = "involucrado")
-    private List<Casos> casosList1;
     @OneToMany(mappedBy = "responsable")
     private List<Casos> casosList2;
     @JoinColumn(name = "persona", referencedColumnName = "id")
@@ -136,15 +134,7 @@ public class Usuarios implements Serializable {
         this.casosList = casosList;
     }
 
-    @XmlTransient
-    public List<Casos> getCasosList1() {
-        return casosList1;
-    }
-
-    public void setCasosList1(List<Casos> casosList1) {
-        this.casosList1 = casosList1;
-    }
-
+    
     @XmlTransient
     public List<Casos> getCasosList2() {
         return casosList2;

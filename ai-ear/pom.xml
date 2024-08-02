@@ -12,7 +12,7 @@
     <artifactId>ai-ear</artifactId>
     <packaging>ear</packaging>
 
-    <name>ai: EAR Module</name>
+    <name>ai-ear</name>
 
     <url>http://wildfly.org</url>
     <licenses>

@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Entity
 @Table(name = "casos")
@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Casos.findByFechadeasignacion", query = "SELECT c FROM Casos c WHERE c.fechadeasignacion = :fechadeasignacion"),
     @NamedQuery(name = "Casos.findByDetallecausa", query = "SELECT c FROM Casos c WHERE c.detallecausa = :detallecausa"),
     @NamedQuery(name = "Casos.findByLugardetrabajo", query = "SELECT c FROM Casos c WHERE c.lugardetrabajo = :lugardetrabajo"),
-    @NamedQuery(name = "Casos.findByMediodeingreso", query = "SELECT c FROM Casos c WHERE c.mediodeingreso = :mediodeingreso"),
+    @NamedQuery(name = "Casos.findByActividadesrealizadas", query = "SELECT c FROM Casos c WHERE c.actividadesrealizadas = :actividadesrealizadas"),
     @NamedQuery(name = "Casos.findByLugardeincidente", query = "SELECT c FROM Casos c WHERE c.lugardeincidente = :lugardeincidente"),
     @NamedQuery(name = "Casos.findByAntecedentes", query = "SELECT c FROM Casos c WHERE c.antecedentes = :antecedentes"),
     @NamedQuery(name = "Casos.findByCalificacion", query = "SELECT c FROM Casos c WHERE c.calificacion = :calificacion"),
@@ -75,15 +75,15 @@ public class Casos implements Serializable {
     @Size(max = 255)
     @Column(name = "lugardetrabajo")
     private String lugardetrabajo;
-    @Size(max = 25)
-    @Column(name = "mediodeingreso")
-    private String mediodeingreso;
+    @Size(max = 2147483647)
+    @Column(name = "actividadesrealizadas")
+    private String actividadesrealizadas;
     @Size(max = 255)
     @Column(name = "lugardeincidente")
     private String lugardeincidente;
     @Size(max = 2147483647)
     @Column(name = "antecedentes")
-    private String antecedentes;
+    public String antecedentes;
     @Size(max = 2147483647)
     @Column(name = "calificacion")
     private String calificacion;
@@ -109,13 +109,16 @@ public class Casos implements Serializable {
     private Usuarios director;
     @JoinColumn(name = "involucrado", referencedColumnName = "id")
     @ManyToOne
-    private Usuarios involucrado;
+    public Personas involucrado;
     @JoinColumn(name = "responsable", referencedColumnName = "id")
     @ManyToOne
     private Usuarios responsable;
     @OneToMany(mappedBy = "caso")
     private List<Eventos> eventosList;
-
+    @Size(max = 2147483647)
+    @Column(name = "observaciones")
+    private String observaciones;
+    
     public Casos() {
     }
 
@@ -179,12 +182,12 @@ public class Casos implements Serializable {
         this.lugardetrabajo = lugardetrabajo;
     }
 
-    public String getMediodeingreso() {
-        return mediodeingreso;
+    public String getActividadesrealizadas() {
+        return actividadesrealizadas;
     }
 
-    public void setMediodeingreso(String mediodeingreso) {
-        this.mediodeingreso = mediodeingreso;
+    public void setActividadesrealizadas(String actividadesrealizadas) {
+        this.actividadesrealizadas = actividadesrealizadas;
     }
 
     public String getLugardeincidente() {
@@ -268,11 +271,11 @@ public class Casos implements Serializable {
         this.director = director;
     }
 
-    public Usuarios getInvolucrado() {
+    public Personas getInvolucrado() {
         return involucrado;
     }
 
-    public void setInvolucrado(Usuarios involucrado) {
+    public void setInvolucrado(Personas involucrado) {
         this.involucrado = involucrado;
     }
 
@@ -317,5 +320,23 @@ public class Casos implements Serializable {
     public String toString() {
         return "ec.bomberosquito.ai.entidades.Casos[ id=" + id + " ]";
     }
+
+    /**
+     * @return the observaciones
+     */
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    /**
+     * @param observaciones the observaciones to set
+     */
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+
+    
+    
     
 }

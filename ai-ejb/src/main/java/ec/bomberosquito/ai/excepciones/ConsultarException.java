@@ -6,7 +6,7 @@ package ec.bomberosquito.ai.excepciones;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 public class ConsultarException extends Exception {
 

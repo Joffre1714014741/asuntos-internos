@@ -6,7 +6,7 @@ package ec.bomberosquito.ai.facades;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 class Map<T0, T1> {
     

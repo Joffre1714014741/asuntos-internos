@@ -18,7 +18,7 @@ import javax.inject.Named;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Named
 @FacesConverter(value = "usuariosConverter")

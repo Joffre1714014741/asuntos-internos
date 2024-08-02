@@ -1,0 +1,157 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Casos</ui:define>
+
+    <ui:define name="viewname">
+        <li>Inicio</li>
+        <li><i class="pi pi-angle-right"/></li>
+        <li>
+            <p:link outcome="/casos">Casos</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="content" >
+        <h:form id="form" >
+            <div class="grid crud-demo">
+                <div class="col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true" />
+
+                        <p:dataTable id="dt-casos" 
+                                     widgetVar="dtCasos" 
+                                     var="itemcaso" 
+                                     value="#{atencionCasosBean.listaCasos}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     rowKey="#{caso.id}" 
+                                     paginator="true" 
+                                     rows="10"  
+                                     rowSelectMode="add" 
+                                     paginatorPosition="bottom">
+                            <f:facet name="header">
+
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Administración de Casos</span>
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtCasos').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>
+
+                            <!--<p:column selectionMode="multiple" exportable="false"></p:column>-->
+
+                            <p:column headerText="ID" sortBy="#{itemcaso.id}" filterBy="#{itemcaso.id}">
+                                <h:outputText value="#{itemcaso.id}" />
+                            </p:column>
+
+                            <p:column headerText="Estado" sortBy="#{itemcaso.estado}" filterBy="#{itemcaso.estado}">
+                                <h:outputText value="#{itemcaso.estado}" />
+                            </p:column>
+
+                            <p:column headerText="Fecha de Incidente" sortBy="#{itemcaso.fechadeincidente}" filterBy="#{itemcaso.fechadeincidente}">
+                                <h:outputText value="#{itemcaso.fechadeincidente}">
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Fecha de Elaboración" sortBy="#{itemcaso.fechaderealizacion}" filterBy="#{itemcaso.fechaderealizacion}">
+                                <h:outputText value="#{itemcaso.fechaderealizacion}">
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Detalle de la Causa" sortBy="#{itemcaso.detallecausa}" filterBy="#{itemcaso.detallecausa}">
+                                <h:outputText value="#{itemcaso.detallecausa}" />
+                            </p:column>
+
+                            <p:column headerText="Lugar de Trabajo" sortBy="#{itemcaso.lugardetrabajo}" filterBy="#{itemcaso.lugardetrabajo}">
+                                <h:outputText value="#{itemcaso.lugardetrabajo}" />
+                            </p:column>
+
+                            <p:column headerText="Lugar de Incidente" sortBy="#{itemcaso.lugardeincidente}" filterBy="#{itemcaso.lugardeincidente}">
+                                <h:outputText value="#{itemcaso.lugardeincidente}" />
+                            </p:column>
+
+                            <p:column headerText="Involucrado" sortBy="#{itemcaso.involucrado}" filterBy="#{itemcaso.involucrado}">
+                                <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
+                            </p:column>
+
+                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable}" filterBy="#{itemcaso.responsable}">
+                                <h:outputText value="#{itemcaso.responsable}" />
+                            </p:column>
+
+                            <p:column headerText="Observación" sortBy="#{itemcaso.observaciones}" filterBy="#{itemcaso.observaciones}">
+                                <h:outputText value="#{itemcaso.observaciones}" />
+                            </p:column>
+
+                            <p:column exportable="false"> 
+                                <p:commandButton icon="pi pi-pencil"
+                                                 action="#{atencionCasosBean.modificar(itemcaso)}"
+                                                 styleClass="edit-button rounded-button ui-button-success" 
+                                                 >
+                                </p:commandButton>
+
+                            </p:column>
+
+                            <!-- Detalles desplegables si es necesario -->
+                        </p:dataTable>
+
+
+
+                        <!-- Confirmación de eliminación de Casos -->
+                        <p:confirmDialog widgetVar="dialogoEliminarCaso" 
+                                         showEffect="fade" 
+                                         width="300" 
+                                         message="¿Está seguro de eliminar el caso?" 
+                                         header="Confirmación" 
+                                         severity="warn">
+                            <p:commandButton value="Sí" 
+                                             icon="pi pi-check" 
+                                             actionListener="#{casosAdministracionBean.eliminarCaso()}" 
+                                             process="@this" 
+                                             oncomplete="PF('dialogoEliminarCaso').hide()"/>
+                            <p:commandButton value="No" 
+                                             type="button" 
+                                             styleClass="ui-button-secondary" 
+                                             icon="pi pi-times" 
+                                             onclick="PF('dialogoEliminarCaso').hide()" />
+                        </p:confirmDialog>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Dialogo para CRUD de Casos-->
+            <p:dialog header=" REVISIÓN DEL CASO" style="text-align: center"
+
+                      showEffect="fade" 
+                      modal="true" 
+                      widgetVar="dialogoGestionCaso" 
+                      responsive="true">
+
+                <f:facet name="footer"> 
+                    <div style="text-align: center">
+
+                        <p:commandButton value="CONFIRMAR" 
+                                         icon="pi pi-check"
+                                         actionListener="#{atencionCasosBean.inicioCaso()}" />
+
+                        <p:commandButton value="CANCELAR"
+                                         icon="pi pi-times" 
+                                         onclick="PF('dialogoGestionCaso').hide()" 
+                                         class="ui-button-secondary" />
+                    </div>
+                </f:facet>
+            </p:dialog> 
+        </h:form> 
+    </ui:define>
+</ui:composition>

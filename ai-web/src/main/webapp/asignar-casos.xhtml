@@ -37,25 +37,26 @@
                             <f:facet name="header">
                                 <div class="products-table-header">
                                     <span style="font-weight: bold">Asignación de Casos</span>
-                                    
+
                                     <span class="filter-container ui-input-icon-left">
                                         <i class="pi pi-search"></i>
                                         <p:inputText id="globalFilter" onkeyup="PF('dtCasos').filter()" placeholder="Search" />
                                     </span>
                                 </div>
+
                             </f:facet>
 
                             <!-- Encabezados de columnas y definiciones -->
-                            
-                            
+
+
                             <p:column headerText="Descripción" sortBy="#{caso.detallecausa}" filterBy="#{caso.detallecausa}">
                                 <h:outputText value="#{caso.detallecausa}" />
                             </p:column>
-                            
+
                             <p:column headerText="ID" sortBy="#{caso.id}" filterBy="#{caso.id}">
                                 <h:outputText value="#{caso.id}" />
                             </p:column>
-                            
+
                             <p:column headerText="Estado" sortBy="#{caso.estado}" filterBy="#{caso.estado}">
                                 <h:outputText value="#{caso.estado}" />
                             </p:column>
@@ -71,13 +72,9 @@
                                     <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
                                 </h:outputText>
                             </p:column>
-                            
+
                             <p:column headerText="Lugar de Trabajo" sortBy="#{caso.lugardetrabajo}" filterBy="#{caso.lugardetrabajo}">
                                 <h:outputText value="#{caso.lugardetrabajo}" />
-                            </p:column>
-
-                            <p:column headerText="Medio de Ingreso" sortBy="#{caso.mediodeingreso}" filterBy="#{caso.mediodeingreso}">
-                                <h:outputText value="#{caso.mediodeingreso}" />
                             </p:column>
 
                             <p:column headerText="Lugar de Incidente" sortBy="#{caso.lugardeincidente}" filterBy="#{caso.lugardeincidente}">
@@ -100,8 +97,9 @@
                                     <f:setPropertyActionListener value="#{caso}" 
                                                                  target="#{casosAsignacionBean.caso}" />
                                 </p:commandButton>
+
                             </p:column>
-                            
+
                         </p:dataTable>
 
                         <!-- Dialogo para la edición de Casos -->
@@ -136,7 +134,7 @@
                                                  class="ui-button-secondary" />
                             </f:facet>
                         </p:dialog> 
-                        
+
                         <p:confirmDialog widgetVar="dialogoArchivarCaso" 
                                          showEffect="fade" 
                                          width="300" 

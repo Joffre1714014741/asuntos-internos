@@ -1,61 +1,68 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+                template="/WEB-INF/template_1.xhtml">
 
-    <ui:define name="title">CHRONOLINE</ui:define>
+    <ui:define name="title">WELCOME</ui:define>
 
-    <ui:define name="viewname">
-        <li>Pages</li>
-        <li><i class="pi pi-angle-right"/></li>
-        <li>
-            <p:link outcome="/chronoline">Chronoline</p:link>
-        </li>
-    </ui:define>
+
 
     <ui:define name="content">
         <h:form id="form">
             <div class="grid">
-                <div class="col-12">
-                    <div class="card">
-                        <h4>SISTEMA DECLARATIVO DEL ÁREA TÉCNICA</h4>
-
-                        <p:outputLabel>
-                            Reciba un cordial saludo del Cuerpo de Bomberos del DMQ y la bienvenida al Sistema Declarativo de Prevención de
-                            Incendios del Área Técnica. Este sistema declarativo tiene la finalidad de agilizar los servicios que el CB-DMQ
-                            presta a la ciudadanía para obtener la/s autorizaciones para continuar con el proceso de Licenciamiento Urbanístico
-                            y de los sistemas de Gas Centralizado.
-                        </p:outputLabel>
-                        <p:chronoline value="#{chronolineView.events}" var="event" align="alternate" styleClass="customized-chronoline" style="margin-top: 30px;">
-
-                            <p:card>
-                                <f:facet name="title">
-                                    #{event.status}
-                                </f:facet>
-                                <f:facet name="subtitle">
-                                    #{event.date}
-                                </f:facet>
-
-                                <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-2"
-                                                value="resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
-                                <p>#{event.info}</p>
-                                <p:commandButton value="Mayor info" styleClass="ui-button-flat" />
-                            </p:card>
-
-                            <f:facet name="marker">
-                                <span class="custom-marker shadow-2" style="background-color: #{event.color}"><i class="#{event.icon}"/></span>
-                            </f:facet>
-                        </p:chronoline>
-
-<!--                        <h5 style="margin-top: 5rem">Horizontal - Alternate Align</h5>
-                        <p:chronoline value="#{chronolineView.events2}" var="event" layout="horizontal" align="alternate">
-                            #{event}
-                        </p:chronoline>-->
+                <div class="col-14">
+                    <div style="text-align: center;">
+                        <h2>SISTEMA DE ELABORACIÓN DE QUEJAS Y DENUNCIAS</h2>   
                     </div>
+                    <br></br>
+                    <div style="text-align: justify;">
+                    <h2>Reciba un cordial saludo del Cuerpo de Bomberos del Distrito Metropolitano de Quito
+                        y la bienvenida al Sistema de Elaboración de Quejas y Denuncias.                
+
+                        Este sistema tiene la finalidad de agilizar los procesos de investigación  los servidores de la Institución
+                        que se encuentren inmiscuidos en en actos denunciados por la ciudadania.</h2>
+                    </div>
+                    <p:chronoline value="#{chronolineView.events}" var="event" align="alternate" styleClass="customized-chronoline" style="margin-top: 30px;">
+
+                        <p:card>
+                            <f:facet name="title">
+                                #{event.status}
+                            </f:facet>
+                            <f:facet name="subtitle">
+                                #{event.date}
+                            </f:facet>
+
+                            <p:graphicImage rendered="#{not empty event.image}" width="200" styleClass="shadow-2"
+                                            value="resources/demo/images/product/#{event.image}" alt="#{event.image}"/>
+                            <p>#{event.info}</p>
+
+                        </p:card>
+
+                        <f:facet name="marker">
+                            <span class="custom-marker shadow-2" style="background-color: #{event.color}"><emo class="#{event.icon}"/></span>
+                        </f:facet>
+                    </p:chronoline>
+
+                    <br/>
+                    <br/><!-- comment -->
+                    <div style="text-align: center;">
+                        <p:commandButton id="btn"
+                                         value="CREAR DENUNCIA" 
+                                         action="#{casosBean.casos()}"
+                                         styleClass="ui-button-success" 
+                                         style="margin-right: .5rem"/>
+
+
+                    </div>
+                    <!--                       <h5 style="margin-top: 5rem">Horizontal - Alternate Align</h5>
+                                            <p:chronoline value="#{chronolineView.events2}" var="event" layout="horizontal" align="alternate">
+                    #{event}
+                </p:chronoline>-->
                 </div>
             </div>
+            
         </h:form>
     </ui:define>
 

@@ -33,7 +33,7 @@ import java.nio.file.Paths;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 @Named
 @ViewScoped
@@ -72,6 +72,10 @@ public class CasosBean implements Serializable {
     public void generarCaso() {
     }
     
+    public String casos(){
+        return "/creacion-casos.xhtml?faces-redirect=true";
+    }
+    
     public void subirDocumento(FileUploadEvent event) {
         try {
             UploadedFile file = event.getFile();
@@ -102,17 +106,13 @@ public class CasosBean implements Serializable {
     public void confirmarCaso() {
         
         // Crear persona
+        persona.setTipo("INVOLUCRADO");
         ejbPersonas.create(persona);
         
-        // Crear usuario
-        usuario.setNombreusuario(persona.getApellidos().toLowerCase() + "." + persona.getNombres());
-        usuario.setContrasena(persona.getCedula());
-        usuario.setPersona(persona);
-        usuario.setTipo("INVOLUCRADO");
-        ejbUsuarios.create(usuario);
+       
         
         // Asignar usuario como involucrado en el caso
-        caso.setInvolucrado(usuario);
+        caso.setInvolucrado(persona);
         caso.setEstado("CREADO");
         
         // Persistir el caso

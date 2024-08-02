@@ -13,7 +13,7 @@ import javax.enterprise.context.RequestScoped;
 
 /**
  *
- * @author danielhwang
+ * @author jpverdezoto
  */
 
 @Named(value = "personasConverterBean")

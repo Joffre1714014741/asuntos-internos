@@ -29,18 +29,17 @@ public class ChronolineView {
     private List<String> events2;
 
     @PostConstruct
+    
     public void init() {
         events = new ArrayList<>();
-        events.add(new Event("Información de la Solicitud", "Paso 1", "pi pi-shopping-cart", "#9C27B0", "El ciudadano ingresará el número de predio del proyecto y seleccionará el tipo de permiso/certificado deseado."));
-        events.add(new Event("Datos Generales del Proyecto", "Paso 2", "pi pi-cog", "#673AB7", "Se completará un formulario con la información básica del proyecto y se adjuntará al documentación necesaria."));
-        events.add(new Event("Formulario Declarativo", "Paso 3", "pi pi-envelope", "#FF9800", "Se registrará la información de la solicitud en un checklist"));
-        events.add(new Event("Registro de la Solicitud", "Paso 4", "pi pi-check", "#607D8B", "Se remitirá la solicitud mediante el Sistema Declarativo del AT"));
-
+        events.add(new Event("Información del denunciante", "Paso 1", "pi pi-check", "#9C27B0", "El ciudadano y/o Denunciante ingresa sus datos."));
+        events.add(new Event("Datos Generales de la denuncia", "Paso 2", "pi pi-check", "#673AB7", "Ingresa los datos de la denuncia."));
+        events.add(new Event("Registro de evidencias", "Paso 3", "pi pi-check", "#FF9800", "Sube los anexos necesarios (Fotos, videos, documentos, etc)."));
+        events.add(new Event("Genera la denuncia", "Paso 4", "pi pi-check", "#607D8B", "Guarda los datos ingresados"));
         events2 = new ArrayList<>();
-        events2.add("2021");
-        events2.add("2021");
-        events2.add("2022");
+        
         events2.add("2023");
+        events2.add("2024");
     }
 
     public List<Event> getEvents() {
@@ -52,6 +51,7 @@ public class ChronolineView {
     }
 
     public static class Event {
+
         String status;
         String date;
         String icon;
@@ -116,7 +116,7 @@ public class ChronolineView {
         public void setImage(String image) {
             this.image = image;
         }
-        
+
         public String getInfo() {
             return info;
         }

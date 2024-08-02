@@ -8,7 +8,7 @@
     <ui:define name="title">Casos</ui:define>
 
     <ui:define name="viewname">
-        <li>Pages</li>
+        <li>Inicio</li>
         <li><i class="pi pi-angle-right"/></li>
         <li>
             <p:link outcome="/casos">Casos</p:link>
@@ -24,30 +24,18 @@
 
                         <p:toolbar styleClass="mb-4">
                             <p:toolbarGroup>
-                                <p:commandButton value="Nuevo" 
-                                                 icon="pi pi-plus" 
-                                                 actionListener="#{casosAdministracionBean.casoNuevo()}" 
-                                                 update="panel-caso-contenido" 
-                                                 oncomplete="PF('dialogoGestionCaso').show()" 
+                                <p:commandButton id="dai"
+                                                 value="Nuevo Caso" 
+                                                 action="#{casosBean.casos()}"
                                                  styleClass="ui-button-success" 
-                                                 style="margin-right: .5rem" />
-                                <p:commandButton id="boton-eliminar-casos" 
-                                                 value="#{casosAdministracionBean.mensajeBotonEliminar}" 
-                                                 icon="pi pi-trash" 
-                                                 actionListener="#{casosAdministracionBean.eliminarCasosSeleccionados()}" 
-                                                 styleClass="ui-button-danger" 
-                                                 disabled="#{!casosAdministracionBean.hayCasosSeleccionados()}" 
-                                                 update="@this">
-                                    <p:confirm header="Confirmación" 
-                                               message="¿Está seguro de eliminar los casos?" 
-                                               icon="pi pi-exclamation-triangle" />
-                                </p:commandButton>
+                                                 style="margin-right: .5rem"/>
                             </p:toolbarGroup>
+                            
                         </p:toolbar>
 
                         <p:dataTable id="dt-casos" 
                                      widgetVar="dtCasos" 
-                                     var="caso" 
+                                     var="itemcaso" 
                                      value="#{casosAdministracionBean.listaCasos}" 
                                      reflow="true" 
                                      styleClass="products-table"
@@ -58,9 +46,9 @@
                                      rowSelectMode="add" 
                                      paginatorPosition="bottom">
                             <f:facet name="header">
+
                                 <div class="products-table-header">
                                     <span style="font-weight: bold">Administración de Casos</span>
-
                                     <span class="filter-container ui-input-icon-left">
                                         <i class="pi pi-search"></i>
                                         <p:inputText id="globalFilter" onkeyup="PF('dtCasos').filter()" placeholder="Search" />
@@ -68,102 +56,67 @@
                                 </div>
                             </f:facet>
 
-                            <p:column selectionMode="multiple" exportable="false"></p:column>
-                            
-                            <p:column headerText="ID" sortBy="#{caso.id}" filterBy="#{caso.id}">
-                                <h:outputText value="#{caso.id}" />
-                            </p:column>
-                            
-                            <p:column headerText="Estado" sortBy="#{caso.estado}" filterBy="#{caso.estado}">
-                                <h:outputText value="#{caso.estado}" />
+                            <!--<p:column selectionMode="multiple" exportable="false"></p:column>-->
+
+                            <p:column headerText="ID" sortBy="#{itemcaso.id}" filterBy="#{itemcaso.id}">
+                                <h:outputText value="#{itemcaso.id}" />
                             </p:column>
 
-                            <p:column headerText="Fecha de Incidente" sortBy="#{caso.fechadeincidente}" filterBy="#{caso.fechadeincidente}">
-                                <h:outputText value="#{caso.fechadeincidente}">
+                            <p:column headerText="Estado" sortBy="#{itemcaso.estado}" filterBy="#{itemcaso.estado}">
+                                <h:outputText value="#{itemcaso.estado}" />
+                            </p:column>
+
+                            <p:column headerText="Fecha de Incidente" sortBy="#{itemcaso.fechadeincidente}" filterBy="#{itemcaso.fechadeincidente}">
+                                <h:outputText value="#{itemcaso.fechadeincidente}">
                                     <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Fecha de Realización" sortBy="#{caso.fechaderealizacion}" filterBy="#{caso.fechaderealizacion}">
-                                <h:outputText value="#{caso.fechaderealizacion}">
+                            <p:column headerText="Fecha de Realización" sortBy="#{itemcaso.fechaderealizacion}" filterBy="#{itemcaso.fechaderealizacion}">
+                                <h:outputText value="#{itemcaso.fechaderealizacion}">
                                     <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Detalle de la Causa" sortBy="#{caso.detallecausa}" filterBy="#{caso.detallecausa}">
-                                <h:outputText value="#{caso.detallecausa}" />
+                            <p:column headerText="Detalle de la Causa" sortBy="#{itemcaso.detallecausa}" filterBy="#{itemcaso.detallecausa}">
+                                <h:outputText value="#{itemcaso.detallecausa}" />
                             </p:column>
 
-                            <p:column headerText="Lugar de Trabajo" sortBy="#{caso.lugardetrabajo}" filterBy="#{caso.lugardetrabajo}">
-                                <h:outputText value="#{caso.lugardetrabajo}" />
+                            <p:column headerText="Lugar de Trabajo" sortBy="#{itemcaso.lugardetrabajo}" filterBy="#{itemcaso.lugardetrabajo}">
+                                <h:outputText value="#{itemcaso.lugardetrabajo}" />
                             </p:column>
 
-                            <p:column headerText="Medio de Ingreso" sortBy="#{caso.mediodeingreso}" filterBy="#{caso.mediodeingreso}">
-                                <h:outputText value="#{caso.mediodeingreso}" />
+                            <p:column headerText="Lugar de Incidente" sortBy="#{itemcaso.lugardeincidente}" filterBy="#{itemcaso.lugardeincidente}">
+                                <h:outputText value="#{itemcaso.lugardeincidente}" />
                             </p:column>
 
-                            <p:column headerText="Lugar de Incidente" sortBy="#{caso.lugardeincidente}" filterBy="#{caso.lugardeincidente}">
-                                <h:outputText value="#{caso.lugardeincidente}" />
+                            <p:column headerText="Involucrado" sortBy="#{itemcaso.involucrado}" filterBy="#{itemcaso.involucrado}">
+                                <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
                             </p:column>
 
-                            <p:column headerText="Involucrado" sortBy="#{caso.involucrado}" filterBy="#{caso.involucrado}">
-                                <h:outputText value="#{caso.involucrado.persona.apellidos} #{caso.involucrado.persona.nombres}" />
+                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable}" filterBy="#{itemcaso.responsable}">
+                                <h:outputText value="#{itemcaso.responsable}" />
                             </p:column>
 
-                            <p:column headerText="Responsable" sortBy="#{caso.responsable}" filterBy="#{caso.responsable}">
-                                <h:outputText value="#{caso.responsable}" />
-                            </p:column>
-                            
-                            
-                            <p:column exportable="false">
-                                <p:commandButton icon="pi pi-pencil" 
-                                                 update=":form:panel-caso-contenido" 
-                                                 oncomplete="PF('dialogoGestionCaso').show()" 
+
+                            <p:column exportable="false"> 
+                                <p:commandButton icon="pi pi-pencil"
+                                                 actionListener="#{casosAdministracionBean.modificar(itemcaso)}"
                                                  styleClass="edit-button rounded-button ui-button-success" 
-                                                 process="@this">
-                                    <f:setPropertyActionListener value="#{caso}" 
-                                                                 target="#{casosAdministracionBean.caso}" />
+                                                 update= ":form:vistaCaso">
+                                    
                                 </p:commandButton>
                                 <p:commandButton class="ui-button-warning rounded-button" 
                                                  icon="pi pi-trash" 
                                                  process="@this" 
                                                  oncomplete="PF('dialogoEliminarCaso').show()" >
-                                    <f:setPropertyActionListener value="#{caso}" 
+                                    <f:setPropertyActionListener value="#{itemcaso}" 
                                                                  target="#{casosAdministracionBean.caso}" />
                                 </p:commandButton>
                             </p:column>
 
                             <!-- Detalles desplegables si es necesario -->
                         </p:dataTable>
-
-                        <!-- Dialogo para CRUD de Casos -->
-                        <p:dialog header="Información" 
-                                  showEffect="fade" 
-                                  modal="true" 
-                                  widgetVar="dialogoGestionCaso" 
-                                  responsive="true">
-                            <p:messages id="messagesDialog" showDetail="true" closable="true" />
-                            <p:outputPanel id="panel-caso-contenido" class="ui-fluid">
-                                <p:outputPanel rendered="#{not empty casosAdministracionBean.caso}">
-                                    <!-- Campos de edición para Casos -->
-                                    <div class="field">
-                                        <!-- Agrega tus campos de edición aquí -->
-                                    </div>
-                                </p:outputPanel>
-                            </p:outputPanel>
-
-                            <f:facet name="footer">
-                                <p:commandButton value="Guardar" 
-                                                 icon="pi pi-check" 
-                                                 actionListener="#{casosAdministracionBean.guardarCaso}" 
-                                                 update="panel-caso-contenido" 
-                                                 process="panel-caso-contenido @this" />
-                                <p:commandButton value="Cancelar" 
-                                                 icon="pi pi-times" 
-                                                 onclick="PF('dialogoGestionCaso').hide()" 
-                                                 class="ui-button-secondary" />
-                            </f:facet>
-                        </p:dialog> 
 
                         <!-- Confirmación de eliminación de Casos -->
                         <p:confirmDialog widgetVar="dialogoEliminarCaso" 
@@ -187,6 +140,47 @@
                     </div>
                 </div>
             </div>
-        </h:form>
+            <!-- Dialogo para CRUD de Casos -->
+            <p:dialog header="INFORMACIÓN DEL CASO" style="text-align: center"
+
+                      showEffect="fade" 
+                      modal="true" 
+                      widgetVar="dialogoGestionCaso" 
+                      responsive="true">
+
+                <h:panelGrid columns="2" id="vistaCaso" style="text-align: justify">
+              
+                    <h:outputText value="Estado de la revision" />
+                    <p:selectOneMenu id="selectInvestigador" 
+                                     value="#{casosAdministracionBean.estadoCasos}">
+                        <f:selectItem itemValue="INICIO" itemLabel="INICIO" />
+                        <br> </br>
+                        <f:selectItem itemValue="ARCHIVAR" itemLabel="ARCHIVAR" />
+                      
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="observaciones">Observaciones</p:outputLabel>
+                    <p:inputText id="observaciones" value="#{casosAdministracionBean.caso.observaciones}"  />
+                    <h:outputText value="Datos del caso: " />
+                    <h:outputText value="" />
+                    <h:outputText value="Descripcion del Caso: " />
+                    <h:outputText value="#{casosAdministracionBean.caso.detallecausa}" />
+
+                </h:panelGrid>
+                <f:facet name="footer"> 
+                    <div style="text-align: center">
+                        
+                        <p:commandButton value="CONFIRMAR" 
+                                         icon="pi pi-check"
+                                         actionListener="#{casosAdministracionBean.inicioCaso()}" />
+
+                        <p:commandButton value="CANCELAR"
+                                         icon="pi pi-times" 
+                                         onclick="PF('dialogoGestionCaso').hide()" 
+                                         class="ui-button-secondary" />
+                    </div>
+                </f:facet>
+            </p:dialog> 
+        </h:form> 
     </ui:define>
 </ui:composition>
