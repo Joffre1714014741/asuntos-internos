@@ -12,7 +12,9 @@
                 <div class="col-12 md:col-6">
                     <div class="field">
                         <span class="ui-float-label">
-                            <p:inputText id="cedula" value="#{casosBean.persona.cedula}" required="true" />
+                            <p:inputText id="cedula" value="#{casosBean.persona.cedula}" required="true" >
+                                 <!-- comment <f:validator validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc" /> -->
+                            </p:inputText>
                             <p:outputLabel for="cedula" value="Cédula:" />
                         </span>
                     </div>

@@ -46,7 +46,7 @@ public class SeguridadBean implements Serializable {
     private String password;
     private Usuarios usuarios = new Usuarios();
     private AuxiliarUsuario entidad;
-    private String UsuarioLogeado;
+    private String UsuarioLogeado = new String();
 
     // Creación de método para logear al usuario
     public String probar() throws ConsultarException, IOException {
@@ -61,6 +61,8 @@ public class SeguridadBean implements Serializable {
 
         }
         usuarios = ejbSeguridad.logear(usuario, password);
+        setUsuarioLogeado(usuarios.getNombreusuario());
+                
         if (usuarios == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No hay registros para ese usuario"));
             return null;
@@ -73,28 +75,7 @@ public class SeguridadBean implements Serializable {
        
     }
     
-    public String analista() throws ConsultarException, IOException {
-        if ((usuario == null) || (usuario.trim().isEmpty())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ingresa usuario"));
-            return null;
-        }
-        if ((password == null) || (password.trim().isEmpty())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ingresa password"));
-            return null;
-
-        }
-        usuarios = ejbSeguridad.logear(usuario, password);
-        if (usuarios == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No hay registros para ese usuario"));
-            return null;
-        } else {
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-           // externalContext.redirect(externalContext.getRequestContextPath() + "/dashboard.xhtml");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El usuario se encuentra registrado"));
-        }
-        return "/dashboard_Analista.xhtml?faces-redirect=true";
-    }
-    
+ 
     public String logout(){
         return "/login.xhtml?faces-redirect=true";
     }

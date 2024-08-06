@@ -31,6 +31,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -42,17 +43,18 @@ import org.primefaces.PrimeFaces;
  *
  * @author jpverdezoto
  */
-@Named(value = "atencionCasosBean")
-@SessionScoped
+@ManagedBean(name = "atencionCasosBean")
+@ViewScoped
 public class atencionCasosBean implements Serializable {
 
     private String pathpdfSolicitud;
     private List<Casos> listaCasos = new ArrayList<>();
     private Casos caso = new Casos();
     @ManagedProperty(value = "#{seguridad}")
+    private SeguridadBean seguridadBean = new SeguridadBean();
+    
     private Eventos evento = new Eventos();
     private File solicitudArchivo;
-    private SeguridadBean seguridadBean;
     @EJB
     private CasosFacade ejbCasos;
     @EJB
@@ -66,10 +68,12 @@ public class atencionCasosBean implements Serializable {
     }
 
     public void cargarCasos() {
+        System.out.println("usuario " + seguridadBean.getUsuarioLogeado());
         HashMap paremetros = new HashMap<>();
-        paremetros.put(";where", "o.estado=:estado or o.estado=:estado1");
+        paremetros.put(";where", "(o.estado=:estado or o.estado=:estado1) and o.responsable.nombreusuario=:userid");
         paremetros.put("estado", "ASIGNADO");
         paremetros.put("estado1", "PENDIENTE REVISION");
+        paremetros.put("userid", seguridadBean.getUsuarioLogeado());
 
         try {
             listaCasos = ejbCasos.encontrarParametros(paremetros);
@@ -379,6 +383,14 @@ public class atencionCasosBean implements Serializable {
 
     public void setPathpdfSolicitud(String pathpdfSolicitud) {
         this.pathpdfSolicitud = pathpdfSolicitud;
+    }
+
+    public SeguridadBean getSeguridadBean() {
+        return seguridadBean;
+    }
+
+    public void setSeguridadBean(SeguridadBean seguridadBean) {
+        this.seguridadBean = seguridadBean;
     }
 
 }

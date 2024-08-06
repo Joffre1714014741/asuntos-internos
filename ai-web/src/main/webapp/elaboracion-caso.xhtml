@@ -413,15 +413,9 @@
                                  onclick="PF('confirmDialogfinalizar').hide()" />
             </p:confirmDialog>
 
-            <p:commandButton value="Generar PDF" 
-                             actionListener="#{atencionCasosBean.generarPdf()}" 
-                             oncomplete="PF('dlgPdf').show()" 
-                             update="pdfDialog" 
-                             styleClass="ui-button-success mr-2 mb-2" />
+            <p:commandButton value="Generar PDF" oncomplete="PF('confirmDialogpdf').show()" styleClass="ui-button-success mr-34 mb-4"  rendered="#{atencionCasosBean.caso.estado eq 'APROBADO'}" />
 
-            <!-- Diálogo de PrimeFaces -->
-           
-            <!-- Diálogo de Confirmación -->
+           <!-- Diálogo de Confirmación -->
             <p:confirmDialog widgetVar="confirmDialogpdf" 
                              showEffect="fade" 
                              width="300" 
@@ -444,9 +438,9 @@
             <p:growl id="messagespdf" showDetail="true" />
 
         </h:form>
-         <p:dialog id="pdfDialog" header="PDF Document" widgetVar="dlgPdf" modal="true" width="700px" height="900px" resizable="false">
-                <!-- Componente Media para mostrar el PDF -->
-                <object data="#{atencionCasosBean.pathpdfSolicitud}" type="application/pdf" width="800" height="600"></object>
-            </p:dialog>
+        <p:dialog id="pdfDialog" header="PDF Document" widgetVar="dlgPdf" modal="true" width="700px" height="900px" resizable="false">
+            <!-- Componente Media para mostrar el PDF -->
+            <object data="#{atencionCasosBean.pathpdfSolicitud}" type="application/pdf" width="800" height="600"></object>
+        </p:dialog>
     </ui:define>
 </ui:composition>
