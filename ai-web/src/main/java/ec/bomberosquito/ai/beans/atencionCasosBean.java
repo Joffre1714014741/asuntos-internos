@@ -29,32 +29,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.context.ExternalContext;
+import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import javax.inject.Named;
+import javax.inject.Inject;
 import org.primefaces.PrimeFaces;
 
 /**
  *
  * @author jpverdezoto
  */
-@ManagedBean(name = "atencionCasosBean")
+@Named(value = "atencionCasosBean")
 @ViewScoped
 public class atencionCasosBean implements Serializable {
+    @Inject
+    private SeguridadBean seguridadBean;
 
     private String pathpdfSolicitud;
     private List<Casos> listaCasos = new ArrayList<>();
-    private Casos caso = new Casos();
-    @ManagedProperty(value = "#{seguridad}")
-    private SeguridadBean seguridadBean = new SeguridadBean();
-    
-    private Eventos evento = new Eventos();
+    private Casos caso;
+   
+    private Eventos evento;
     private File solicitudArchivo;
+    
     @EJB
     private CasosFacade ejbCasos;
     @EJB
@@ -70,9 +68,10 @@ public class atencionCasosBean implements Serializable {
     public void cargarCasos() {
         System.out.println("usuario " + seguridadBean.getUsuarioLogeado());
         HashMap paremetros = new HashMap<>();
-        paremetros.put(";where", "(o.estado=:estado or o.estado=:estado1) and o.responsable.nombreusuario=:userid");
-        paremetros.put("estado", "ASIGNADO");
-        paremetros.put("estado1", "PENDIENTE REVISION");
+        paremetros.put(";where", "(o.estado in ('ASIGNADO','PENDIENTE REVISION', 'APROBADO') ) and o.responsable.nombreusuario=:userid");
+//        paremetros.put(";where", "(o.estado=:estado or o.estado=:estado1) and o.responsable.nombreusuario=:userid");
+//        paremetros.put("estado", "ASIGNADO");
+//        paremetros.put("estado1", "PENDIENTE REVISION");
         paremetros.put("userid", seguridadBean.getUsuarioLogeado());
 
         try {
@@ -99,7 +98,8 @@ public class atencionCasosBean implements Serializable {
 
     }
 
-    public void generarPdf() {
+    public void generarPdf(Casos casoParametro) {
+        caso = casoParametro;
         try {
             DocumentoPDF pdf = new DocumentoPDF("", "", 1, true);
             List<AuxiliarReporte> columnas = new LinkedList<>();
@@ -224,6 +224,7 @@ public class atencionCasosBean implements Serializable {
             solicitudArchivo = pdf.traerArchivo();
 
             mostrarPDF(solicitudArchivo.getAbsolutePath(), "test1.pdf");
+            PrimeFaces.current().executeScript("PF('manageDialogpdf').show()");
 
         } catch (IOException | DocumentException | ConsultarException ex) {
             Logger.getLogger(atencionCasosBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -254,7 +255,7 @@ public class atencionCasosBean implements Serializable {
         return fichero.getCanonicalPath();
     }
 
-    public Boolean validacionInforme() {
+    public Boolean validacionInforme() { // si vale
         if (caso.getLugardeincidente() == null || caso.getLugardeincidente().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar lugar del incidente"));
             return false;
@@ -294,7 +295,11 @@ public class atencionCasosBean implements Serializable {
         return true;
     }
 
-    public String revisarInforme() {
+    public String enviarInforme() { // si vale
+        if (caso.getId() == null)  {
+            System.out.println("NULO NULO");
+            return null;
+        }
         if (validacionInforme() == false) {
             return null;
         }
@@ -311,40 +316,29 @@ public class atencionCasosBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El Informe se ha enviado para su revisión"));
         listaCasos.clear();
         cargarCasos();
+        PrimeFaces.current().executeScript("PF('manageDialogenviar').hide()");
         return null;
 
     }
 
-    public void guardarCaso() {
-        ejbCasos.edit(caso);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso Guardado"));
-
-    }
-
+   
     public void concluirInforme() {
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El Informe finalizó con éxito"));
     }
 
-    public String modificar(Casos casoparametro) {
-        this.caso = casoparametro;
-        System.out.println("nombre  : " + caso.getInvolucrado().getNombres());
-        return "/elaboracion-caso.xhtml?faces-redirect=true";
+    
+
+    public void grabar() {
+        if (caso.getId() == null) {
+            return;
+        }
+        ejbCasos.edit(caso);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El Informe editado con éxito"));
+        PrimeFaces.current().executeScript("PF('manageDialogcaso').hide()");
     }
 
-//    public void modificar() throws IOException {
-//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-//try {
-//            externalContext.redirect(externalContext.getRequestContextPath() + "/elaboracion-caso.xhtml?faces-redirect=true");
-//            //externalContext.getFlash().setKeepMessages(true); // Opcional: conserva los mensajes de FacesContext
-//
-//            // Actualizar o recargar la vista
-//            externalContext.getApplicationMap().put("forceReload", true);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
     public List<Casos> getListaCasos() {
         return listaCasos;
     }

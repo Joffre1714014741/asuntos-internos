@@ -8,32 +8,30 @@ import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Eventos;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.CasosFacade;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.PrimeFaces;
 
 /**
  *
  * @author jpverdezoto
  */
-@Named
-@SessionScoped
+@Named(value = "revisionCasosBean")
+@ViewScoped
 public class RevisionCasosBean implements Serializable {
 
     private List<Casos> listaCasos = new ArrayList<>();
-    private Casos caso = new Casos();
-    private Eventos evento = new Eventos();
-    private List<Casos> listaCasosSeleccionados;
+    private Casos caso;
+    private Eventos evento;
+
     @EJB
     private CasosFacade ejbCasos;
 
@@ -54,39 +52,21 @@ public class RevisionCasosBean implements Serializable {
         }
     }
 
-    public String modificar(Casos casoparametro) {       
-        this.caso = casoparametro;
-        System.out.println("nombre  : " + caso.getInvolucrado().getNombres());
-        return "/revision-casos.xhtml?faces-redirect=true";
-    }
-    
-    
-//     public void modificar() throws IOException {
-//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-//try {
-//            externalContext.redirect(externalContext.getRequestContextPath() + "/revision-casos.xhtml?faces-redirect=true");
-//            //externalContext.getFlash().setKeepMessages(true); // Opcional: conserva los mensajes de FacesContext
-//
-//            // Actualizar o recargar la vista
-//            externalContext.getApplicationMap().put("forceReload", true);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public void realizarCambiosInforme() {
+    public void regresarCaso() {
         caso.setEstado("PENDIENTE REVISION");
         ejbCasos.edit(caso);
         listaCasos.clear();
-                cargarCasos();
-
+        cargarCasos();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe enviado para realizar cambios"));
+        PrimeFaces.current().executeScript("PF('manageDialogregresar').hide()");
     }
 
-    public void aprobarInforme() {
+    public void aprobarcaso() {
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe Aprobado"));
+        cargarCasos();
+        PrimeFaces.current().executeScript("PF('manageDialogaprobar').hide()");
     }
 
     public List<Casos> getListaCasos() {
@@ -103,14 +83,6 @@ public class RevisionCasosBean implements Serializable {
 
     public void setEjbCasos(CasosFacade ejbCasos) {
         this.ejbCasos = ejbCasos;
-    }
-
-    public List<Casos> getListaCasosSeleccionados() {
-        return listaCasosSeleccionados;
-    }
-
-    public void setListaCasosSeleccionados(List<Casos> listaCasosSeleccionados) {
-        this.listaCasosSeleccionados = listaCasosSeleccionados;
     }
 
     public Casos getCaso() {

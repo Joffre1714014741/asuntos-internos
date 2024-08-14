@@ -1,17 +1,17 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui" xmlns:pa="http://primefaces.org/mirage">
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:pa="http://primefaces.org/mirage">
 
     <div class="layout-topbar">
         <div class="layout-topbar-wrapper">
             <div class="layout-topbar-left">
-                
+
                 <!-- Mega Menu -->
                 <div class="layout-megamenu-wrapper">
-                    
-                        <i class="pi pi-comment"/>
-                      CUERPO DE BOMBEROS DEL DISTRITO METROPOLITANO DE QUITO - DIRECCIÓN DE ASUNTOS INTERNOS
-                                 
+
+                    <i class="pi pi-comment"/>
+                    CUERPO DE BOMBEROS DEL DISTRITO METROPOLITANO DE QUITO - DIRECCIÓN DE ASUNTOS INTERNOS
+
                 </div>
             </div>
             <div class="layout-topbar-right">
@@ -57,7 +57,7 @@
                             </li>
                             <li class="layout-submenu-item">
                                 <p:graphicImage name="images/topbar/" library="mirage-layout"
-                                    width="35" />
+                                                width="35" />
                                 <div class="menu-text">
                                     <p>Lenin Bastidas</p>
                                     <span>Revisión de informe 74</span>
@@ -66,7 +66,7 @@
                             </li>
                             <li class="layout-submenu-item">
                                 <p:graphicImage name="images/topbar/" library="mirage-layout"
-                                    width="35" />
+                                                width="35" />
                                 <div class="menu-text">
                                     <p>Daniel Hwan</p>
                                     <span>Enviar docuemntación al involucrado</span>
@@ -75,7 +75,7 @@
                             </li>
                             <li class="layout-submenu-item">
                                 <p:graphicImage name="images/topbar/" library="mirage-layout"
-                                    width="35" />
+                                                width="35" />
                                 <div class="menu-text">
                                     <p>David Chipantiza</p>
                                     <span>Enviar estadisticas mes de enero</span>
@@ -84,7 +84,7 @@
                             </li>
                             <li class="layout-submenu-item">
                                 <p:graphicImage name="images/topbar/" library="mirage-layout"
-                                    width="35" />
+                                                width="35" />
                                 <div class="menu-text">
                                     <p>Henry Rodriguez</p>
                                     <span>Asistir a sala de reuniones 14:00</span>
@@ -93,7 +93,7 @@
                             </li>
                         </ul>
                     </li>
-                    
+
                     <li class="topbar-item profile-item">
                         <a href="#">
                             <span class="profile-image-wrapper">
@@ -106,24 +106,25 @@
                         </a>
                         <ul class="profile-item-submenu">
                             <li class="profile-submenu-header">
-                                
+
                                 <div class="profile">
                                     <p:graphicImage name="images/topbar/" library="mirage-layout"
-                                        width="40" />
+                                                    width="40" />
                                     <h1>#{seguridad.usuarios.persona.nombres} #{seguridad.usuarios.persona.apellidos}</h1>
                                     <span>#{seguridad.usuarios.tipo} </span>
                                 </div>
                             </li>
-                                        
+
                             <li >
-                               
-                                 <p:commandButton value="SALIR" action="#{seguridad.logout()}" />
+                                <h:form >
+                                    <p:commandLink value="SALIR" action="#{seguridad.logout()}" />
+                                </h:form>
                             </li>
                         </ul>
                     </li>
-                   
+
                 </ul>
-              
+
             </div>
         </div>
     </div>

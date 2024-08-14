@@ -9,8 +9,8 @@ import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Documentos;
 import ec.bomberosquito.ai.entidades.Eventos;
+import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.PersonasFacade;
-import ec.bomberosquito.ai.facades.UsuariosFacade;
 import ec.bomberosquito.ai.facades.CasosFacade;
 import ec.bomberosquito.ai.facades.DocumentosFacade;
 import ec.bomberosquito.ai.facades.EventosFacade;
@@ -30,52 +30,60 @@ import org.primefaces.model.file.UploadedFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import org.primefaces.PrimeFaces;
 
 /**
  *
  * @author jpverdezoto
  */
-@Named
+@Named(value = "casosBean")
 @ViewScoped
 public class CasosBean implements Serializable {
-    
+
     private Personas persona;
-    private Usuarios usuario;
     private Casos caso;
-    private List<Documentos> documentosTemporales;
-    private List<Documentos> listaDocumentos;   
+    private List<Documentos> listaDocumentos;
+    private List<Casos> listaCasos;
+    private String estadoCasos;
 
     @EJB
     private PersonasFacade ejbPersonas;
-
-    @EJB
-    private UsuariosFacade ejbUsuarios;
-
     @EJB
     private CasosFacade ejbCasos;
-    
     @EJB
     private DocumentosFacade ejbDocumentos;
-    
     @EJB
     private EventosFacade ejbEventos;
 
     @PostConstruct
     public void init() {
-        persona = new Personas();
-        usuario = new Usuarios();
-        caso = new Casos();
-        listaDocumentos = new ArrayList<>();
-        documentosTemporales = new ArrayList<>();
     }
 
-    public void generarCaso() {
+    public void buscar() {
+        HashMap paremetros = new HashMap<>();
+        paremetros.put(";where", "o.estado=:estado");
+        paremetros.put("estado", "CREADO");
+        try {
+            setListaCasos(ejbCasos.encontrarParametros(paremetros));
+        } catch (ConsultarException e) {
+        }
     }
-    
-    public String casos(){
-        return "/creacion-casos.xhtml?faces-redirect=true";
+
+    public void crearCaso() {
+        listaDocumentos = new ArrayList<>();
+        caso = new Casos();
+        persona = new Personas();
+        PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
     }
-    
+
+    public void editarCaso() {
+        listaDocumentos = new ArrayList<>();
+        caso = new Casos();
+        persona = new Personas();
+        PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
+    }
+
     public void subirDocumento(FileUploadEvent event) {
         try {
             UploadedFile file = event.getFile();
@@ -87,8 +95,8 @@ public class CasosBean implements Serializable {
             Documentos nuevoDocumento = new Documentos();
             nuevoDocumento.setNombredocumento(filename);
             nuevoDocumento.setRuta(filePath.toString());
-            documentosTemporales.add(nuevoDocumento);
-        } catch (Exception e) {
+            listaDocumentos.add(nuevoDocumento);
+        } catch (IOException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al subir el archivo", null));
         }
     }
@@ -97,47 +105,115 @@ public class CasosBean implements Serializable {
         try {
             Path fileToDeletePath = Paths.get(documento.getRuta());
             Files.deleteIfExists(fileToDeletePath);
-            documentosTemporales.remove(documento);
+            listaDocumentos.remove(documento);
         } catch (IOException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar el archivo físico", null));
         }
     }
 
-    public void confirmarCaso() {
-        
+    public void insertarCaso() {
         // Crear persona
-        persona.setTipo("INVOLUCRADO");
-        ejbPersonas.create(persona);
-        
-       
-        
-        // Asignar usuario como involucrado en el caso
-        caso.setInvolucrado(persona);
+        caso.setInvolucrado(verificarPersona(persona));
         caso.setEstado("CREADO");
-        
         // Persistir el caso
         caso.setFechaderealizacion(new Date());
         ejbCasos.create(caso);
-        
         // Ahora, asigna el caso y persiste cada documento
-        for (Documentos documento : documentosTemporales) {
-            documento.setCaso(caso);
-            ejbDocumentos.create(documento);
-        }
-        
-        listaDocumentos = new ArrayList<>(documentosTemporales);
-        documentosTemporales.clear();
+//        for (Documentos documento : listaDocumentos) {
+//            documento.setCaso(caso);
+//            ejbDocumentos.create(documento);
+//        }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos creados exitosamente"));
-        
+
         Eventos eventoCreacion = new Eventos();
         eventoCreacion.setCaso(caso);
         eventoCreacion.setAccionrealizada("Usuario crea un caso");
         eventoCreacion.setEstado("CASO_CREADO");
         eventoCreacion.setFechahora(new Date());
         ejbEventos.create(eventoCreacion);
+        buscar();
+        PrimeFaces.current().executeScript("PF('manageDialogcaso').hide()");
 
-        // Reiniciar los objetos para nuevos registros
-        init();
+    }
+
+    public void grabarCaso() {
+
+        ejbCasos.edit(caso);
+        // Ahora, asigna el caso y persiste cada documento
+//        for (Documentos documento : listaDocumentos) {
+//            documento.setCaso(caso);
+//            ejbDocumentos.create(documento);
+//        }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos editadps exitosamente"));
+
+        Eventos eventoCreacion = new Eventos();
+        eventoCreacion.setCaso(caso);
+        eventoCreacion.setAccionrealizada("Usuario edita un caso");
+        eventoCreacion.setEstado("CASO_CREADO");
+        eventoCreacion.setFechahora(new Date());
+        ejbEventos.create(eventoCreacion);
+        PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').hide()");
+
+    }
+
+    public void eliminarCAso() {
+        ejbCasos.remove(caso);
+        buscar();
+        PrimeFaces.current().executeScript("PF('manageDialogeliminar').hide()");
+
+    }
+
+    private void buscarDocumentos() {
+        listaDocumentos = new ArrayList<>();
+    }
+
+    private Personas verificarPersona(Personas personaParametro) {
+        HashMap paremetros = new HashMap<>();
+        paremetros.put(";where", "o.cedula=:cedula");
+        paremetros.put("cedula", personaParametro.getCedula());
+        try {
+            List<Personas> lista = ejbPersonas.encontrarParametros(paremetros);
+            if (lista.isEmpty()) {
+                Personas personaDevolver = new Personas();
+                personaDevolver.setApellidos(personaParametro.getApellidos());
+                personaDevolver.setNombres(personaParametro.getNombres());
+                personaDevolver.setCedula(personaParametro.getCedula());
+                personaDevolver.setMail(personaParametro.getMail());
+                personaDevolver.setContacto(personaParametro.getContacto());
+                personaDevolver.setTipo("INVOLUCRADO");
+                ejbPersonas.create(personaDevolver);
+                return personaDevolver;
+            } else {
+                return lista.get(0);
+            }
+        } catch (ConsultarException e) {
+        }
+        return null;
+    }
+
+    public void inicioCaso() {
+        System.out.println("estadoCasos " + estadoCasos);
+        if (estadoCasos == null) {
+            return;
+        }
+        // Editar caso
+        caso.setEstado(estadoCasos);
+        System.out.println("observaciones " + caso.getObservaciones());
+        ejbCasos.edit(caso);
+        //fin editar caso
+        // crear tracking
+        Eventos eventoCreacion = new Eventos();
+        eventoCreacion.setFechahora(new Date());
+        eventoCreacion.setEstado(estadoCasos);
+        eventoCreacion.setAccionrealizada("Director Ingresa Caso");
+        eventoCreacion.setCaso(caso);
+        ejbEventos.create(eventoCreacion);
+        // finizaiza tracking
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso editado"));
+        PrimeFaces.current().executeScript("PF('manageDialogcontinuar').hide()");
+
+        buscar();
+
     }
 
     public Personas getPersona() {
@@ -146,14 +222,6 @@ public class CasosBean implements Serializable {
 
     public void setPersona(Personas persona) {
         this.persona = persona;
-    }
-
-    public Usuarios getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuarios usuario) {
-        this.usuario = usuario;
     }
 
     public Casos getCaso() {
@@ -172,12 +240,32 @@ public class CasosBean implements Serializable {
         this.listaDocumentos = listaDocumentos;
     }
 
-    public List<Documentos> getDocumentosTemporales() {
-        return documentosTemporales;
+    /**
+     * @return the listaCasos
+     */
+    public List<Casos> getListaCasos() {
+        return listaCasos;
     }
 
-    public void setDocumentosTemporales(List<Documentos> documentosTemporales) {
-        this.documentosTemporales = documentosTemporales;
+    /**
+     * @param listaCasos the listaCasos to set
+     */
+    public void setListaCasos(List<Casos> listaCasos) {
+        this.listaCasos = listaCasos;
     }
-    
+
+    /**
+     * @return the estadoCasos
+     */
+    public String getEstadoCasos() {
+        return estadoCasos;
+    }
+
+    /**
+     * @param estadoCasos the estadoCasos to set
+     */
+    public void setEstadoCasos(String estadoCasos) {
+        this.estadoCasos = estadoCasos;
+    }
+
 }

@@ -413,7 +413,7 @@
                                  onclick="PF('confirmDialogfinalizar').hide()" />
             </p:confirmDialog>
 
-            <p:commandButton value="Generar PDF" oncomplete="PF('confirmDialogpdf').show()" styleClass="ui-button-success mr-34 mb-4"  rendered="#{atencionCasosBean.caso.estado eq 'APROBADO'}" />
+            <!<!-- comment <p:commandButton value="Generar PDF" oncomplete="PF('confirmDialogpdf').show()" styleClass="ui-button-success mr-34 mb-4"  rendered="#{atencionCasosBean.caso.estado eq 'APROBADO'}" /> -->
 
            <!-- Diálogo de Confirmación -->
             <p:confirmDialog widgetVar="confirmDialogpdf" 

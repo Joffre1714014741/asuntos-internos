@@ -6,7 +6,6 @@ package ec.bomberosquito.ai.beans;
 
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Eventos;
-import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.CasosFacade;

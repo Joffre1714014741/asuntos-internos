@@ -24,10 +24,10 @@
 
 
                     <p:submenu id="m_default" label="Menu" icon="pi pi-fw pi-copy">
-                        <p:menuitem  value="Usuarios" icon="pi pi-fw pi-pencil" outcome="/usuarios" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
-                        <p:menuitem  value="Casos Creados" icon="pi pi-fw pi-pencil" outcome="/casos" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
-                        <p:menuitem  value="Asignar Casos" icon="pi pi-fw pi-pencil" outcome="/asignar-casos" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
-                        <p:menuitem  value="Aprobar Informes" icon="pi pi-fw pi-pencil" outcome="/casosRevision" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
+                        <p:menuitem  value="Usuarios" icon="pi pi-user-plus" outcome="/usuarios" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
+                        <p:menuitem  value="Casos Creados" icon="pi pi-database" outcome="/casos" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
+                        <p:menuitem  value="Asignar Casos" icon="pi pi-users" outcome="/asignar-casos" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
+                        <p:menuitem  value="Aprobar Informes" icon="pi pi-check-circle" outcome="/casosRevision" rendered="#{seguridad.usuarios.tipo eq 'DIRECTOR'}" />
                         <p:menuitem  value="Elaborar informe " icon="pi pi-fw pi-pencil" outcome="/atencionCasos" rendered="#{seguridad.usuarios.tipo eq 'ANALISTA'}" />
                         
                     </p:submenu>
