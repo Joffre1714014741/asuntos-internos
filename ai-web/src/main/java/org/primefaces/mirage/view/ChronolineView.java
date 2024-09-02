@@ -32,10 +32,10 @@ public class ChronolineView {
     
     public void init() {
         events = new ArrayList<>();
-        events.add(new Event("Información del denunciante", "Paso 1", "pi pi-check", "#9C27B0", "El ciudadano y/o Denunciante ingresa sus datos."));
-        events.add(new Event("Datos Generales de la denuncia", "Paso 2", "pi pi-check", "#673AB7", "Ingresa los datos de la denuncia."));
-        events.add(new Event("Registro de evidencias", "Paso 3", "pi pi-check", "#FF9800", "Sube los anexos necesarios (Fotos, videos, documentos, etc)."));
-        events.add(new Event("Genera la denuncia", "Paso 4", "pi pi-check", "#607D8B", "Guarda los datos ingresados"));
+        events.add(new Event("Información del denunciante", "Paso 1", "pi pi-arrow-right", "#9C27B0", "El ciudadano y/o Denunciante ingresa sus datos."));
+        events.add(new Event("Datos Generales de la denuncia", "Paso 2", "pi pi-arrow-left", "#673AB7", "Ingresa los datos de la denuncia."));
+        events.add(new Event("Registro de evidencias", "Paso 3", "pi pi-arrow-right", "#FF9800", "Sube los anexos necesarios (Fotos, videos, documentos, etc)."));
+        events.add(new Event("Genera la denuncia", "Paso 4", "pi pi-arrow-left", "#607D8B", "Guarda los datos ingresados"));
         events2 = new ArrayList<>();
         
         events2.add("2023");

@@ -46,6 +46,7 @@ public class CasosBean implements Serializable {
     private List<Documentos> listaDocumentos;
     private List<Casos> listaCasos;
     private String estadoCasos;
+    private UploadedFile file;
 
     @EJB
     private PersonasFacade ejbPersonas;
@@ -77,18 +78,20 @@ public class CasosBean implements Serializable {
         PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
     }
 
-    public void editarCaso() {
-        listaDocumentos = new ArrayList<>();
-        caso = new Casos();
-        persona = new Personas();
-        PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
+    public void editarCaso(Casos casoParametro) {
+        caso = casoParametro;
+        buscarDocumentos();
+        PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').show()");
     }
 
-    public void subirDocumento(FileUploadEvent event) {
+    public void upload() {
         try {
-            UploadedFile file = event.getFile();
+            if (file == null) {
+                return;
+            }
+            System.out.println("paso archivo");
             String filename = file.getFileName();
-            Path folder = Paths.get("/Users/danielhwang/Documents/ai");
+            Path folder = Paths.get("C:\\Users\\jpverdezoto\\Documents\\documentos");
             Path filePath = Files.createTempFile(folder, filename + "-", ".tmp");
             Files.write(filePath, file.getContent());
 
@@ -106,6 +109,9 @@ public class CasosBean implements Serializable {
             Path fileToDeletePath = Paths.get(documento.getRuta());
             Files.deleteIfExists(fileToDeletePath);
             listaDocumentos.remove(documento);
+            if (documento.getId() != null) {
+                ejbDocumentos.remove(documento);
+            }
         } catch (IOException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar el archivo físico", null));
         }
@@ -119,10 +125,10 @@ public class CasosBean implements Serializable {
         caso.setFechaderealizacion(new Date());
         ejbCasos.create(caso);
         // Ahora, asigna el caso y persiste cada documento
-//        for (Documentos documento : listaDocumentos) {
-//            documento.setCaso(caso);
-//            ejbDocumentos.create(documento);
-//        }
+        for (Documentos documento : listaDocumentos) {
+            documento.setCaso(caso);
+            ejbDocumentos.create(documento);
+        }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos creados exitosamente"));
 
         Eventos eventoCreacion = new Eventos();
@@ -140,10 +146,16 @@ public class CasosBean implements Serializable {
 
         ejbCasos.edit(caso);
         // Ahora, asigna el caso y persiste cada documento
-//        for (Documentos documento : listaDocumentos) {
-//            documento.setCaso(caso);
-//            ejbDocumentos.create(documento);
-//        }
+        System.out.println("listaDocumentos" + listaDocumentos.size());
+        for (Documentos documento : listaDocumentos) {
+            if (documento.getId() == null) {
+                System.out.println("creo documento");
+
+                documento.setCaso(caso);
+                ejbDocumentos.create(documento);
+            }
+
+        }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos editadps exitosamente"));
 
         Eventos eventoCreacion = new Eventos();
@@ -157,6 +169,10 @@ public class CasosBean implements Serializable {
     }
 
     public void eliminarCAso() {
+        buscarDocumentos();
+        for (Documentos doc : listaDocumentos) {
+            ejbDocumentos.remove(doc);
+        }
         ejbCasos.remove(caso);
         buscar();
         PrimeFaces.current().executeScript("PF('manageDialogeliminar').hide()");
@@ -165,6 +181,13 @@ public class CasosBean implements Serializable {
 
     private void buscarDocumentos() {
         listaDocumentos = new ArrayList<>();
+        HashMap paremetros = new HashMap<>();
+        paremetros.put(";where", "o.caso=:caso");
+        paremetros.put("caso", caso);
+        try {
+            listaDocumentos = ejbDocumentos.encontrarParametros(paremetros);
+        } catch (ConsultarException e) {
+        }
     }
 
     private Personas verificarPersona(Personas personaParametro) {
@@ -266,6 +289,20 @@ public class CasosBean implements Serializable {
      */
     public void setEstadoCasos(String estadoCasos) {
         this.estadoCasos = estadoCasos;
+    }
+
+    /**
+     * @return the file
+     */
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(UploadedFile file) {
+        this.file = file;
     }
 
 }

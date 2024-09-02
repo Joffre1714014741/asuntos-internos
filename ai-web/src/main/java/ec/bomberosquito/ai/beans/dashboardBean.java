@@ -56,7 +56,7 @@ public class dashboardBean implements Serializable {
     public String cantidadFinalizados() throws ConsultarException {
         Map<String, Object> parametros = new HashMap<>();
         parametros.put(";where", "o.estado=:estado");
-        parametros.put("estado", "FINALIZADO");
+        parametros.put("estado", "APROBADO");
         List<Casos> listaCasos = ejbCasos.encontrarParametros(parametros);
         Integer i = listaCasos.size();
         return i.toString();

@@ -105,8 +105,8 @@
 
 
                             <p:column exportable="false"> 
-                                <p:commandButton title="Editar" update=":frmdialogcasoeditar:manage-casoeditar-content" 
-                                                 oncomplete="PF('manageDialogcasoeditar').show()"
+                                <p:commandButton actionListener="#{casosBean.editarCaso(itemcaso)}" title="Editar" update=":frmdialogcasoeditar:manage-casoeditar-content" 
+
                                                  process="@this"
                                                  icon="pi pi-pencil" styleClass="rounded-button mr-2 mb-2"
                                                  >
@@ -268,47 +268,59 @@
 
                             <div class="card" style="width: 100%">
                                 <h5>Anexos del Caso</h5>
-                                <div class="col-12">
-                                    <p:fileUpload listener="#{casosBean.subirDocumento}"
-                                                  mode="advanced"
-                                                  update="documentosTable"
-                                                  sizeLimit="10000000"
-                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
-                                                  multiple="true"/>
 
-                                    <!-- Tabla para listar Documentos -->
-                                    <p:dataTable id="documentosTable"
-                                                 var="documento"
-                                                 value="#{casosBean.listaDocumentos}"
-                                                 emptyMessage="No hay documentos subidos">
-                                        <p:column headerText="Nombre del Documento">
-                                            <h:outputText value="#{documento.nombredocumento}" />
-                                        </p:column>
-                                        <p:column headerText="Acciones">
-                                            <p:commandButton icon="pi pi-times"
-                                                             title="Eliminar"
-                                                             actionListener="#{casosBean.eliminarDocumento(documento)}"
-                                                             update="documentosTable"/>
-                                        </p:column>
-                                    </p:dataTable>
+                                <div style="text-align: justify;">
+                                    <p:fileUpload  value="#{casosBean.file}"
+                                                   label="Seleccionar archivo"
+                                                   mode="simple" skinSimple="true" auto="true"
+                                                   style="width: 30%"
+                                                   allowTypes="/(\.|\/)(pdf)$/" 
+                                                   sizeLimit="10485760"
+                                                   invalidSizeMessage="Solo se permiten archivos de 10Mb"
+                                                   invalidFileMessage="Solo se acepta archivos pdf"
+                                                   />
+                                   
+                                    <p:commandButton value="Guardar" 
+                                                     icon="pi pi-cloud-upload"
+                                                     iconPos="right"
+                                                     style="width: 30%"
+                                                     update="documentosTable" 
+                                                     actionListener="#{casosBean.upload}"  
+                                                     styleClass="mt-2 ui-button-outlined block" 
+                                                     id="uloadPreparatoria"
+                                                     />
                                 </div>
+
+
+                                <!-- Tabla para listar Documentos -->
+                                
+                                <p:dataTable id="documentosTable"
+                                             var="documento"
+                                             value="#{casosBean.listaDocumentos}"
+                                             emptyMessage="No hay documentos subidos">
+                                    <p:column headerText="Nombre del Documento">
+                                        <h:outputText value="#{documento.nombredocumento}" />
+                                    </p:column>
+                                    <p:column headerText="Acciones">
+                                        <p:commandButton icon="pi pi-times"
+                                                         title="Eliminar"
+                                                         actionListener="#{casosBean.eliminarDocumento(documento)}"
+                                                         update="documentosTable"/>
+                                    </p:column>
+                                </p:dataTable>
                             </div>
                         </div>
 
-
-
                     </p:outputPanel>
                 </p:outputPanel>
+                
                 <f:facet name="footer">
-
 
                     <p:commandButton  value="Si, Guardar" icon="pi pi-check" actionListener="#{casosBean.insertarCaso()}"
                                       update="manage-caso-content form" process="manage-caso-content @this" />                
                     <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogcaso').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
-
-
             </p:dialog>
         </h:form>
 
@@ -410,14 +422,30 @@
                             <div class="card" style="width: 100%">
                                 <h5>Anexos del Caso</h5>
                                 <div class="col-12">
-                                    <p:fileUpload listener="#{casosBean.subirDocumento}"
-                                                  mode="advanced"
-                                                  update="documentosTable"
-                                                  sizeLimit="10000000"
-                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
-                                                  multiple="true"/>
+
+                                    <p:fileUpload  value="#{casosBean.file}"
+
+                                                   label="Seleccionar archivo"
+                                                   mode="simple" skinSimple="true" auto="true"
+                                                   style="width: 30%"
+                                                   allowTypes="/(\.|\/)(pdf)$/" 
+                                                   sizeLimit="10485760"
+                                                   invalidSizeMessage="Solo se permiten archivos de 10Mb"
+                                                   invalidFileMessage="Solo se acepta archivos pdf"
+                                                   />
+                                    
+                                    <p:commandButton value="Guardar" 
+                                                     icon="pi pi-cloud-upload"
+                                                     iconPos="right"
+                                                     style="width: 30%"
+                                                     update="documentosTable" 
+                                                     actionListener="#{casosBean.upload}"  
+                                                     styleClass="mt-3 ui-button-outlined block" 
+
+                                                     />
 
                                     <!-- Tabla para listar Documentos -->
+                                    
                                     <p:dataTable id="documentosTable"
                                                  var="documento"
                                                  value="#{casosBean.listaDocumentos}"
@@ -435,8 +463,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                     </p:outputPanel>
                 </p:outputPanel>
