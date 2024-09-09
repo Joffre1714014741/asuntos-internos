@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Tracking Casos</ui:define>
+
+    <ui:define name="viewname">
+        <li>Inicio</li>
+        <li><i class="pi pi-angle-right"/></li>
+        <li>
+            <p:link outcome="/casos">Traking casos</p:link>
+        </li>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="form">
+            <div class="grid crud-demo">
+                <div class="col-12">
+                    <div class="card">
+                        <p:growl id="messages" showDetail="true" />
+
+
+                        <div class="grid button-demo">
+                            <div class="field">
+
+                                <h:panelGroup  > 
+                                    <span class="ui-float-label">
+                                        <p:inputText id="idCaso" value="#{trackingBean.casoParametro}"  />
+                                        <p:outputLabel for="idCaso" value="Caso"/>
+                                    </span>
+                                </h:panelGroup>
+                            </div>
+                            <div class="col-12 md:col-6">
+                                <div class="card">
+                                    <p:commandButton action="#{trackingBean.cargarCaso()}" value="Buscar" icon="pi pi-search-plus" update="dt-casos" />
+                                </div>
+                            </div>
+                        </div> 
+                        
+                        <p:dataTable id="dt-casos" 
+                                     widgetVar="dtTraking" 
+                                     var="eventos" 
+                                     value="#{trackingBean.listaCasos}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     rowKey="#{itemcaso.id}" 
+                                     paginator="true" 
+                                     rows="15" 
+                                     rowSelectMode="add" 
+                                     paginatorPosition="bottom">
+                            <f:facet name="header">
+
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Casos</span>
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtTraking').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>  
+
+                            <p:column headerText="ID" sortBy="#{itemcaso.id}" >
+                                <h:outputText value="#{eventos.id}" />
+                            </p:column>
+                            
+                            <p:column headerText="ESTADO" sortBy="#{itemcaso.id}" >
+                                <h:outputText value="#{eventos.estado}" />
+                            </p:column>
+                            
+                            <p:column headerText="DETALLE CAUSA" sortBy="#{itemcaso.id}" >
+                                <h:outputText value="#{eventos.detallecausa}" />
+                            </p:column>
+                            
+                            <p:column headerText="OBSERVACIONES" sortBy="#{itemcaso.id}" >
+                                <h:outputText value="#{eventos.observaciones}" >
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+                            
+                            <p:column exportable="false"> 
+                                <p:commandButton title="Completar informe"   update=":frmtrackingdialogo:manage-caso-content-tracking" 
+                                                 oncomplete="PF('manageDialogcasoTracking').show()"
+                                                 icon="pi pi-pencil" styleClass="rounded-button mr-2 mb-2"
+                                                 actionListener="#{trackingBean.cargarEvento(eventos.id)}"> 
+                                   
+                                  
+                                </p:commandButton>
+
+                               
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Dialogo para CRUD de Casos -->
+
+        </h:form> 
+        <h:form id="frmtrackingdialogo">
+             <p:dialog header="Tracking del caso" showEffect="fade" modal="true" widgetVar="manageDialogcasoTracking"
+                      responsive="true"
+                      fitViewport="true" 
+                      minHeight="200"
+                      width="1500"
+                      >
+                 
+                 <p:outputPanel id="manage-caso-content-tracking" class="ui-fluid">
+                     <div class="card" style="width: 100%;">
+                         <h:outputText value="NOMBRES:   " style="font-weight: bold;" />
+                     </div>
+                     
+                     <div>
+                            <p:dataTable id="dt-tracking" 
+                                     widgetVar="dtTrakingtabla" 
+                                     var="tracking" 
+                                     value="#{trackingBean.listaEventosTraking}" 
+                                     reflow="true" 
+                                     styleClass="products-table"
+                                     rowKey="#{tracking.id}" 
+                                     paginator="true" 
+                                     rows="15" 
+                                     rowSelectMode="add" 
+                                     paginatorPosition="bottom">
+                            <f:facet name="header">
+
+                                <div class="products-table-header">
+                                    <span style="font-weight: bold">Tracking</span>
+                                    <span class="filter-container ui-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <p:inputText id="globalFilter" onkeyup="PF('dtTraking').filter()" placeholder="Search" />
+                                    </span>
+                                </div>
+                            </f:facet>  
+
+                            <p:column headerText="ID" sortBy="#{tracking.id}" >
+                                <h:outputText value="#{tracking.id}" />
+                            </p:column>
+                            <p:column headerText="ESTADO" sortBy="#{tracking.estado}" >
+                                <h:outputText value="#{tracking.estado}" />
+                            </p:column><!-- comment -->
+                            <p:column headerText="ACCIÓN REALIZADA" sortBy="#{tracking.accionrealizada}" >
+                                <h:outputText value="#{tracking.accionrealizada}" />
+                            </p:column>
+                            <p:column headerText="FECHA" sortBy="#{itemcaso.fechahora}" >
+                                <h:outputText value="#{tracking.fechahora}" >
+                                    <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                </h:outputText>
+                            </p:column>
+              
+                        </p:dataTable>
+
+                     </div>
+                     
+                 </p:outputPanel>
+                          
+                 
+             </p:dialog>
+            
+            
+        </h:form>
+
+    </ui:define>
+    
+</ui:composition>

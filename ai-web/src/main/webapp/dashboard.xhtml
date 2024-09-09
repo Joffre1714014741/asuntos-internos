@@ -6,12 +6,12 @@
     xmlns:p="http://primefaces.org/ui" 
     template="/WEB-INF/template.xhtml">
 
- 
+
     <ui:define name="viewname">
         <li>Menu</li>
         <li><strong class="pi pi-angle-right"/></li>
         <li>
-            <p:link outcome="/dashboard">Cosas por Hacer</p:link>
+            <p:link outcome="/dashboard">Tus actividades</p:link>
         </li>
     </ui:define>
 
@@ -41,13 +41,13 @@
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio' ,'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                         datasets: [{
                                 data: [20, 7, 9, 3, 30, 7, 15, 5, 50, 60, 100, 25],
                                 borderColor: [
                                     '#45b0d5'
                                 ],
-                                borderWidth:2,
+                                borderWidth: 2,
                                 fill: false
                             }]
                     },
@@ -92,13 +92,13 @@
         <h:form id="form">
             <div class="grid layout-dashboard">
                 <div class="col-12 xl:col-3 md:col-6">
-                    <div class="grid grid-nogutter overview-box overview-box-2">
+                    <div class="grid grid-nogutter overview-box overview-box-1">
                         <div class="col-3 overview-box-icon">
                             <p:graphicImage name="images/dashboard/Notificacion.jpg" library="mirage-layout" />
                         </div>
                         <div class="col-6 overview-box-text">
-                            <p>Notificaciones</p>
-                            <span>Tienes Casos por revisar</span>
+                            <p>CASOS CREADOS</p>
+
                         </div>
                         <div class="col-3 overview-box-status">
                             #{dashboardBean.cantidadCasos()}
@@ -106,33 +106,35 @@
                     </div>
                 </div>
                 <div class="col-12 xl:col-3 md:col-6">
-                    <div class="grid grid-nogutter overview-box overview-box-3">
+                    <div class="grid grid-nogutter overview-box overview-box-2">
                         <div class="col-3 overview-box-icon">
                             <p:graphicImage name="images/dashboard/Elaboracion.png" library="mirage-layout" />
                         </div>
                         <div class="col-6 overview-box-text">
-                            <p>En Elaboración</p>
-                            <span>Casos pendientes por realizar</span>
+                            <p>CASOS ASIGNADOS</p>
+
                         </div>
                         <div class="col-3 overview-box-status">
                             #{dashboardBean.cantidadElaborados()}
                         </div>
                     </div>
                 </div>
+
                 <div class="col-12 xl:col-3 md:col-6">
                     <div class="grid grid-nogutter overview-box overview-box-4">
                         <div class="col-3 overview-box-icon">
                             <p:graphicImage name="images/dashboard/Finalizado.jpg" library="mirage-layout" />
                         </div>
                         <div class="col-6 overview-box-text" style="align-content: center">
-                            <p>Casos Aprobados</p> 
-                            <span>Realizados hasta el momento</span> 
+                            <p>CASOS APROVADOS</p> 
+
                         </div>
-                        <div class="col-3 overview-box-status">
+                        <div class="col-6 overview-box-status">
                             #{dashboardBean.cantidadFinalizados()}
                         </div>
                     </div>
                 </div>
+
                 <div class="col-12 lg:col-6 ">
                     <div class="grid flex-column grid-nogutter">
                         <div class="col-12 ">

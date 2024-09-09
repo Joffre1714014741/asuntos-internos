@@ -8,8 +8,10 @@ import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Eventos;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.CasosFacade;
+import ec.bomberosquito.ai.facades.EventosFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -34,8 +36,11 @@ public class RevisionCasosBean implements Serializable {
 
     @EJB
     private CasosFacade ejbCasos;
+    @EJB
+    private EventosFacade ejbEventos;
 
     @PostConstruct
+
     public void init() {
         listaCasos.clear();
         cargarCasos();
@@ -53,6 +58,13 @@ public class RevisionCasosBean implements Serializable {
     }
 
     public void regresarCaso() {
+        // implementacion del tracing del caso cuando se devuekve para revison 
+        Eventos eventos = new Eventos();
+        eventos.setEstado("PENDIENTE REVISIO");
+        eventos.setCaso(caso);
+        eventos.setFechahora(new Date());
+        eventos.setAccionrealizada("se regresa el casos " + caso.getId());
+        ejbEventos.create(eventos);
         caso.setEstado("PENDIENTE REVISION");
         ejbCasos.edit(caso);
         listaCasos.clear();
@@ -62,6 +74,13 @@ public class RevisionCasosBean implements Serializable {
     }
 
     public void aprobarcaso() {
+        // implementacion de tracking cuando se aprueba un caso
+        Eventos eventos = new Eventos();
+        eventos.setEstado("APROBADO");
+        eventos.setCaso(caso);
+        eventos.setFechahora(new Date());
+        eventos.setAccionrealizada("se aprueba el caso " + caso.getId());
+        ejbEventos.create(eventos);
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe Aprobado"));
