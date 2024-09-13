@@ -5,84 +5,121 @@
 package ec.bomberosquito.ai.beans;
 
 import ec.bomberosquito.ai.entidades.Casos;
-import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.CasosFacade;
-import ec.bomberosquito.ai.facades.EventosFacade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.donut.DonutChartDataSet;
+import org.primefaces.model.charts.donut.DonutChartModel;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author jpverdezoto
  */
-@ManagedBean(name = "dashboardBean")
+@Named(value = "dashboardBean")
 @ViewScoped
 public class dashboardBean implements Serializable {
 
-    private String bandeja;
-    private Usuarios usuarios = new Usuarios();
+    private DonutChartModel donutModel;
+    private List<Casos> listaCasos;
 
     @EJB
     private CasosFacade ejbCasos;
 
-    @ManagedProperty(value = "#{seguridad}")
-    private SeguridadBean seguridadBean;
-    
-    public String cantidadCasos() throws ConsultarException {
+    public dashboardBean() {
+
+    }
+
+    @PostConstruct
+    public void init() {
+        createDonutModel();
+        ultimosCasos();
+    }
+
+    public void ultimosCasos() {
+        listaCasos = new LinkedList<>();
         Map<String, Object> parametros = new HashMap<>();
-        parametros.put(";where", "o.estado=:estado");
-        parametros.put("estado", "CREADO");
-        List<Casos> listaCasos = ejbCasos.encontrarParametros(parametros);
-        Integer i = listaCasos.size();
-        return i.toString();
-    }
-    
-    public String cantidadElaborados() throws ConsultarException {
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put(";where", "o.estado=:estado");
-        parametros.put("estado", "ASIGNADO");
-        List<Casos> listaCasos = ejbCasos.encontrarParametros(parametros);
-        Integer i = listaCasos.size();
-        return i.toString();
-    }
-    
-    public String cantidadFinalizados() throws ConsultarException {
-        Map<String, Object> parametros = new HashMap<>();
-        parametros.put(";where", "o.estado=:estado");
-        parametros.put("estado", "APROBADO");
-        List<Casos> listaCasos = ejbCasos.encontrarParametros(parametros);
-        Integer i = listaCasos.size();
-        return i.toString();
-    }
-    
-    
-    
-        
-    
-    
-  
+        parametros.put(";where", "o.id is not null");
+        parametros.put(";orden", "o.id desc ");
+        parametros.put(";inicial", 0);
+        parametros.put(";final", 7);
+        try {
+            listaCasos = ejbCasos.encontrarParametros(parametros);
+        } catch (ConsultarException ex) {
+            Logger.getLogger(dashboardBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    
-
-    
-
-    
-
-    
-
-    public String getBandeja() {
-        return bandeja;
     }
 
-    public void setBandeja(String bandeja) {
-        this.bandeja = bandeja;
+    public int traerNumeroProcesosxEstado(int caso) {
+        String tipoestado;
+        switch (caso) {
+            case 1: // CREADO
+                tipoestado = " in ('CREADO')";
+                break;
+            case 2: // ASIGNADO
+                tipoestado = " in ('ASIGNADO')";
+                break;
+            case 3: // PENDIENTE REVISION
+                tipoestado = " in ('PENDIENTE REVISION')";
+                break;
+            case 4: // APROBADO
+                tipoestado = " not in('APROBADO')";
+                break;
+            default:
+                return 0;
+        }
+
+        Map parametros = new HashMap();
+        parametros.put(";where", " o.estado " + tipoestado);
+        try {
+            return ejbCasos.contar(parametros);
+        } catch (ConsultarException ex) {
+            Logger.getLogger(dashboardBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return 0;
+    }
+
+    public void createDonutModel() {
+        setDonutModel(new DonutChartModel());
+        ChartData data = new ChartData();
+
+        DonutChartDataSet dataSet = new DonutChartDataSet();
+        List<Number> values = new ArrayList<>();
+        values.add(traerNumeroProcesosxEstado(1));
+        values.add(traerNumeroProcesosxEstado(2));
+        values.add(traerNumeroProcesosxEstado(3));
+        values.add(traerNumeroProcesosxEstado(4));
+        dataSet.setData(values);
+
+        List<String> bgColors = new ArrayList<>();
+        bgColors.add("rgb(115,182,200)");
+        bgColors.add("rgb(240,197,110)");
+        bgColors.add("rgb(154,186,127)");
+        bgColors.add("rgb(174,130,166)");
+        dataSet.setBackgroundColor(bgColors);
+
+        data.addChartDataSet(dataSet);
+        List<String> labels = new ArrayList<>();
+        labels.add("CREADOS");
+        labels.add("ASIGNADOS");
+        labels.add("PENDIENTE REVISION");
+        labels.add("APROBADO");
+        data.setLabels(labels);
+
+        getDonutModel().setData(data);
     }
 
     public CasosFacade getEjbCasos() {
@@ -93,13 +130,32 @@ public class dashboardBean implements Serializable {
         this.ejbCasos = ejbCasos;
     }
 
-    public SeguridadBean getSeguridadBean() {
-        return seguridadBean;
+    /**
+     * @return the donutModel
+     */
+    public DonutChartModel getDonutModel() {
+        return donutModel;
     }
 
-    public void setSeguridadBean(SeguridadBean seguridadBean) {
-        this.seguridadBean = seguridadBean;
+    /**
+     * @param donutModel the donutModel to set
+     */
+    public void setDonutModel(DonutChartModel donutModel) {
+        this.donutModel = donutModel;
     }
 
+    /**
+     * @return the listaCasos
+     */
+    public List<Casos> getListaCasos() {
+        return listaCasos;
+    }
+
+    /**
+     * @param listaCasos the listaCasos to set
+     */
+    public void setListaCasos(List<Casos> listaCasos) {
+        this.listaCasos = listaCasos;
+    }
 
 }

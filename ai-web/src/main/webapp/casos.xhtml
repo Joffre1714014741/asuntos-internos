@@ -108,7 +108,7 @@
                                 <p:commandButton actionListener="#{casosBean.editarCaso(itemcaso)}" title="Editar" update=":frmdialogcasoeditar:manage-casoeditar-content" 
 
                                                  process="@this"
-                                                 icon="pi pi-pencil" styleClass="rounded-button mr-2 mb-2"
+                                                 icon="pi pi-user-edit" styleClass="rounded-button mr-2 mb-2"
                                                  >
                                     <f:setPropertyActionListener value="#{itemcaso}" target="#{casosBean.caso}" />
                                     <p:resetInput target="frmdialogcasoeditar:manage-casoeditar-content" />
@@ -117,7 +117,7 @@
                                 <p:commandButton title="Continuar" update=":frmdialogcontinuar:manage-continuar-content" 
                                                  oncomplete="PF('manageDialogcontinuar').show()"
                                                  process="@this"
-                                                 icon="pi pi-book" styleClass="rounded-button ui-button-secondary mr-2 mb-2"
+                                                 icon="pi pi-user-plus" styleClass="rounded-button ui-button-secondary mr-2 mb-2"
                                                  >
                                     <f:setPropertyActionListener value="#{itemcaso}" target="#{casosBean.caso}" />
                                     <p:resetInput target="frmdialogcontinuar:manage-continuar-content" />

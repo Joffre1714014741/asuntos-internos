@@ -161,11 +161,38 @@
                                         </span>
                                     </div>
 
-                                    <div class="field">
-                                        <span   >
-                                            <p:inputText  value="#{atencionCasosBean.caso.lugardetrabajo}" />
-                                            <p:outputLabel  value="UNIDAD A LA QUE PERTENECE:" />
+                                    <div class="col-12 md:col-8 dropdown">
+                                        <span class="ui-float-label">
+                                            <h:outputText value="ESTACIÓN A LA QUE PERTENECE: "/>
                                         </span>
+                                        <h:selectOneMenu id="Estaciones" value="#{atencionCasosBean.caso.lugardetrabajo}" style="width: 200px">
+                                            <f:selectItem itemLabel="Estación X-1" itemValue="Estación X-1" />
+                                            <f:selectItem itemLabel="Estación X-2" itemValue="Estación X-2" />
+                                            <f:selectItem itemLabel="Estación X-3" itemValue="Estación X-3" />
+                                            <f:selectItem itemLabel="Estación X-4" itemValue="Estación X-4" />
+                                            <f:selectItem itemLabel="Estación X-5" itemValue="Estación X-5" />
+                                            <f:selectItem itemLabel="Estación X-6" itemValue="Estación X-6" />
+                                            <f:selectItem itemLabel="Estación X-7" itemValue="Estación X-7" />
+                                            <f:selectItem itemLabel="Estación X-8" itemValue="Estación X-8" />
+                                            <f:selectItem itemLabel="Estación X-9" itemValue="Estación X-9" />
+                                            <f:selectItem itemLabel="Estación X-10" itemValue="Estación X-10" />
+                                            <f:selectItem itemLabel="Estación X-11" itemValue="Estación X-11" />
+                                            <f:selectItem itemLabel="Estación X-12" itemValue="Estación X-12" />
+                                            <f:selectItem itemLabel="Estación X-13" itemValue="Estación X-13" />
+                                            <f:selectItem itemLabel="Estación X-14" itemValue="Estación X-14" />
+                                            <f:selectItem itemLabel="Estación X-15" itemValue="Estación X-15" />
+                                            <f:selectItem itemLabel="Estación X-16" itemValue="Estación X-16" />
+                                            <f:selectItem itemLabel="Estación X-17" itemValue="Estación X-17" />
+                                            <f:selectItem itemLabel="Estación X-18" itemValue="Estación X-18" />
+                                            <f:selectItem itemLabel="Estación X-19" itemValue="Estación X-19" />
+                                            <f:selectItem itemLabel="Estación X-20" itemValue="Estación X-20" />
+                                            <f:selectItem itemLabel="Estación X-21" itemValue="Estación X-21" />
+                                            <f:selectItem itemLabel="Estación X-22" itemValue="Estación X-22" />
+                                            <f:selectItem itemLabel="Estación X-23" itemValue="Estación X-23" />
+                                            <f:selectItem itemLabel="Estación X-24" itemValue="Estación X-24" />
+                                            <f:selectItem itemLabel="Estación X-25" itemValue="Estación X-25" />
+                                        </h:selectOneMenu>
+
                                     </div>
 
                                     <div class="field">
@@ -468,11 +495,9 @@
                             </div>
                         </div>
 
-
-
-
                     </p:outputPanel>
                 </p:outputPanel>
+                
                 <f:facet name="footer">
                     <p:commandButton value="Si, Guardar" icon="pi pi-check" actionListener="#{atencionCasosBean.grabar()}"
                                      update="manage-caso-content form" process="manage-caso-content @this" />

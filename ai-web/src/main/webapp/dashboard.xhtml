@@ -4,6 +4,7 @@
     xmlns:f="http://java.sun.com/jsf/core" 
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui" 
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
     template="/WEB-INF/template.xhtml">
 
 
@@ -101,7 +102,7 @@
 
                         </div>
                         <div class="col-3 overview-box-status">
-                            #{dashboardBean.cantidadCasos()}
+                            #{dashboardBean.traerNumeroProcesosxEstado(1)}
                         </div>
                     </div>
                 </div>
@@ -115,7 +116,7 @@
 
                         </div>
                         <div class="col-3 overview-box-status">
-                            #{dashboardBean.cantidadElaborados()}
+                            #{dashboardBean.traerNumeroProcesosxEstado(2)}
                         </div>
                     </div>
                 </div>
@@ -130,192 +131,53 @@
 
                         </div>
                         <div class="col-6 overview-box-status">
-                            #{dashboardBean.cantidadFinalizados()}
+                            #{dashboardBean.traerNumeroProcesosxEstado(4)}
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="col-12 lg:col-6 ">
-                    <div class="grid flex-column grid-nogutter">
-                        <div class="col-12 ">
-                            <div class="card statistics">
-                                <div class="grid">
-                                    <div class="col-2 md:col-10 dropdown">
-                                        <p:selectOneMenu id="Causas">
-                                            <f:selectItem itemLabel="Robo" itemValue="Robo" />
-                                            <f:selectItem itemLabel="Perdida" itemValue="Perdida" />
-                                            <f:selectItem itemLabel="Daño" itemValue="Perdida" />
-                                            <f:selectItem itemLabel="Accidente de Tránsito" itemValue="Accidente de Tránsito" />
-                                            <f:selectItem itemLabel="Faltas Leves" itemValue="Faltas Leves" />
-                                            <f:selectItem itemLabel="Faltas Graves" itemValue="Faltas Graves" />
-                                            <f:selectItem itemLabel="Faltas muy Graves" itemValue="Faltas muy Graves" />
-                                        </p:selectOneMenu>
-                                    </div>
+                <div class="grid flex-column grid-nogutter">
+                    <div class="col-12 ">
+                        <div class="card statistics">
+                            <div >
+                                <div >
+                                    <!--<h5>Donut Chart</h5>-->
+                                    <p:donutChart model="#{dashboardBean.donutModel}" style="width: 100%; height: 500px;"/>
                                 </div>
-                                <div class="col-2 md:col-4 dropdown">
-                                    <p:selectOneMenu id="Estaciones" style="align-items: center">
-                                        <f:selectItem itemLabel="Estación X-1" itemValue="Estación X-1" />
-                                        <f:selectItem itemLabel="Estación X-2" itemValue="Estación X-2" />
-                                        <f:selectItem itemLabel="Estación X-3" itemValue="Estación X-3" />
-                                        <f:selectItem itemLabel="Estación X-4" itemValue="Estación X-4" />
-                                        <f:selectItem itemLabel="Estación X-5" itemValue="Estación X-5" />
-                                        <f:selectItem itemLabel="Estación X-6" itemValue="Estación X-6" />
-                                        <f:selectItem itemLabel="Estación X-7" itemValue="Estación X-7" />
-                                        <f:selectItem itemLabel="Estación X-8" itemValue="Estación X-8" />
-                                        <f:selectItem itemLabel="Estación X-9" itemValue="Estación X-9" />
-                                        <f:selectItem itemLabel="Estación X-10" itemValue="Estación X-10" />
-                                        <f:selectItem itemLabel="Estación X-11" itemValue="Estación X-11" />
-                                        <f:selectItem itemLabel="Estación X-12" itemValue="Estación X-12" />
-                                        <f:selectItem itemLabel="Estación X-13" itemValue="Estación X-13" />
-                                        <f:selectItem itemLabel="Estación X-14" itemValue="Estación X-14" />
-                                        <f:selectItem itemLabel="Estación X-15" itemValue="Estación X-15" />
-                                        <f:selectItem itemLabel="Estación X-16" itemValue="Estación X-16" />
-                                        <f:selectItem itemLabel="Estación X-17" itemValue="Estación X-17" />
-                                        <f:selectItem itemLabel="Estación X-18" itemValue="Estación X-18" />
-                                        <f:selectItem itemLabel="Estación X-19" itemValue="Estación X-19" />
-                                        <f:selectItem itemLabel="Estación X-20" itemValue="Estación X-20" />
-                                        <f:selectItem itemLabel="Estación X-21" itemValue="Estación X-21" />
-                                        <f:selectItem itemLabel="Estación X-22" itemValue="Estación X-22" />
-                                        <f:selectItem itemLabel="Estación X-23" itemValue="Estación X-23" />
-                                        <f:selectItem itemLabel="Estación X-24" itemValue="Estación X-24" />
-                                        <f:selectItem itemLabel="Estación X-25" itemValue="Estación X-25" />
-                                    </p:selectOneMenu>
-                                </div>
-                                <canvas id="dashboard-chart"></canvas>
                             </div>
+
+                            <!--<canvas id="dashboard-chart"></canvas>-->
                         </div>
-                        <div class="col-12 news-row-wrapper">
-                            <div class="link-points">
-                                <div class="grid points">
-                                    <div class="col-4 point point-1 active-point"></div>
-                                    <div class="col-4 point point-2 "></div>
-                                    <div class="col-4 point point-3 "></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 lg:col-4 md:col-6">
-                    <div class="card tasks">
-                        <div class="grid grid-nogutter">
-                            <div class="col-6 title">
-                                <p>TAREAS </p> 
-                            </div>
-                            <div class="col-6 task-info">
-                                <span>Tienes</span><span class="highlighted"> 3 tareas</span><span> para hoy</span>
-                            </div>
-                        </div>
-                        <ul class="checkboxes">
-                            <li class="checkbox-row">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Reunión Comandancia</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time">Hoy</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row even">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Entrega de actividades mensuales</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time">Hoy</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Registro seguimiento de casos</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time later">Hoy</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row even">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Reunión Operaciones</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time later">Mañana</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Elaboración del plan estratégico</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time later">jueves</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row even">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Examenes médicos Institucional</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time later">jueves</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="checkbox-row">
-                                <div class="grid">
-                                    <div class="col-6 checkbox">
-                                        <p:selectBooleanCheckbox />
-                                        <p>Reunion de Área</p>
-                                    </div>
-                                    <div class="col-6 checkbox-row-info">
-                                        <span class="time later">Viernes</span>
-                                        <strong class="pi pi-tag"/>
-                                        <strong class="pi pi-calendar"/>
-                                        <strong class="pi pi-bookmark"/>
-                                    </div>
-                                </div>
-                            </li>
-
-                        </ul>
                     </div>
 
                 </div>
+            </div>
+
+              
+            <div class="col-12 lg:col-4">
+                <div class="card team">
+                    <h5>Ultimos casos</h5>
+                    <ul>
+                        <c:forEach items="#{dashboardBean.listaCasos}" var="itemCaso">
+                            <li>
+                                <div class="grid member">
+                                    <div class="col-12 team-box">
+                                 
+                                        <div>
+                                            <h6 class="team-member">#{itemCaso.detallecausa}</h6>
+                                            <span class="team-member-role">#{itemCaso.lugardeincidente}</span>
+                                        </div>
+                                    </div>
+             
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+
+            </div>
+
             </div>
         </h:form>
     </ui:define>

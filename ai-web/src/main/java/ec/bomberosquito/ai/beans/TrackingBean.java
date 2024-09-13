@@ -46,9 +46,9 @@ public class TrackingBean implements Serializable {
             HashMap paremetros = new HashMap<>();
             paremetros.put(";where", "o.caso.id=:jofre");
             paremetros.put("jofre", id);
-            paremetros.put(";orden","o.id desc");
+            paremetros.put(";orden","o.id");
             listaEventosTraking = ejbEventos.encontrarParametros(paremetros);
-            System.out.println("tmanio de la lista" + listaEventosTraking.size());
+            System.out.println("tamanio de la lista" + listaEventosTraking.size());
         } catch (ConsultarException ex) {
             Logger.getLogger(TrackingBean.class.getName()).log(Level.SEVERE, null, ex);
         }
