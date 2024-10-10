@@ -122,6 +122,21 @@
                 </div>
 
                 <div class="col-12 xl:col-3 md:col-6">
+                    <div class="grid grid-nogutter overview-box overview-box-3">
+                        <div class="col-3 overview-box-icon">
+                            <p:graphicImage name="images/dashboard/Elaboracion.png" library="mirage-layout" />
+                        </div>
+                        <div class="col-6 overview-box-text">
+                            <p>EN REVISIÓN</p>
+
+                        </div>
+                        <div class="col-3 overview-box-status">
+                            #{dashboardBean.traerNumeroProcesosxEstado(3)}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 xl:col-3 md:col-6">
                     <div class="grid grid-nogutter overview-box overview-box-4">
                         <div class="col-3 overview-box-icon">
                             <p:graphicImage name="images/dashboard/Finalizado.jpg" library="mirage-layout" />
@@ -135,48 +150,46 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-12 lg:col-6 ">
-                <div class="grid flex-column grid-nogutter">
-                    <div class="col-12 ">
-                        <div class="card statistics">
-                            <div >
+                    <div class="grid flex-column grid-nogutter">
+                        <div class="col-12 ">
+                            <div class="card statistics">
                                 <div >
-                                    <!--<h5>Donut Chart</h5>-->
-                                    <p:donutChart model="#{dashboardBean.donutModel}" style="width: 100%; height: 500px;"/>
-                                </div>
-                            </div>
-
-                            <!--<canvas id="dashboard-chart"></canvas>-->
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-              
-            <div class="col-12 lg:col-4">
-                <div class="card team">
-                    <h5>Ultimos casos</h5>
-                    <ul>
-                        <c:forEach items="#{dashboardBean.listaCasos}" var="itemCaso">
-                            <li>
-                                <div class="grid member">
-                                    <div class="col-12 team-box">
-                                 
-                                        <div>
-                                            <h6 class="team-member">#{itemCaso.detallecausa}</h6>
-                                            <span class="team-member-role">#{itemCaso.lugardeincidente}</span>
-                                        </div>
+                                    <div >
+                                        <!--<h5>Donut Chart</h5>-->
+                                        <p:donutChart model="#{dashboardBean.donutModel}" style="width: 100%; height: 500px;"/>
                                     </div>
-             
                                 </div>
-                            </li>
-                        </c:forEach>
-                    </ul>
+
+                                <!--<canvas id="dashboard-chart"></canvas>-->
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
 
-            </div>
+                <div class="col-12 lg:col-4">
+                    <div class="card team">
+                        <h5>ÚLTIMOS CASOS</h5>
+                        <ul>
+                            <c:forEach items="#{dashboardBean.listaCasos}" var="itemCaso">
+                                <li>
+                                    <div class="grid member">
+                                        <div class="col-12 team-box">
+
+                                            <div>
+                                                <h6 class="team-member">#{itemCaso.detallecausa}</h6>
+                                                <span class="team-member-role">#{itemCaso.lugardeincidente}</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
         </h:form>
