@@ -186,6 +186,11 @@ public class Personas implements Serializable {
     @Override
     public String toString() {
         return "ec.bomberosquito.ai.entidades.Personas[ id=" + id + " ]";
+    
+    }
+    
+    public String nombrescompletos() {
+        return apellidos + " " + nombres;
     }
 
 }

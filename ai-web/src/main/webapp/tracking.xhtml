@@ -22,22 +22,22 @@
                     <div class="card">
                         <p:growl id="messages" showDetail="true" />
 
-                        <div class="grid button-demo">
-                            <div class="field">
-
-                                <h:panelGroup  > 
-                                    <span class="ui-float-label">
-                                        <p:inputText id="idCaso" value="#{trackingBean.casoParametro}"  />
-                                        <p:outputLabel for="idCaso" value="Caso"/>
-                                    </span>
-                                </h:panelGroup>
-                            </div>
-                            <div class="col-12 md:col-6">
-                                <div class="card">
-                                    <p:commandButton action="#{trackingBean.cargarCaso()}" value="Buscar" icon="pi pi-search-plus" update="dt-casos" />
-                                </div>
-                            </div>
-                        </div> 
+                        <!--                        <div class="grid button-demo">
+                                                    <div class="field">
+                        
+                                                        <h:panelGroup  > 
+                                                            <span class="ui-float-label">
+                                                                <p:inputText id="idCaso" value="#{trackingBean.casoParametro}"  />
+                                                                <p:outputLabel for="idCaso" value="Caso"/>
+                                                            </span>
+                                                        </h:panelGroup>
+                                                    </div>
+                                                    <div class="col-12 md:col-6">
+                                                        <div class="card">
+                                                            <p:commandButton action="#{trackingBean.cargarCaso()}" value="Buscar" icon="pi pi-search-plus" update="dt-casos" />
+                                                        </div>
+                                                    </div>
+                                                </div> -->
 
                         <p:dataTable id="dt-casos" 
                                      widgetVar="dtTraking" 
@@ -61,12 +61,25 @@
                                 </div>
                             </f:facet>  
 
-                            <p:column headerText="Nº Caso" sortBy="#{itemcaso.id}" >
+                            <p:column headerText="Nº Caso" sortBy="#{eventos.id}" filterBy="#{eventos.id}" >
+                                <f:facet name="filter">
+                                    <p:inputText onkeyup="PF('dtTraking').filter()"    />
+                                </f:facet>
                                 <h:outputText value="#{eventos.id}" />
                             </p:column>
 
-                            <p:column headerText="ESTADO" sortBy="#{itemcaso.id}" >
+                            <p:column headerText="ESTADO" sortBy="#{eventos.estado}" filterBy="#{eventos.estado}" width="200" >
+                                <f:facet name="filter">
+                                    <p:inputText onkeyup="PF('dtTraking').filter()"    />
+                                </f:facet>
                                 <h:outputText value="#{eventos.estado}" />
+                            </p:column>
+
+                            <p:column headerText="ANALISTA"  filterBy="#{eventos.responsable.persona.nombrescompletos()}" width="200" >
+                                <f:facet name="filter">
+                                    <p:inputText onkeyup="PF('dtTraking').filter()"    />
+                                </f:facet>
+                                <h:outputText value="#{eventos.responsable.persona.nombrescompletos()}" />
                             </p:column>
 
                             <p:column headerText="DETALLE CAUSA" sortBy="#{itemcaso.id}" >
@@ -81,13 +94,16 @@
                                 </p:commandButton>
                             </p:column>
 
-                            <p:column exportable="false"> 
-                                <p:commandButton title="Reporte"   update=":frmtrackingdialogo:manage-caso-content-tracking" 
-                                                 oncomplete="PF('manageDialogcasoTracking').show()"
-                                                 icon="pi pi-print" styleClass="rounded-button mr-2 mb-2"
-                                                 actionListener="#{trackingBean.cargarEvento(eventos.id)}"> 
+                            <p:column exportable="false">
+                                <p:commandButton actionListener="#{trackingBean.generarPdf(eventos)}"   update=":frmdialogpdf:manage-pdf-content" title="Ver pdf"
+
+                                                 icon="pi pi-file-pdf" styleClass="rounded-button ui-button-success mr-2 mb-2" > 
+                                    <f:setPropertyActionListener value="#{eventos}" target="#{trackingBean.caso}" />
+                                    <p:resetInput target=":frmdialogpdf:manage-pdf-content" />
                                 </p:commandButton>
                             </p:column>
+
+
 
                         </p:dataTable>
 
@@ -136,7 +152,7 @@
                             <p:column headerText="ACCIÓN REALIZADA" >
                                 <h:outputText value="#{tracking.accionrealizada}" />
                             </p:column>
-                            <p:column headerText="FECHA" sortBy="#{itemcaso.fechahora}" >
+                            <p:column headerText="FECHA" sortBy="#{eventos.fechahora}" >
                                 <h:outputText value="#{tracking.fechahora}" >
                                     <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
                                 </h:outputText>
@@ -152,6 +168,28 @@
             </p:dialog>
 
 
+        </h:form>
+
+        <h:form id="frmdialogpdf">
+            <p:dialog header="Tracking" showEffect="fade" modal="true" widgetVar="manageDialogpdf"
+                      responsive="true"
+                      fitViewport="true" 
+                      minHeight="200"
+                      width="1000"
+                      >
+                <p:outputPanel id="manage-pdf-content" class="ui-fluid">
+                    <p:outputPanel rendered="#{not empty trackingBean.caso}">
+                        <div class="card">
+                            <object data="#{trackingBean.pathpdfSolicitud}" type="application/pdf" width="900" height="600"  ></object>
+                        </div>
+                    </p:outputPanel>
+                </p:outputPanel>
+                <f:facet name="footer">
+
+                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageDialogpdf').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+            </p:dialog>
         </h:form>
 
     </ui:define>
