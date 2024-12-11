@@ -309,6 +309,7 @@ public class atencionCasosBean implements Serializable {
         tracking.setEstado("PARA REVISION");
         tracking.setAccionrealizada("Analista");
         tracking.setCaso(caso);
+        tracking.setComentario(caso.getObservaciones());
         ejbEventos.create(tracking);
 
         caso.setEstado("PARA REVISION");

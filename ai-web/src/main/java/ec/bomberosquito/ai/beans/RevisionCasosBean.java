@@ -58,12 +58,17 @@ public class RevisionCasosBean implements Serializable {
     }
 
     public void regresarCaso() {
+        if (caso.getObservaciones() == null || caso.getObservaciones().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la observación"));
+            return;
+        }
         // implementacion del tracing del caso cuando se devuekve para revison 
         Eventos eventos = new Eventos();
-        eventos.setEstado("PENDIENTE REVISIO");
+        eventos.setEstado("PENDIENTE REVISION");
         eventos.setCaso(caso);
         eventos.setFechahora(new Date());
-        eventos.setAccionrealizada("se regresa el casos " + caso.getId());
+        eventos.setAccionrealizada("Director retorna el informe " + caso.getId());
+        eventos.setComentario(caso.getObservaciones());
         ejbEventos.create(eventos);
         caso.setEstado("PENDIENTE REVISION");
         ejbCasos.edit(caso);
@@ -75,11 +80,16 @@ public class RevisionCasosBean implements Serializable {
 
     public void aprobarcaso() {
         // implementacion de tracking cuando se aprueba un caso
+        if (caso.getObservaciones() == null || caso.getObservaciones().isEmpty()) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la observación"));
+            return;
+        }
         Eventos eventos = new Eventos();
         eventos.setEstado("APROBADO");
         eventos.setCaso(caso);
         eventos.setFechahora(new Date());
-        eventos.setAccionrealizada("se aprueba el caso " + caso.getId());
+        eventos.setAccionrealizada("Director aprueba el informe " + caso.getId());
+        eventos.setComentario(caso.getObservaciones());
         ejbEventos.create(eventos);
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);

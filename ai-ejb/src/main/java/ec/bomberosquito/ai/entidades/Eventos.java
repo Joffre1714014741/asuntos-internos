@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Eventos.findByAccionrealizada", query = "SELECT e FROM Eventos e WHERE e.accionrealizada = :accionrealizada")})
 public class Eventos implements Serializable {
 
+    @Size(max = 2147483647)
+    @Column(name = "comentario")
+    private String comentario;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,5 +131,13 @@ public class Eventos implements Serializable {
     public String toString() {
         return "ec.bomberosquito.ai.entidades.Eventos[ id=" + id + " ]";
     }
-    
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
 }

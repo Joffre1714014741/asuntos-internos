@@ -37,7 +37,7 @@
                             <f:facet name="header">
 
                                 <div class="products-table-header">
-                                    <span style="font-weight: bold">Administración de Casos</span>
+                                    <span style="font-weight: bold">Administración de Casos e Informes</span>
                                     <span class="filter-container ui-input-icon-left">
                                         <i class="pi pi-search"></i>
                                         <p:inputText id="globalFilter" onkeyup="PF('dtCasos').filter()" placeholder="Search" />
@@ -83,8 +83,8 @@
                                 <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
                             </p:column>
 
-                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable}" filterBy="#{itemcaso.responsable}">
-                                <h:outputText value="#{itemcaso.responsable}" />
+                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable.nombreusuario}" filterBy="#{itemcaso.responsable.nombreusuario}">
+                                <h:outputText value="#{itemcaso.responsable.nombreusuario}" />
                             </p:column>
 
                             <p:column headerText="Observación" sortBy="#{itemcaso.observaciones}" filterBy="#{itemcaso.observaciones}">
@@ -92,14 +92,14 @@
                             </p:column>
 
                             <p:column exportable="false"> 
-                                <p:commandButton title="Completar informe" rendered="#{itemcaso.estado ne 'APROBADO'}"   update=":frmdialogcaso:manage-caso-content" 
+                                <p:commandButton title="Editar informe" rendered="#{itemcaso.estado ne 'APROBADO'}"   update=":frmdialogcaso:manage-caso-content" 
                                                  oncomplete="PF('manageDialogcaso').show()"
                                                  icon="pi pi-pencil" styleClass="rounded-button mr-2 mb-2" > 
                                     <f:setPropertyActionListener value="#{itemcaso}" target="#{atencionCasosBean.caso}" />
                                     <p:resetInput target=":frmdialogcaso:manage-caso-content" />
                                 </p:commandButton>
 
-                                <p:commandButton rendered="#{itemcaso.estado ne 'APROBADO'}"   update=":frmdialogenviar:manage-enviar-content" title="Enviar caso"
+                                <p:commandButton title="Enviar Informe" rendered="#{itemcaso.estado ne 'APROBADO'}"   update=":frmdialogenviar:manage-enviar-content" 
                                                  oncomplete="PF('manageDialogenviar').show()"
                                                  icon="pi pi-send" styleClass="rounded-button ui-button-secondary mr-2 mb-2" > 
                                     <f:setPropertyActionListener value="#{itemcaso}" target="#{atencionCasosBean.caso}" />
@@ -113,12 +113,9 @@
                                     <p:resetInput target=":frmdialogpdf:manage-pdf-content" />
                                 </p:commandButton>
 
-
                             </p:column>
 
-
                         </p:dataTable>
-
 
                     </div>
                 </div>
@@ -138,7 +135,7 @@
 
                         <div style="text-align: center"> 
                             <h5>DIRECCION DE ASUNTOS INTERNOS</h5>
-                            <h5> INFORME DE INVESTIGACIÓN </h5>
+                            <h5> INFORME DE INVESTIGACIÓN PREVIA </h5>
                             <h5> DAJ-UI-CBDMQ-2024</h5>
                         </div>
 
@@ -163,9 +160,9 @@
 
                                     <div class="col-12 md:col-8 dropdown">
                                         <span class="ui-float-label">
-                                            <h:outputText value="ESTACIÓN A LA QUE PERTENECE: "/>
+                                            <h:outputText value="ESTACIÓN O UNIDAD A LA QUE PERTENECE: "/>
                                         </span>
-                                        <h:selectOneMenu id="Estaciones" value="#{atencionCasosBean.caso.lugardetrabajo}" style="width: 200px">
+                                        <h:selectOneMenu id="Estaciones" value="#{atencionCasosBean.caso.lugardetrabajo}" style="width: 300px">
                                             <f:selectItem itemLabel="Estación X-1" itemValue="Estación X-1" />
                                             <f:selectItem itemLabel="Estación X-2" itemValue="Estación X-2" />
                                             <f:selectItem itemLabel="Estación X-3" itemValue="Estación X-3" />
@@ -190,7 +187,16 @@
                                             <f:selectItem itemLabel="Estación X-22" itemValue="Estación X-22" />
                                             <f:selectItem itemLabel="Estación X-23" itemValue="Estación X-23" />
                                             <f:selectItem itemLabel="Estación X-24" itemValue="Estación X-24" />
-                                            <f:selectItem itemLabel="Estación X-25" itemValue="Estación X-25" />
+                                            <f:selectItem itemLabel="comandancia General" itemValue="Comandancia General" />
+                                            <f:selectItem itemLabel="Dirección General Administrativa" itemValue="Dirección General Administrativa" />
+                                            <f:selectItem itemLabel="Dirección Administrativa y Logística" itemValue="Dirección Administrativa y Logística" />
+                                            <f:selectItem itemLabel="Dirección General Financiera" itemValue="Dirección General Financiera" />
+                                            <f:selectItem itemLabel="Dirección de Talento Humano" itemValue="Dirección de talento Humano" />
+                                            <f:selectItem itemLabel="Dirección de Asesoría Jurídica" itemValue="Dirección de Asesoría Jurídica" />
+                                            <f:selectItem itemLabel="Dirección de Adquisiciones" itemValue="Dirección de Adquisiciones" />
+                                            <f:selectItem itemLabel="Dirección de Planificación" itemValue="Dirección de Planificación" />
+                                            <f:selectItem itemLabel="Dirección de Tecnología y Comunicaciones" itemValue="Dirección de Tecnología y Comunicaciones" />
+                                            
                                         </h:selectOneMenu>
 
                                     </div>
@@ -460,7 +466,7 @@
                                     <div class="field">
                                         <span class="ui-float-label">
                                             <p:inputTextarea id="comentario" value="#{atencionCasosBean.caso.observaciones}"  />
-                                            <p:outputLabel for="comentario" value="Ingrese la recomendación:" />
+                                            <p:outputLabel for="comentario" value="Ingrese un comentario:" />
                                         </span>
                                     </div>
                                 </div>
@@ -474,7 +480,7 @@
                                               mode="advanced"
                                               update="documentosTable"
                                               sizeLimit="10000000"
-                                              allowTypes="/(\.|\/)(gif|jpe?g|png|pdf)$/"
+                                              allowTypes="/(\.|\/)(pdf)$/"
                                               multiple="true"/>
 
                                 <!-- Tabla para listar Documentos -->
@@ -508,7 +514,7 @@
         </h:form>
 
         <h:form id="frmdialogenviar">
-            <p:dialog header="Enviar caso" showEffect="fade" modal="true" widgetVar="manageDialogenviar"
+            <p:dialog header="Enviar Informe" showEffect="fade" modal="true" widgetVar="manageDialogenviar"
                       responsive="true"
                       fitViewport="true" 
                       minHeight="200"
@@ -524,7 +530,7 @@
                                             <div class="p-grid">
                                                 <div class="p-col-6 p-md-6">
                                                     <div class="field">
-                                                        <p:outputLabel style="text-transform: uppercase">Está seguro de enviar proceso? </p:outputLabel>
+                                                        <p:outputLabel style="text-transform: uppercase">Estás seguro de enviar el informe? </p:outputLabel>
                                                     </div>
                                                 </div>                                                
                                             </div>
@@ -536,9 +542,9 @@
                     </p:outputPanel>
                 </p:outputPanel>
                 <f:facet name="footer">
-                    <p:commandButton value="Si, Guardar" icon="pi pi-check" actionListener="#{atencionCasosBean.enviarInforme()}"
+                    <p:commandButton value="Si, Enviar" icon="pi pi-check" actionListener="#{atencionCasosBean.enviarInforme()}"
                                      update="manage-enviar-content form" process="manage-enviar-content @this" />
-                    <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogenviar').hide()"
+                    <p:commandButton value="Cancelar, no enviar" icon="pi pi-times" onclick="PF('manageDialogenviar').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
@@ -565,9 +571,5 @@
                 </f:facet>
             </p:dialog>
         </h:form>
-
-
-
-
     </ui:define>
 </ui:composition>

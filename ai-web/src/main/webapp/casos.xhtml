@@ -133,12 +133,7 @@
 
                                 </p:commandButton>
                             </p:column>
-
-                            <!-- Detalles desplegables si es necesario -->
                         </p:dataTable>
-
-
-
                     </div>
                 </div>
             </div>
@@ -161,7 +156,7 @@
                                     <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                         <span class="ui-float-label">
                                             <p:inputText id="cedula" value="#{casosBean.persona.cedula}" >
-                                                <!-- comment <f:validator validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc" /> -->
+                                               
                                             </p:inputText>
                                             <p:outputLabel for="cedula" value="Cédula:" />
                                         </span>
@@ -287,7 +282,6 @@
                                                      update="documentosTable" 
                                                      actionListener="#{casosBean.upload}"  
                                                      styleClass="mt-2 ui-button-outlined block" 
-                                                     id="uloadPreparatoria"
                                                      />
                                 </div>
 
@@ -424,7 +418,6 @@
                                 <div class="col-12">
 
                                     <p:fileUpload  value="#{casosBean.file}"
-
                                                    label="Seleccionar archivo"
                                                    mode="simple" skinSimple="true" auto="true"
                                                    style="width: 30%"
@@ -499,7 +492,6 @@
 
                             <p:outputLabel >Observaciones: </p:outputLabel>
                             <p:inputTextarea  rows="5" cols="50" value="#{casosBean.caso.observaciones}" />
-
 
                             <h:outputText value="Descripcion del Caso: " />
                             <p:inputTextarea disabled="true"  rows="5" cols="50" value="#{casosBean.caso.detallecausa}" />

@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -54,6 +55,11 @@ public class TrackingBean implements Serializable {
     private Casos caso;
     private File solicitudArchivo;
     private String pathpdfSolicitud;
+
+    @PostConstruct
+    public void init() {
+        cargarCaso();
+    }
 
     public void cargarEvento(Integer id) {
         try {
@@ -112,7 +118,7 @@ public class TrackingBean implements Serializable {
 
             } else {
                 for (Eventos ev : listaEventosTraking) {
-                    columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, ev.getEstado() != null ?  ev.getEstado() : "", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
+                    columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, ev.getEstado() != null ? ev.getEstado() : "", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
                     columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, ev.getAccionrealizada() != null ? ev.getAccionrealizada() : "", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
                     columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, ev.getFechahora() != null ? sdf.format(ev.getFechahora()) : "", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
                 }

@@ -5,7 +5,6 @@
 package ec.bomberosquito.ai.beans;
 
 import ec.bomberosquito.ai.entidades.Personas;
-import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Documentos;
 import ec.bomberosquito.ai.entidades.Eventos;
@@ -25,7 +24,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -60,6 +58,11 @@ public class CasosBean implements Serializable {
     @PostConstruct
     public void init() {
     }
+    
+    public CasosBean () {
+        
+    }
+    
 
     public void buscar() {
         HashMap paremetros = new HashMap<>();
@@ -83,16 +86,27 @@ public class CasosBean implements Serializable {
         buscarDocumentos();
         PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').show()");
     }
+    
+    public void nuevo(){
+        System.out.println("entrar");
+    }
+            
+public void cargar(){
+           System.out.println("entro1");
 
+}
     public void upload() {
+        System.out.println("paso archivo 1");
+
         try {
             if (file == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Archivo null", null));
                 return;
             }
             System.out.println("paso archivo");
             String filename = file.getFileName();
             Path folder = Paths.get("C:\\Users\\jpverdezoto\\Documents\\documentos");
-            Path filePath = Files.createTempFile(folder, filename + "-", ".tmp");
+            Path filePath = Files.createTempFile(folder, filename + "-", ".pdf");
             Files.write(filePath, file.getContent());
 
             Documentos nuevoDocumento = new Documentos();
@@ -136,6 +150,7 @@ public class CasosBean implements Serializable {
         eventoCreacion.setAccionrealizada("Usuario crea un caso");
         eventoCreacion.setEstado("CASO_CREADO");
         eventoCreacion.setFechahora(new Date());
+        eventoCreacion.setComentario("Usuario crea un caso");
         ejbEventos.create(eventoCreacion);
         buscar();
         PrimeFaces.current().executeScript("PF('manageDialogcaso').hide()");
@@ -156,7 +171,7 @@ public class CasosBean implements Serializable {
             }
 
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos editadps exitosamente"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos editados exitosamente"));
 
         Eventos eventoCreacion = new Eventos();
         eventoCreacion.setCaso(caso);
@@ -219,6 +234,10 @@ public class CasosBean implements Serializable {
         if (estadoCasos == null) {
             return;
         }
+        if (caso.getObservaciones() == null || caso.getObservaciones().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ingrese la observación"));
+            return;
+        }
         // Editar caso
         caso.setEstado(estadoCasos);
         System.out.println("observaciones " + caso.getObservaciones());
@@ -230,6 +249,7 @@ public class CasosBean implements Serializable {
         eventoCreacion.setEstado(estadoCasos);
         eventoCreacion.setAccionrealizada("Director Ingresa Caso");
         eventoCreacion.setCaso(caso);
+        eventoCreacion.setComentario(caso.getObservaciones());
         ejbEventos.create(eventoCreacion);
         // finizaiza tracking
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso editado"));

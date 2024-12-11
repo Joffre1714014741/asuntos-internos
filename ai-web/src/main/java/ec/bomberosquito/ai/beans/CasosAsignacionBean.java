@@ -72,6 +72,7 @@ public class CasosAsignacionBean implements Serializable {
             evento.setCaso(caso);
             evento.setAccionrealizada("Director asigna el caso");
             evento.setEstado("ASIGNADO");
+            evento.setComentario("Caso asigando a " + (caso.getResponsable().getPersona().getApellidos() != null ? caso.getResponsable().getPersona().getApellidos() :""));
             ejbEventos.create(evento);
             
             listaCasos.remove(caso);

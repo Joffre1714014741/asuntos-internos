@@ -82,8 +82,8 @@
                                 <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
                             </p:column>
 
-                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable}" filterBy="#{itemcaso.responsable}">
-                                <h:outputText value="#{itemcaso.responsable}" />
+                            <p:column headerText="Responsable" sortBy="#{itemcaso.responsable.nombreusuario}" filterBy="#{itemcaso.responsable.nombreusuario}">
+                                <h:outputText value="#{itemcaso.responsable.nombreusuario}" />
                             </p:column>
 
 
@@ -450,7 +450,7 @@
                                             <div class="p-grid">
                                                 <div class="p-col-6 p-md-6">
                                                     <div class="field">
-                                                        <p:outputLabel style="text-transform: uppercase">Está seguro de regresar el caso? </p:outputLabel>
+                                                        <p:outputLabel style="text-transform: uppercase">Estás seguro de regresar el caso al analista para que realice los cambios? </p:outputLabel>
                                                     </div>
                                                 </div>                                                
                                             </div>
@@ -460,7 +460,7 @@
                             </div>
                         </div>
                         <div class="card" style="width: 100%">
-                         
+
                             <div class="grid ui-fluid mt-1 floatlabel-demo">
                                 <div class="col-12 md:col-12">
                                     <div class="field">
@@ -473,9 +473,10 @@
                             </div>
                         </div>
                     </p:outputPanel>
+                    
                 </p:outputPanel>
                 <f:facet name="footer">
-                    <p:commandButton value="Si, Grabar" icon="pi pi-check" actionListener="#{revisionCasosBean.regresarCaso()}"
+                    <p:commandButton value="Si, Enviar" icon="pi pi-check" actionListener="#{revisionCasosBean.regresarCaso()}"
                                      update="manage-regresar-content form" process="manage-regresar-content @this" />
                     <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogregresar').hide()"
                                      class="ui-button-secondary" type="button" />
@@ -484,7 +485,7 @@
         </h:form>
 
         <h:form id="frmdialogaprobar">
-            <p:dialog header="Aprobar caso" showEffect="fade" modal="true" widgetVar="manageDialogaprobar"
+            <p:dialog header="Aprobar Informe" showEffect="fade" modal="true" widgetVar="manageDialogaprobar"
                       responsive="true"
                       fitViewport="true" 
                       minHeight="200"
@@ -500,8 +501,12 @@
                                             <div class="p-grid">
                                                 <div class="p-col-6 p-md-6">
                                                     <div class="field">
-                                                        <p:outputLabel style="text-transform: uppercase">Está seguro de aprobar el caso? </p:outputLabel>
+                                                        <p:outputLabel style="text-transform: uppercase">Estás seguro de aprobar el informe? </p:outputLabel>
                                                     </div>
+                                                    <span class="ui-float-label">
+                                                        <p:inputTextarea id="observacionRevision" value="#{revisionCasosBean.caso.observaciones}" />
+                                                        <p:outputLabel for="observacionRevision" value="Ingrese los cambios que considere a ser realizados:" />
+                                                    </span>
                                                 </div>                                                
                                             </div>
                                         </div>
@@ -510,9 +515,10 @@
                             </div>
                         </div>
                     </p:outputPanel>
+                    
                 </p:outputPanel>
                 <f:facet name="footer">
-                    <p:commandButton value="Si, Grabar" icon="pi pi-check" actionListener="#{revisionCasosBean.aprobarcaso()}"
+                    <p:commandButton value="Si, Aprobar" icon="pi pi-check" actionListener="#{revisionCasosBean.aprobarcaso()}"
                                      update="manage-aprobar-content form" process="manage-aprobar-content @this" />
                     <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogaprobar').hide()"
                                      class="ui-button-secondary" type="button" />

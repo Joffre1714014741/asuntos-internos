@@ -22,23 +22,6 @@
                     <div class="card">
                         <p:growl id="messages" showDetail="true" />
 
-                        <!--                        <div class="grid button-demo">
-                                                    <div class="field">
-                        
-                                                        <h:panelGroup  > 
-                                                            <span class="ui-float-label">
-                                                                <p:inputText id="idCaso" value="#{trackingBean.casoParametro}"  />
-                                                                <p:outputLabel for="idCaso" value="Caso"/>
-                                                            </span>
-                                                        </h:panelGroup>
-                                                    </div>
-                                                    <div class="col-12 md:col-6">
-                                                        <div class="card">
-                                                            <p:commandButton action="#{trackingBean.cargarCaso()}" value="Buscar" icon="pi pi-search-plus" update="dt-casos" />
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-
                         <p:dataTable id="dt-casos" 
                                      widgetVar="dtTraking" 
                                      var="eventos" 
@@ -152,11 +135,21 @@
                             <p:column headerText="ACCIÓN REALIZADA" >
                                 <h:outputText value="#{tracking.accionrealizada}" />
                             </p:column>
-                            <p:column headerText="FECHA" sortBy="#{eventos.fechahora}" >
+                            <p:column headerText="FECHA"  >
                                 <h:outputText value="#{tracking.fechahora}" >
                                     <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
                                 </h:outputText>
                             </p:column>
+
+
+                            <p:column headerText="COMENTARIOS"  >
+                                <f:facet name="filter">
+                                    <p:inputText onkeyup="PF('dtTraking').filter()"    />
+                                </f:facet>
+                                <h:outputText value="#{tracking.comentario}" />
+                            </p:column>
+
+
 
                         </p:dataTable>
 
