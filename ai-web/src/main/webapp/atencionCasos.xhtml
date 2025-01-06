@@ -139,22 +139,27 @@
                             <h5> DAJ-UI-CBDMQ-2024</h5>
                         </div>
 
-                        <div class="card" style="width: 100%;">
+                        <div class="card" style="width: 50%;">
                             <h5>I. DATOS GENERALES</h5> 
                             <div class="grid ui-fluid mt-3 floatlabel-demo">
                                 <div class="col-12 md:col-8">
                                     <div class="field">
                                         <span class="ui-float-label">
-                                            <h5>Funcionario(s) Involucrado(s)</h5>
-                                            <h:outputText value="NOMBRES:   " style="font-weight: bold;" />
-                                            <h:outputText value="#{atencionCasosBean.caso.involucrado.nombres}" />
+                                            <h5>Funcionario Involucrado</h5>
+                                            <div class="field">
+                                                <span class="ui-float-label">
+                                                    <p:inputText id="involucradonom" value="#{atencionCasosBean.caso.involucrado.nombres}" />
+                                                    <p:outputLabel for="involucradonom" value="NOMBRES: " style="font-weight: bold;"/>
+                                                </span>
+                                            </div>
+
                                         </span>
                                     </div>
 
                                     <div class="field">
                                         <span class="ui-float-label"  >
-                                            <h:outputText value="APELLIDOS:   " style="font-weight: bold;"/>
-                                            <h:outputText value="#{atencionCasosBean.caso.involucrado.apellidos}" />
+                                            <p:inputText id="involucradoape" value="#{atencionCasosBean.caso.involucrado.apellidos}" />
+                                            <p:outputLabel for="involucradoape" value="APELLIDOS: " style="font-weight: bold;"/>
                                         </span>
                                     </div>
 
@@ -196,7 +201,7 @@
                                             <f:selectItem itemLabel="Dirección de Adquisiciones" itemValue="Dirección de Adquisiciones" />
                                             <f:selectItem itemLabel="Dirección de Planificación" itemValue="Dirección de Planificación" />
                                             <f:selectItem itemLabel="Dirección de Tecnología y Comunicaciones" itemValue="Dirección de Tecnología y Comunicaciones" />
-                                            
+
                                         </h:selectOneMenu>
 
                                     </div>
@@ -476,14 +481,29 @@
                         <div class="card" style="width: 100%">
                             <h5>Anexos del Caso</h5>
                             <div class="col-12">
-                                <p:fileUpload listener="#{casosBean.subirDocumento}"
-                                              mode="advanced"
-                                              update="documentosTable"
-                                              sizeLimit="10000000"
-                                              allowTypes="/(\.|\/)(pdf)$/"
-                                              multiple="true"/>
+                                <p:fileUpload  value="#{casosBean.file}"
+                                               label="Seleccionar archivo"
+                                               mode="simple" skinSimple="true" auto="true"
+                                               style="width: 25%"
+                                               allowTypes="/(\.|\/)(pdf)$/" 
+                                               sizeLimit="10485760"
+                                               invalidSizeMessage="Solo se permiten archivos de 10Mb"
+                                               invalidFileMessage="Solo se acepta archivos pdf"
+                                               />
+
+                                <p:commandButton 
+                                    value="Cargar"
+                                    icon="pi pi-cloud-upload"
+                                    iconPos="right"
+                                    style="width: 25%"
+                                    actionListener="#{casosBean.upload()}"  
+                                    update="documentosTable"
+                                    styleClass="mt-2 ui-button-outlined block" 
+                                    />
+
 
                                 <!-- Tabla para listar Documentos -->
+
                                 <p:dataTable id="documentosTable"
                                              var="documento"
                                              value="#{casosBean.listaDocumentos}"
@@ -503,7 +523,7 @@
 
                     </p:outputPanel>
                 </p:outputPanel>
-                
+
                 <f:facet name="footer">
                     <p:commandButton value="Si, Guardar" icon="pi pi-check" actionListener="#{atencionCasosBean.grabar()}"
                                      update="manage-caso-content form" process="manage-caso-content @this" />

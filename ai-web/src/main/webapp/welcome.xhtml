@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+                template="/WEB-INF/template_1.xhtml">
 
     <ui:define name="title">WELCOME</ui:define>
 
@@ -72,7 +72,7 @@
         <!-- formulario -->
 
         <h:form id="frmdialogcaso">
-            <p:dialog header="Información del caso" showEffect="fade" modal="true" widgetVar="manageDialogcaso"
+            <p:dialog header="INFORMACIÓN DE LA DENUNCIA" showEffect="fade" modal="true" widgetVar="manageDialogcaso"
                       responsive="true"
                       fitViewport="true" 
                       minHeight="200"
@@ -82,7 +82,7 @@
                     <p:outputPanel rendered="#{not empty casosBean.caso}" >
                         <p:growl showDetail="true" />
                         <div class="card" style="width: 100%">
-                            <h5>Datos de la Persona</h5>
+                            <h5>Datos del denunciante</h5>
                             <div class="col-12 md:col-6">
                                 <div class="field">
                                     <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
@@ -139,7 +139,7 @@
                                             </span>
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
-                                            <p:outputLabel value="Correo Electronico : "/>
+                                            <p:outputLabel value="Correo Electrónico : "/>
                                             <p:outputLabel  value="#{casosBean.caso.involucrado.mail}"  />
                                         </h:panelGroup>
                                     </div>
@@ -150,11 +150,11 @@
                                         <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                             <span class="ui-float-label">
                                                 <p:inputText id="Contacto" value="#{casosBean.persona.contacto}"  />
-                                                <p:outputLabel for="Contacto" value="Contacto:" />
+                                                <p:outputLabel for="Contacto" value="Número de contacto:" />
                                             </span>
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
-                                            <p:outputLabel value="Contacto : "/>
+                                            <p:outputLabel value="Número de contacto : "/>
                                             <p:outputLabel value="#{casosBean.caso.involucrado.contacto}"  />
                                         </h:panelGroup>
                                     </div>
@@ -163,13 +163,13 @@
                         </div>
 
                         <div class="card" style="width: 100%">
-                            <h5>Datos del Caso</h5>
+                            <h5>Detalle de la denuncia</h5>
                             <div class="grid ui-fluid mt-3 floatlabel-demo">
                                 <div class="col-12 md:col-6">
                                     <div class="field">
                                         <span >
                                             <p:inputTextarea id="detalleCausa" value="#{casosBean.caso.detallecausa}"/>
-                                            <p:outputLabel for="detalleCausa" value="Detalle:" />
+                                            <p:outputLabel for="detalleCausa" value="Describa el incidente ocurrido:" />
                                         </span>
                                     </div>
                                 </div>
@@ -232,6 +232,13 @@
                                                              actionListener="#{casosBean.eliminarDocumento(documento)}"
                                                              update="documentosTable"/>
                                         </p:column>
+
+                                        <p:column headerText="Ver Anexos">
+                                            <p:commandButton value=" Ver Archivo"
+                                                             style="width: 30%"
+                                                             action="#{casosBean.downloadFile(documento.ruta)}"
+                                                             ajax="false" />
+                                        </p:column>
                                     </p:dataTable>
                                 </div>
                             </div>
@@ -249,5 +256,6 @@
                 </f:facet>
             </p:dialog>
         </h:form>
+
     </ui:define>
 </ui:composition>

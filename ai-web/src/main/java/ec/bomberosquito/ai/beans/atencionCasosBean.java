@@ -53,6 +53,7 @@ public class atencionCasosBean implements Serializable {
     private Eventos evento;
     private File solicitudArchivo;
     
+    
     @EJB
     private CasosFacade ejbCasos;
     @EJB

@@ -2227,7 +2227,7 @@
   display: flex;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
-  justify-content: center;
+  justify-content: left;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
@@ -2275,7 +2275,7 @@
   transition: opacity 0.15s;
 }
 .login-body .login-content .login-panel {
-  width: 40%;
+  width: 20%;
   height: 100vh;
   text-align: center;
   display: -webkit-box;
@@ -2307,7 +2307,7 @@
   align-items: center;
 }
 .login-body .login-content .login-panel .login-panel-content .logo img {
-  width: 80px;
+  width: 200px;
 }
 .login-body .login-content .login-panel .login-panel-content h1 {
   font-size: 42px;
@@ -2454,7 +2454,7 @@
   display: block;
 }
 .login-body.layout-dark {
-  background-image: url("#{resource['mirage-layout:images/pages/asset-login-bg@3x.jpg']}");
+  background-image: url("#{resource['mirage-layout:images/fondo-academia.png']}");
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -91,7 +91,7 @@
                 <div class="card" style="width: 100%">
                     <h5>Anexos del Caso</h5>
                     <div class="col-12">
-                        <p:fileUpload listener="#{casosBean.subirDocumento}"
+                        <p:fileUpload listener="#{casosBean.file}"
                                       mode="advanced"
                                       update="documentosTable"
                                       sizeLimit="10000000"
@@ -101,7 +101,7 @@
                         <!-- Tabla para listar Documentos -->
                         <p:dataTable id="documentosTable"
                                      var="documento"
-                                     value="#{casosBean.documentosTemporales}"
+                                     value="#{casosBean.listaDocumentos}"
                                      emptyMessage="No hay documentos subidos">
                             <p:column headerText="Nombre del Documento">
                                 <h:outputText value="#{documento.nombredocumento}" />
@@ -118,7 +118,7 @@
             </div>
 
             <!-- Botón para Guardar Caso -->
-            <p:commandButton value="Guardar Caso" actionListener="#{casosBean.generarCaso}" oncomplete="PF('confirmDialog').show()" styleClass="ui-button-success mr-2 mb-2" />
+            <p:commandButton value="Guardar Caso" actionListener="#{casosBean.grabarCaso()}" oncomplete="PF('confirmDialog').show()" styleClass="ui-button-success mr-2 mb-2" />
 
             <!-- Diálogo de Confirmación -->
             <p:confirmDialog widgetVar="confirmDialog" 
@@ -129,7 +129,7 @@
                              severity="warn">
                 <p:commandButton value="Sí" 
                                  icon="pi pi-check" 
-                                 actionListener="#{casosBean.confirmarCaso}"
+                                 actionListener="#{casosBean.grabarCaso()}"
                                  update="formCasos" 
                                  oncomplete="PF('confirmDialog').hide()"/>
                 <p:commandButton value="No" 

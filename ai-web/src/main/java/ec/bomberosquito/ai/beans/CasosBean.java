@@ -4,6 +4,7 @@
  */
 package ec.bomberosquito.ai.beans;
 
+import ec.bomberosquito.ai.auxiliares.Recurso;
 import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Documentos;
@@ -13,7 +14,12 @@ import ec.bomberosquito.ai.facades.PersonasFacade;
 import ec.bomberosquito.ai.facades.CasosFacade;
 import ec.bomberosquito.ai.facades.DocumentosFacade;
 import ec.bomberosquito.ai.facades.EventosFacade;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +35,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.faces.context.ExternalContext;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -41,10 +53,13 @@ public class CasosBean implements Serializable {
 
     private Personas persona;
     private Casos caso;
-    private List<Documentos> listaDocumentos;
+    private List<Documentos> listaDocumentos = new ArrayList<>();
     private List<Casos> listaCasos;
     private String estadoCasos;
     private UploadedFile file;
+    private Recurso recurso;
+
+    private StreamedContent file1;
 
     @EJB
     private PersonasFacade ejbPersonas;
@@ -58,11 +73,10 @@ public class CasosBean implements Serializable {
     @PostConstruct
     public void init() {
     }
-    
-    public CasosBean () {
-        
+
+    public CasosBean() {
+
     }
-    
 
     public void buscar() {
         HashMap paremetros = new HashMap<>();
@@ -75,7 +89,6 @@ public class CasosBean implements Serializable {
     }
 
     public void crearCaso() {
-        listaDocumentos = new ArrayList<>();
         caso = new Casos();
         persona = new Personas();
         PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
@@ -86,26 +99,20 @@ public class CasosBean implements Serializable {
         buscarDocumentos();
         PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').show()");
     }
-    
-    public void nuevo(){
-        System.out.println("entrar");
-    }
-            
-public void cargar(){
-           System.out.println("entro1");
 
-}
     public void upload() {
         System.out.println("paso archivo 1");
-
         try {
             if (file == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Archivo null", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se seleccionó ningún archivo", null));
                 return;
             }
             System.out.println("paso archivo");
             String filename = file.getFileName();
             Path folder = Paths.get("C:\\Users\\jpverdezoto\\Documents\\documentos");
+            if (!Files.exists(folder)) {
+                Files.createDirectories(folder);
+            }
             Path filePath = Files.createTempFile(folder, filename + "-", ".pdf");
             Files.write(filePath, file.getContent());
 
@@ -113,9 +120,53 @@ public void cargar(){
             nuevoDocumento.setNombredocumento(filename);
             nuevoDocumento.setRuta(filePath.toString());
             listaDocumentos.add(nuevoDocumento);
+            // Mensaje de éxito
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Archivo cargado con éxito", filename));
         } catch (IOException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al subir el archivo", null));
         }
+
+    }
+
+    public void downloadFile(String filePath) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpServletResponse response = 
+                (HttpServletResponse) facesContext.getExternalContext().getResponse();
+
+        File file = new File(filePath);
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             OutputStream output = response.getOutputStream()) {
+
+            // Configurar la respuesta HTTP
+            response.reset();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+            response.setContentLength((int) file.length());
+
+            // Copiar los datos del archivo al flujo de salida
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+
+            output.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            facesContext.responseComplete();
+        }
+    }
+
+
+    public String descargarImagen(String path, String nombre) {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            recurso = new Recurso(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException ex) {
+            Logger.getLogger(CasosBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     public void eliminarDocumento(Documentos documento) {
@@ -133,7 +184,7 @@ public void cargar(){
 
     public void insertarCaso() {
         // Crear persona
-        caso.setInvolucrado(verificarPersona(persona));
+        caso.setDenunciante(verificarPersona(persona));
         caso.setEstado("CREADO");
         // Persistir el caso
         caso.setFechaderealizacion(new Date());
@@ -158,7 +209,7 @@ public void cargar(){
     }
 
     public void grabarCaso() {
-
+        
         ejbCasos.edit(caso);
         // Ahora, asigna el caso y persiste cada documento
         System.out.println("listaDocumentos" + listaDocumentos.size());
@@ -178,6 +229,7 @@ public void cargar(){
         eventoCreacion.setAccionrealizada("Usuario edita un caso");
         eventoCreacion.setEstado("CASO_CREADO");
         eventoCreacion.setFechahora(new Date());
+        eventoCreacion.setComentario("Director revisa el caso creado");
         ejbEventos.create(eventoCreacion);
         PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').hide()");
 
@@ -195,7 +247,6 @@ public void cargar(){
     }
 
     private void buscarDocumentos() {
-        listaDocumentos = new ArrayList<>();
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.caso=:caso");
         paremetros.put("caso", caso);
@@ -323,6 +374,14 @@ public void cargar(){
      */
     public void setFile(UploadedFile file) {
         this.file = file;
+    }
+
+    public Recurso getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(Recurso recurso) {
+        this.recurso = recurso;
     }
 
 }
