@@ -118,7 +118,11 @@ public class Casos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "observaciones")
     private String observaciones;
-    
+
+    @JoinColumn(name = "denunciante", referencedColumnName = "id")
+    @ManyToOne
+    public Personas denunciante;
+
     public Casos() {
     }
 
@@ -335,8 +339,12 @@ public class Casos implements Serializable {
         this.observaciones = observaciones;
     }
 
+    public Personas getDenunciante() {
+        return denunciante;
+    }
 
-    
-    
-    
+    public void setDenunciante(Personas denunciante) {
+        this.denunciante = denunciante;
+    }
+
 }
