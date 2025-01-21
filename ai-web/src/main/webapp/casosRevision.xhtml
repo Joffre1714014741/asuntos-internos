@@ -78,8 +78,8 @@
                                 <h:outputText value="#{itemcaso.lugardeincidente}" />
                             </p:column>
 
-                            <p:column headerText="Involucrado" sortBy="#{itemcaso.involucrado}" filterBy="#{itemcaso.involucrado}">
-                                <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
+                            <p:column headerText="Involucrado" sortBy="#{itemcaso.nombreinvolucrado}" filterBy="#{itemcaso.apellidosinvloucrado}">
+                                <h:outputText value="#{itemcaso.nombreinvolucrado} #{itemcaso.apellidosinvloucrado}" />
                             </p:column>
 
                             <p:column headerText="Responsable" sortBy="#{itemcaso.responsable.nombreusuario}" filterBy="#{itemcaso.responsable.nombreusuario}">
@@ -150,16 +150,23 @@
                                 <div class="col-12 md:col-8">
                                     <div class="field">
                                         <span class="ui-float-label">
-                                            <h5>Funcionario(s) Involucrado(s)</h5>
+                                            <h5>Funcionario Involucrado</h5>
                                             <h:outputText value="NOMBRES:   " style="font-weight: bold;" />
-                                            <h:outputText value="#{revisionCasosBean.caso.involucrado.nombres}" />
+                                            <h:outputText value="#{revisionCasosBean.caso.nombreinvolucrado}" />
                                         </span>
                                     </div>
 
                                     <div class="field">
                                         <span class="ui-float-label"  >
                                             <h:outputText value="APELLIDOS:   " style="font-weight: bold;"/>
-                                            <h:outputText value="#{revisionCasosBean.caso.involucrado.apellidos}" />
+                                            <h:outputText value="#{revisionCasosBean.caso.apellidosinvloucrado}" />
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="field">
+                                        <span class="ui-float-label"  >
+                                            <h:outputText value="CAUSA:   " style="font-weight: bold;"/>
+                                            <h:outputText value="#{revisionCasosBean.caso.incurrencia}" />
                                         </span>
                                     </div>
 

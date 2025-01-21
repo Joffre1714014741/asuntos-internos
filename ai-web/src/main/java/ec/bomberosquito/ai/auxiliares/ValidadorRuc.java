@@ -1,92 +1,92 @@
-///*
-// * To change this template, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package ec.bomberosquito.ai.auxiliares;
-//
-//import javax.faces.validator.Validator;
-//import javax.faces.application.FacesMessage;
-//import javax.faces.component.UIComponent;
-//import javax.faces.context.FacesContext;
-//import javax.faces.validator.FacesValidator;
-//import javax.faces.validator.ValidatorException;
-//
-///**
-// *
-// * @author jpverdezoto
-// */
-//@FacesValidator("ec.bomberosquito.ai.auxiliares.ValidadorRuc")
-//public class ValidadorRuc implements Validator {
-//
-//    @Override
-//    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-//
-//        String numero = (String) value;
-//        int suma = 0;
-//        int residuo = 0;
-//        boolean privada = false;
-//        boolean publica = false;
-//        boolean natural = false;
-//        int numeroProvincias = 24;
-//        int digitoVerificador = 0;
-//        int modulo = 11;
-//
-//        int d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
-//        int p1, p2, p3, p4, p5, p6, p7, p8, p9;
-//
-//        d1 = d2 = d3 = d4 = d5 = d6 = d7 = d8 = d9 = d10 = 0;
-//        p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = 0;
-//        if (numero.contains("P")) {
-//            return;
-//        }
-//        if (numero.length() < 10) {
-//
-//            FacesMessage msg = new FacesMessage("RUC invalidado menor a 10 caracteres");
-//            msg.setDetail(" RUC invalidado menor a 10 caracteres");
-//            //msg.setSumamry("Fecha menor que Periodo Vigente");
-//            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-//            throw new ValidatorException(msg);
-//
-//        }
-//
-//        // Los primeros dos digitos corresponden al codigo de la provincia
-//        int provincia = Integer.parseInt(numero.substring(0, 2));
-//
-//        if (provincia <= 0 || provincia > numeroProvincias) {
-//            FacesMessage msg = new FacesMessage("RUC invalido provincia inconsistente");
-//            msg.setDetail(" RUC invalido provincia inconsistente");
-//            //msg.setSumamry("Fecha menor que Periodo Vigente");
-//            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-//            throw new ValidatorException(msg);
-//
-//        }
-//
-//        // Aqui almacenamos los digitos de la cedula en variables.
-//        d1 = Integer.parseInt(numero.substring(0, 1));
-//        d2 = Integer.parseInt(numero.substring(1, 2));
-//        d3 = Integer.parseInt(numero.substring(2, 3));
-//        d4 = Integer.parseInt(numero.substring(3, 4));
-//        d5 = Integer.parseInt(numero.substring(4, 5));
-//        d6 = Integer.parseInt(numero.substring(5, 6));
-//        d7 = Integer.parseInt(numero.substring(6, 7));
-//        d8 = Integer.parseInt(numero.substring(7, 8));
-//        d9 = Integer.parseInt(numero.substring(8, 9));
-//        d10 = Integer.parseInt(numero.substring(9, 10));
-//
-//        // El tercer digito es:
-//        // 9 para sociedades privadas y extranjeros
-//        // 6 para sociedades publicas
-//        // menor que 6 (0,1,2,3,4,5) para personas naturales
-//        if (d3 == 7 || d3 == 8) {
-//            FacesMessage msg = new FacesMessage("RUC invalido no corresponde a formato");
-//            msg.setDetail(" RUC invalido no corresponde a formato");
-//            //msg.setSumamry("Fecha menor que Periodo Vigente");
-//            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-//            throw new ValidatorException(msg);
-//
-//        }
-//
-//        // Solo para personas naturales (modulo 10)
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ec.bomberosquito.ai.auxiliares;
+
+import javax.faces.validator.Validator;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
+import javax.faces.validator.ValidatorException;
+
+/**
+ *
+ * @author jpverdezoto
+ */
+@FacesValidator("ec.bomberosquito.ai.auxiliares.ValidadorRuc")
+public class ValidadorRuc implements Validator {
+
+    @Override
+    public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+
+        String numero = (String) value;
+        int suma = 0;
+        int residuo = 0;
+        boolean privada = false;
+        boolean publica = false;
+        boolean natural = false;
+        int numeroProvincias = 24;
+        int digitoVerificador = 0;
+        int modulo = 11;
+
+        int d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
+        int p1, p2, p3, p4, p5, p6, p7, p8, p9;
+
+        d1 = d2 = d3 = d4 = d5 = d6 = d7 = d8 = d9 = d10 = 0;
+        p1 = p2 = p3 = p4 = p5 = p6 = p7 = p8 = p9 = 0;
+        if (numero.contains("P")) {
+            return;
+        }
+        if (numero.length() < 10) {
+
+            FacesMessage msg = new FacesMessage(" Cédula invalida menor a 10 caracteres");
+            msg.setDetail(" Cédula invalida menor a 10 caracteres");
+            //msg.setSumamry("Fecha menor que Periodo Vigente");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+
+        }
+
+        // Los primeros dos digitos corresponden al codigo de la provincia
+        int provincia = Integer.parseInt(numero.substring(0, 2));
+
+        if (provincia <= 0 || provincia > numeroProvincias) {
+            FacesMessage msg = new FacesMessage(" Cédula invalida provincia inconsistente");
+            msg.setDetail(" Cédula invalida provincia inconsistente");
+            //msg.setSumamry("Fecha menor que Periodo Vigente");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+
+        }
+
+        // Aqui almacenamos los digitos de la cedula en variables.
+        d1 = Integer.parseInt(numero.substring(0, 1));
+        d2 = Integer.parseInt(numero.substring(1, 2));
+        d3 = Integer.parseInt(numero.substring(2, 3));
+        d4 = Integer.parseInt(numero.substring(3, 4));
+        d5 = Integer.parseInt(numero.substring(4, 5));
+        d6 = Integer.parseInt(numero.substring(5, 6));
+        d7 = Integer.parseInt(numero.substring(6, 7));
+        d8 = Integer.parseInt(numero.substring(7, 8));
+        d9 = Integer.parseInt(numero.substring(8, 9));
+        d10 = Integer.parseInt(numero.substring(9, 10));
+
+        // El tercer digito es:
+        // 9 para sociedades privadas y extranjeros
+        // 6 para sociedades publicas
+        // menor que 6 (0,1,2,3,4,5) para personas naturales
+        if (d3 == 7 || d3 == 8) {
+            FacesMessage msg = new FacesMessage(" Cédula invalida no corresponde a formato");
+            msg.setDetail(" Cédula invalida no corresponde a formato");
+            //msg.setSumamry("Fecha menor que Periodo Vigente");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(msg);
+
+        }
+
+        // Solo para personas naturales (modulo 10)
 //        if (d3 < 6) {
 //            natural = true;
 //            modulo = 10;
@@ -223,7 +223,7 @@
 //
 //            }
 //        }
-//
-//    }
-//
-//}
+
+    }
+
+}

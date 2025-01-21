@@ -72,7 +72,10 @@
         <!-- formulario -->
 
         <h:form id="frmdialogcaso">
-            <p:dialog header="INFORMACIÓN DE LA DENUNCIA" showEffect="fade" modal="true" widgetVar="manageDialogcaso"
+            <p:dialog header="INFORMACIÓN DE LA DENUNCIA" 
+                      showEffect="fade" 
+                      modal="true" 
+                      widgetVar="manageDialogcaso"
                       responsive="true"
                       fitViewport="true" 
                       minHeight="200"
@@ -87,15 +90,19 @@
                                 <div class="field">
                                     <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                         <span class="ui-float-label">
-                                            <p:inputText id="cedula" value="#{casosBean.persona.cedula}" >
+                                            <p:inputText id="cedula" value="#{casosBean.cedula}" >
+                                             <f:validator  validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc"/>
+                                             <p:ajax event="blur" listener="#{casosBean.llenarDatos}" update="nombres apellidos Correo Contacto" />
+                                        
                                             </p:inputText>
                                             <p:outputLabel for="cedula" value="Cédula:" />
+                                           
                                         </span>
                                     </h:panelGroup>
 
                                     <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                         <p:outputLabel value="Cédula : "/>
-                                        <p:outputLabel value="#{casosBean.caso.involucrado.cedula}"  />
+                                        <p:outputLabel value="#{casosBean.persona.cedula}"  />
                                     </h:panelGroup>
                                 </div>
                             </div>
@@ -111,7 +118,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Nombres : "/>
-                                            <p:outputLabel rendered="#{casosBean.caso.id ne null}"  value="#{casosBean.caso.involucrado.nombres}"  />
+                                            <p:outputLabel rendered="#{casosBean.caso.id ne null}"  value="#{casosBean.persona.nombres}"  />
                                         </h:panelGroup>
 
                                     </div>
@@ -125,7 +132,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Apellidos : "/>
-                                            <p:outputLabel  value="#{casosBean.caso.involucrado.apellidos}"  />
+                                            <p:outputLabel  value="#{casosBean.persona.apellidos}"  />
                                         </h:panelGroup>
                                     </div>
                                 </div>
@@ -140,7 +147,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Correo Electrónico : "/>
-                                            <p:outputLabel  value="#{casosBean.caso.involucrado.mail}"  />
+                                            <p:outputLabel  value="#{casosBean.persona.mail}"  />
                                         </h:panelGroup>
                                     </div>
                                 </div>
@@ -155,7 +162,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Número de contacto : "/>
-                                            <p:outputLabel value="#{casosBean.caso.involucrado.contacto}"  />
+                                            <p:outputLabel value="#{casosBean.persona.mail}"  />
                                         </h:panelGroup>
                                     </div>
                                 </div>
@@ -178,7 +185,7 @@
                                     <div class="field">
                                         <span>
                                             <p:inputTextarea id="LugarIncidente" value="#{casosBean.caso.lugardeincidente}" />
-                                            <p:outputLabel for="LugarIncidente" value="Lugar del incidente:" />
+                                            <p:outputLabel for="LugarIncidente" value="Lugar del incidente: " />
                                         </span>
                                     </div>
                                 </div>
@@ -187,7 +194,7 @@
                                     <div class="field">
                                         <span>
                                             <p:datePicker id="fechaIncidente" value="#{casosBean.caso.fechadeincidente}"/>
-                                            <p:outputLabel for="fechaIncidente" value="Fecha del Incidente:" />
+                                            <p:outputLabel for="fechaIncidente" value="Fecha del Incidente: " />
                                         </span>
                                     </div>
                                 </div>
@@ -195,7 +202,8 @@
 
                             <div class="card" style="width: 100%">
                                 <h5>Anexos del Caso</h5>
-                                <div class="col-12">
+
+                                <div style="text-align: justify;">
                                     <p:fileUpload  value="#{casosBean.file}"
                                                    label="Seleccionar archivo"
                                                    mode="simple" skinSimple="true" auto="true"
@@ -206,41 +214,40 @@
                                                    invalidFileMessage="Solo se acepta archivos pdf"
                                                    />
 
-                                    <p:commandButton 
-                                        value="Cargar"
-                                        icon="pi pi-cloud-upload"
-                                        iconPos="right"
-                                        style="width: 30%"
-                                        actionListener="#{casosBean.upload()}"  
-                                        update="documentosTable"
-                                        styleClass="mt-2 ui-button-outlined block" 
-                                        />
-
-
-                                    <!-- Tabla para listar Documentos -->
-
-                                    <p:dataTable id="documentosTable"
-                                                 var="documento"
-                                                 value="#{casosBean.listaDocumentos}"
-                                                 emptyMessage="No hay documentos subidos">
-                                        <p:column headerText="Nombre del Documento">
-                                            <h:outputText value="#{documento.nombredocumento}" />
-                                        </p:column>
-                                        <p:column headerText="Acciones">
-                                            <p:commandButton icon="pi pi-times"
-                                                             title="Eliminar"
-                                                             actionListener="#{casosBean.eliminarDocumento(documento)}"
-                                                             update="documentosTable"/>
-                                        </p:column>
-
-                                        <p:column headerText="Ver Anexos">
-                                            <p:commandButton value=" Ver Archivo"
-                                                             style="width: 30%"
-                                                             action="#{casosBean.downloadFile(documento.ruta)}"
-                                                             ajax="false" />
-                                        </p:column>
-                                    </p:dataTable>
+                                    <p:commandButton value="Guardar" 
+                                                     icon="pi pi-cloud-upload"
+                                                     iconPos="right"
+                                                     style="width: 30%"
+                                                     update="documentosTable" 
+                                                     actionListener="#{casosBean.upload}"  
+                                                     styleClass="mt-2 ui-button-outlined block" 
+                                                     />
                                 </div>
+
+
+                                <!-- Tabla para listar Documentos -->
+
+                                <p:dataTable id="documentosTable"
+                                             var="documento"
+                                             value="#{casosBean.listaDocumentos}"
+                                             emptyMessage="No hay documentos subidos">
+                                    <p:column headerText="Nombre del Documento">
+                                        <h:outputText value="#{documento.nombredocumento}" />
+                                    </p:column>
+                                    <p:column headerText="Acciones">
+                                        <p:commandButton icon="pi pi-times"
+                                                         title="Eliminar"
+                                                         actionListener="#{casosBean.eliminarDocumento(documento)}"
+                                                         update="documentosTable"/>
+                                    </p:column>
+
+                                    <p:column headerText="Ver Anexos">
+                                        <p:commandButton value=" Ver Archivo"
+                                                         style="width: 30%"
+                                                         action="#{casosBean.downloadFile(documento.ruta)}"
+                                                         ajax="false" />
+                                    </p:column>
+                                </p:dataTable>
                             </div>
                         </div>
 

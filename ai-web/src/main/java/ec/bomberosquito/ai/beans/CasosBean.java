@@ -50,7 +50,7 @@ import org.primefaces.model.StreamedContent;
 @Named(value = "casosBean")
 @ViewScoped
 public class CasosBean implements Serializable {
-
+    private String cedula;
     private Personas persona;
     private Casos caso;
     private List<Documentos> listaDocumentos = new ArrayList<>();
@@ -58,9 +58,9 @@ public class CasosBean implements Serializable {
     private String estadoCasos;
     private UploadedFile file;
     private Recurso recurso;
-
+    
     private StreamedContent file1;
-
+    
     @EJB
     private PersonasFacade ejbPersonas;
     @EJB
@@ -69,15 +69,28 @@ public class CasosBean implements Serializable {
     private DocumentosFacade ejbDocumentos;
     @EJB
     private EventosFacade ejbEventos;
-
+    
     @PostConstruct
     public void init() {
     }
-
+    
     public CasosBean() {
-
+        
     }
-
+    
+    public void llenarDatos() throws ConsultarException {
+        System.out.println("entro");
+        if (cedula != null) {
+            HashMap paremetros = new HashMap<>();
+            paremetros.put(";where", "o.cedula=:cedula");
+            paremetros.put("cedula", cedula);
+            if (!ejbPersonas.encontrarParametros(paremetros).isEmpty()) {
+                this.persona = ejbPersonas.encontrarParametros(paremetros).get(0);
+                System.out.println("si encontro personas " + persona);
+            }
+        }
+    }
+    
     public void buscar() {
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.estado=:estado");
@@ -87,19 +100,19 @@ public class CasosBean implements Serializable {
         } catch (ConsultarException e) {
         }
     }
-
+    
     public void crearCaso() {
         caso = new Casos();
         persona = new Personas();
         PrimeFaces.current().executeScript("PF('manageDialogcaso').show()");
     }
-
+    
     public void editarCaso(Casos casoParametro) {
         caso = casoParametro;
         buscarDocumentos();
         PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').show()");
     }
-
+    
     public void upload() {
         System.out.println("paso archivo 1");
         try {
@@ -115,7 +128,7 @@ public class CasosBean implements Serializable {
             }
             Path filePath = Files.createTempFile(folder, filename + "-", ".pdf");
             Files.write(filePath, file.getContent());
-
+            
             Documentos nuevoDocumento = new Documentos();
             nuevoDocumento.setNombredocumento(filename);
             nuevoDocumento.setRuta(filePath.toString());
@@ -125,17 +138,16 @@ public class CasosBean implements Serializable {
         } catch (IOException e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al subir el archivo", null));
         }
-
+        
     }
-
+    
     public void downloadFile(String filePath) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpServletResponse response = 
-                (HttpServletResponse) facesContext.getExternalContext().getResponse();
-
+        HttpServletResponse response
+                = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        
         File file = new File(filePath);
-        try (FileInputStream fileInputStream = new FileInputStream(file);
-             OutputStream output = response.getOutputStream()) {
+        try ( FileInputStream fileInputStream = new FileInputStream(file);  OutputStream output = response.getOutputStream()) {
 
             // Configurar la respuesta HTTP
             response.reset();
@@ -149,7 +161,7 @@ public class CasosBean implements Serializable {
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
                 output.write(buffer, 0, bytesRead);
             }
-
+            
             output.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,8 +169,7 @@ public class CasosBean implements Serializable {
             facesContext.responseComplete();
         }
     }
-
-
+    
     public String descargarImagen(String path, String nombre) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
@@ -168,7 +179,7 @@ public class CasosBean implements Serializable {
         }
         return null;
     }
-
+    
     public void eliminarDocumento(Documentos documento) {
         try {
             Path fileToDeletePath = Paths.get(documento.getRuta());
@@ -181,7 +192,7 @@ public class CasosBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar el archivo físico", null));
         }
     }
-
+    
     public void insertarCaso() {
         // Crear persona
         caso.setDenunciante(verificarPersona(persona));
@@ -195,19 +206,19 @@ public class CasosBean implements Serializable {
             ejbDocumentos.create(documento);
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos creados exitosamente"));
-
+        
         Eventos eventoCreacion = new Eventos();
         eventoCreacion.setCaso(caso);
-        eventoCreacion.setAccionrealizada("Usuario crea un caso");
-        eventoCreacion.setEstado("CASO_CREADO");
+        eventoCreacion.setAccionrealizada("Denuncia creada");
+        eventoCreacion.setEstado("CREADO");
         eventoCreacion.setFechahora(new Date());
-        eventoCreacion.setComentario("Usuario crea un caso");
+        eventoCreacion.setComentario("Usuario crea una nueva denuncia");
         ejbEventos.create(eventoCreacion);
         buscar();
         PrimeFaces.current().executeScript("PF('manageDialogcaso').hide()");
-
+        
     }
-
+    
     public void grabarCaso() {
         
         ejbCasos.edit(caso);
@@ -216,25 +227,25 @@ public class CasosBean implements Serializable {
         for (Documentos documento : listaDocumentos) {
             if (documento.getId() == null) {
                 System.out.println("creo documento");
-
+                
                 documento.setCaso(caso);
                 ejbDocumentos.create(documento);
             }
-
+            
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso y documentos editados exitosamente"));
-
+        
         Eventos eventoCreacion = new Eventos();
         eventoCreacion.setCaso(caso);
-        eventoCreacion.setAccionrealizada("Usuario edita un caso");
-        eventoCreacion.setEstado("CASO_CREADO");
+        eventoCreacion.setAccionrealizada("Revisado por el Director ");
+        eventoCreacion.setEstado("REVISADO");
         eventoCreacion.setFechahora(new Date());
-        eventoCreacion.setComentario("Director revisa el caso creado");
+        eventoCreacion.setComentario("Director Verifica que la denuncia cumpla con los parametros requeridos para dar inicio a la investigación");
         ejbEventos.create(eventoCreacion);
         PrimeFaces.current().executeScript("PF('manageDialogcasoeditar').hide()");
-
+        
     }
-
+    
     public void eliminarCAso() {
         buscarDocumentos();
         for (Documentos doc : listaDocumentos) {
@@ -243,9 +254,9 @@ public class CasosBean implements Serializable {
         ejbCasos.remove(caso);
         buscar();
         PrimeFaces.current().executeScript("PF('manageDialogeliminar').hide()");
-
+        
     }
-
+    
     private void buscarDocumentos() {
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.caso=:caso");
@@ -255,7 +266,7 @@ public class CasosBean implements Serializable {
         } catch (ConsultarException e) {
         }
     }
-
+    
     private Personas verificarPersona(Personas personaParametro) {
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.cedula=:cedula");
@@ -269,7 +280,7 @@ public class CasosBean implements Serializable {
                 personaDevolver.setCedula(personaParametro.getCedula());
                 personaDevolver.setMail(personaParametro.getMail());
                 personaDevolver.setContacto(personaParametro.getContacto());
-                personaDevolver.setTipo("INVOLUCRADO");
+                personaDevolver.setTipo("DENUNCIANTE");
                 ejbPersonas.create(personaDevolver);
                 return personaDevolver;
             } else {
@@ -279,7 +290,7 @@ public class CasosBean implements Serializable {
         }
         return null;
     }
-
+    
     public void inicioCaso() {
         System.out.println("estadoCasos " + estadoCasos);
         if (estadoCasos == null) {
@@ -298,38 +309,38 @@ public class CasosBean implements Serializable {
         Eventos eventoCreacion = new Eventos();
         eventoCreacion.setFechahora(new Date());
         eventoCreacion.setEstado(estadoCasos);
-        eventoCreacion.setAccionrealizada("Director Ingresa Caso");
+        eventoCreacion.setAccionrealizada("Director inicia la investigación");
         eventoCreacion.setCaso(caso);
         eventoCreacion.setComentario(caso.getObservaciones());
         ejbEventos.create(eventoCreacion);
         // finizaiza tracking
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso editado"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso revisado de manera correcta"));
         PrimeFaces.current().executeScript("PF('manageDialogcontinuar').hide()");
-
+        
         buscar();
-
+        
     }
-
+    
     public Personas getPersona() {
         return persona;
     }
-
+    
     public void setPersona(Personas persona) {
         this.persona = persona;
     }
-
+    
     public Casos getCaso() {
         return caso;
     }
-
+    
     public void setCaso(Casos caso) {
         this.caso = caso;
     }
-
+    
     public List<Documentos> getListaDocumentos() {
         return listaDocumentos;
     }
-
+    
     public void setListaDocumentos(List<Documentos> listaDocumentos) {
         this.listaDocumentos = listaDocumentos;
     }
@@ -375,13 +386,21 @@ public class CasosBean implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
-
+    
     public Recurso getRecurso() {
         return recurso;
     }
-
+    
     public void setRecurso(Recurso recurso) {
         this.recurso = recurso;
     }
 
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+    
 }

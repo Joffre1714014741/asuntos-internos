@@ -72,8 +72,6 @@ public class Personas implements Serializable {
     @Column(name = "tipo")
     private String tipo;
     
-    @OneToMany(mappedBy = "involucrado")
-    private List<Casos> casosList1;
 
     public Personas() {
     }
@@ -172,15 +170,6 @@ public class Personas implements Serializable {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    @XmlTransient
-    public List<Casos> getCasosList1() {
-        return casosList1;
-    }
-
-    public void setCasosList1(List<Casos> casosList1) {
-        this.casosList1 = casosList1;
     }
 
     @Override

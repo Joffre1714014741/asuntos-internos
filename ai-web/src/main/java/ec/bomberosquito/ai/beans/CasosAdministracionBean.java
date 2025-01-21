@@ -183,7 +183,7 @@ public class CasosAdministracionBean implements Serializable {
         // crear tracking
         evento.setFechahora(new Date());
         evento.setEstado(estadoCasos);
-        evento.setAccionrealizada("Director Ingresa Caso");
+        evento.setAccionrealizada("Director Inicia el la Investigación");
         evento.setCaso(caso);
         ejbEventos.create(evento);
         // finizaiza tracking

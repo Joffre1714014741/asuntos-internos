@@ -67,14 +67,14 @@ public class RevisionCasosBean implements Serializable {
         eventos.setEstado("PENDIENTE REVISION");
         eventos.setCaso(caso);
         eventos.setFechahora(new Date());
-        eventos.setAccionrealizada("Director retorna el informe " + caso.getId());
+        eventos.setAccionrealizada("Director retorna el informe al analista para que realice los cambios indicados " + caso.getId());
         eventos.setComentario(caso.getObservaciones());
         ejbEventos.create(eventos);
         caso.setEstado("PENDIENTE REVISION");
         ejbCasos.edit(caso);
         listaCasos.clear();
         cargarCasos();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe enviado para realizar cambios"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe enviado para realizar cambios por el Analista"));
         PrimeFaces.current().executeScript("PF('manageDialogregresar').hide()");
     }
 
@@ -93,7 +93,7 @@ public class RevisionCasosBean implements Serializable {
         ejbEventos.create(eventos);
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe Aprobado"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe Aprobado por el Director"));
         cargarCasos();
         PrimeFaces.current().executeScript("PF('manageDialogaprobar').hide()");
     }

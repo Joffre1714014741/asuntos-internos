@@ -76,23 +76,27 @@
                             <p:ajax event="toggleSelect" update=":form:boton-eliminar-personas" />
 
                             <p:column selectionMode="multiple" exportable="false"></p:column>
-                            
+
                             <p:column headerText="Id" sortBy="#{persona.id}" filterBy="#{persona.id}">
                                 <h:outputText value="#{persona.id}" />
                             </p:column>
-                            
+
                             <p:column headerText="Apellidos" sortBy="#{persona.apellidos}" filterBy="#{persona.apellidos}">
                                 <h:outputText value="#{persona.apellidos}" />
                             </p:column>
-                            
+
                             <p:column headerText="Nombres" sortBy="#{persona.nombres}" filterBy="#{persona.nombres}">
                                 <h:outputText value="#{persona.nombres}" />
                             </p:column>
-                            
+
                             <p:column headerText="Cédula" sortBy="#{persona.cedula}" filterBy="#{persona.cedula}">
                                 <h:outputText value="#{persona.cedula}" />
                             </p:column>
                             
+                            <p:column headerText="Tipo de Usuario" sortBy="#{persona.tipo}" filterBy="#{persona.tipo}">
+                                <h:outputText value="#{persona.tipo}" />
+                            </p:column>
+
                             <p:column exportable="false">
                                 <p:commandButton icon="pi pi-pencil" 
                                                  update=":form:panel-persona-contenido" 
@@ -148,6 +152,19 @@
                                         <p:outputLabel for="cedula">Cédula</p:outputLabel>
                                         <p:inputText id="cedula" value="#{usuariosBean.persona.cedula}" required="true" />
                                     </div>
+                                    <div class="field">
+                                        <p:outputLabel for="Correo">Correo Electronico</p:outputLabel>
+                                        <p:inputText id="Correo" value="#{usuariosBean.persona.mail}" required="true" />
+                                    </div>
+                                    <div class="field">
+                                        <p:outputLabel for="Contacto">Número de contacto</p:outputLabel>
+                                        <p:inputText id="Contacto" value="#{usuariosBean.persona.contacto}" required="true" />
+                                    </div>
+                                    <p:selectOneMenu id="tipoPersona" value="#{usuariosBean.persona.tipo}">
+                                        <f:selectItem itemLabel="ADMINISTRATIVO" itemValue="ADMINISTRATIVO" />
+                                        <f:selectItem itemLabel="OPERATIVO" itemValue="OPERATIVO" />
+                                        <!-- Agregar más tipos según sea necesario -->
+                                    </p:selectOneMenu>
                                 </p:outputPanel>
                             </p:outputPanel>
 
@@ -157,6 +174,7 @@
                                                  actionListener="#{usuariosBean.guardarPersona}" 
                                                  update="panel-persona-contenido" 
                                                  process="panel-persona-contenido @this" />
+                                
                                 <p:commandButton value="Cancelar" 
                                                  icon="pi pi-times" 
                                                  onclick="PF('dialogoGestionPersona').hide()" 
@@ -200,6 +218,7 @@
                                                  oncomplete="PF('dialogoGestionUsuario').show()" 
                                                  styleClass="ui-button-success" 
                                                  style="margin-right: .5rem" />
+                                
                                 <p:commandButton id="boton-eliminar-usuarios" 
                                                  value="#{usuariosBean.mensajeBotonEliminarUsuario}" 
                                                  icon="pi pi-trash" 
@@ -227,8 +246,8 @@
                                      rows="10" 
                                      rowSelectMode="add" 
                                      paginatorPosition="bottom">
-                            
-                             <f:facet name="header">
+
+                            <f:facet name="header">
                                 <div class="products-table-header">
                                     <span style="font-weight: bold">Administración de Usuarios</span>
 
@@ -243,7 +262,7 @@
                             <p:column headerText="ID" sortBy="#{usuario.id}" filterBy="#{usuario.id}">
                                 <h:outputText value="#{usuario.id}" />
                             </p:column>
-                            
+
                             <p:column headerText="Persona" sortBy="#{usuario.persona.nombres}">
                                 <h:outputText value="#{usuario.persona.nombres} #{usuario.persona.apellidos}" />
                             </p:column>
@@ -252,6 +271,10 @@
                                 <h:outputText value="#{usuario.nombreusuario}" />
                             </p:column>
                             
+                            <p:column headerText="Tipo de Usuario" sortBy="#{usuario.tipo}">
+                                <h:outputText value="#{usuario.tipo}" />
+                            </p:column>
+
                             <!-- Agrega botones para editar y eliminar Usuarios -->
                             <p:column exportable="false">
                                 <p:commandButton icon="pi pi-pencil" 
@@ -297,7 +320,7 @@
                                         <p:selectOneMenu id="tipoUsuario" value="#{usuariosBean.usuario.tipo}">
                                             <f:selectItem itemLabel="DIRECTOR" itemValue="DIRECTOR" />
                                             <f:selectItem itemLabel="ANALISTA" itemValue="ANALISTA" />
-                                            <f:selectItem itemLabel="INVOLUCRADO" itemValue="INVOLUCRADO" />
+                                            
                                             <!-- Agregar más tipos según sea necesario -->
                                         </p:selectOneMenu>
                                     </div>

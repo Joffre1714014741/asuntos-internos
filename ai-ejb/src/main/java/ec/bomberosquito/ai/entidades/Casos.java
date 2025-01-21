@@ -51,6 +51,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Casos.findByNumeroinforme", query = "SELECT c FROM Casos c WHERE c.numeroinforme = :numeroinforme")})
 public class Casos implements Serializable {
 
+    @Size(max = 2147483647)
+    @Column(name = "nombreinvolucrado")
+    private String nombreinvolucrado;
+    @Size(max = 2147483647)
+    @Column(name = "apellidosinvloucrado")
+    private String apellidosinvloucrado;
+    @Size(max = 2147483647)
+    @Column(name = "incurrencia")
+    private String incurrencia;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,9 +117,7 @@ public class Casos implements Serializable {
     @JoinColumn(name = "director", referencedColumnName = "id")
     @ManyToOne
     private Usuarios director;
-    @JoinColumn(name = "involucrado", referencedColumnName = "id")
-    @ManyToOne
-    public Personas involucrado;
+    
     @JoinColumn(name = "responsable", referencedColumnName = "id")
     @ManyToOne
     private Usuarios responsable;
@@ -275,14 +283,6 @@ public class Casos implements Serializable {
         this.director = director;
     }
 
-    public Personas getInvolucrado() {
-        return involucrado;
-    }
-
-    public void setInvolucrado(Personas involucrado) {
-        this.involucrado = involucrado;
-    }
-
     public Usuarios getResponsable() {
         return responsable;
     }
@@ -345,6 +345,30 @@ public class Casos implements Serializable {
 
     public void setDenunciante(Personas denunciante) {
         this.denunciante = denunciante;
+    }
+
+    public String getNombreinvolucrado() {
+        return nombreinvolucrado;
+    }
+
+    public void setNombreinvolucrado(String nombreinvolucrado) {
+        this.nombreinvolucrado = nombreinvolucrado;
+    }
+
+    public String getApellidosinvloucrado() {
+        return apellidosinvloucrado;
+    }
+
+    public void setApellidosinvloucrado(String apellidosinvloucrado) {
+        this.apellidosinvloucrado = apellidosinvloucrado;
+    }
+
+    public String getIncurrencia() {
+        return incurrencia;
+    }
+
+    public void setIncurrencia(String incurrencia) {
+        this.incurrencia = incurrencia;
     }
 
 }

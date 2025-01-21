@@ -10,9 +10,11 @@ import ec.bomberosquito.ai.auxiliares.AuxiliarReporte;
 import ec.bomberosquito.ai.auxiliares.DocumentoPDF;
 import ec.bomberosquito.ai.entidades.Casos;
 import ec.bomberosquito.ai.entidades.Eventos;
+import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.CasosFacade;
 import ec.bomberosquito.ai.facades.EventosFacade;
+import ec.bomberosquito.ai.facades.PersonasFacade;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,6 +23,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -52,7 +55,15 @@ public class atencionCasosBean implements Serializable {
    
     private Eventos evento;
     private File solicitudArchivo;
+     private List<Personas> listaPersonas;
+     private String selectedOption;
+    private List<String> options;
     
+    private Personas involucra;
+
+    
+     @EJB
+    private PersonasFacade ejbPersonas;
     
     @EJB
     private CasosFacade ejbCasos;
@@ -63,8 +74,43 @@ public class atencionCasosBean implements Serializable {
     public void init() {
         listaCasos.clear();
         cargarCasos();
-
+        listaPersonas = buscarInvolucrados();
     }
+    
+    
+      
+    
+    public List<Personas> buscarInvolucrados(){
+         List<Personas>  per = new ArrayList<>();
+        HashMap paremetros = new HashMap<>();
+        paremetros.put(";where", "o.tipo=:'INVOLUCRADO'");
+        paremetros.put("caso", caso);
+        try {
+            per =  ejbPersonas.encontrarParametros(paremetros);
+        } catch (ConsultarException e) {
+        }
+             return per;   
+    }
+  
+    
+    
+    public String getSelectedOption() {
+        return selectedOption;
+    }
+
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void submit() {
+        // Lógica para manejar la opción seleccionada
+        System.out.println("Opción seleccionada: " + selectedOption);
+    }
+    
 
     public void cargarCasos() {
         System.out.println("usuario " + seguridadBean.getUsuarioLogeado());
@@ -114,9 +160,9 @@ public class atencionCasosBean implements Serializable {
 
             columnas = new LinkedList<>();
             columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, true, "NOMBRES: ", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
-            columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, caso.involucrado.getNombres(), 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
+            columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, caso.getNombreinvolucrado(), 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
             columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, true, "APELLIDOS: ", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
-            columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, caso.involucrado.getApellidos(), 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
+            columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, caso.getApellidosinvloucrado(), 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
             columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, true, "FECHA DEL INCIDENTE: ", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
             columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, false, caso.getFechadeincidente().toString(), 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
             columnas.add(new AuxiliarReporte("String", 1, AuxiliarReporte.ALIGN_JUSTIFIED, 11, true, "FECHA INFORMADA: ", 1, 0, Color.BLACK, Color.WHITE, Color.WHITE));
@@ -274,15 +320,15 @@ public class atencionCasosBean implements Serializable {
             return false;
         }
         if (caso.getCalificacion() == null || caso.getCalificacion().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la claificaión"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la clalificaión"));
             return false;
         }
         if (caso.getActividadesrealizadas() == null || caso.getActividadesrealizadas().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar las actividades realizadas en el investigación"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar las actividades que realizaste en el investigación"));
             return false;
         }
         if (caso.getRelaciondehechos() == null || caso.getRelaciondehechos().isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar resumen del caso"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar el resumen del caso"));
             return false;
         }
         if (caso.getConclusiones() == null || caso.getConclusiones().isEmpty()) {
@@ -308,7 +354,7 @@ public class atencionCasosBean implements Serializable {
 
         tracking.setFechahora(new Date());
         tracking.setEstado("PARA REVISION");
-        tracking.setAccionrealizada("Analista");
+        tracking.setAccionrealizada("Analista envía el informe al Director para su revisión");
         tracking.setCaso(caso);
         tracking.setComentario(caso.getObservaciones());
         ejbEventos.create(tracking);
@@ -336,8 +382,10 @@ public class atencionCasosBean implements Serializable {
         if (caso.getId() == null) {
             return;
         }
+        caso.setNombreinvolucrado(involucra.getNombres());
+        caso.setApellidosinvloucrado(involucra.getApellidos());
         ejbCasos.edit(caso);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El Informe editado con éxito"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Informe editado con éxito"));
         PrimeFaces.current().executeScript("PF('manageDialogcaso').hide()");
     }
 
@@ -387,6 +435,22 @@ public class atencionCasosBean implements Serializable {
 
     public void setSeguridadBean(SeguridadBean seguridadBean) {
         this.seguridadBean = seguridadBean;
+    }
+
+    public Personas getInvolucra() {
+        return involucra;
+    }
+
+    public void setInvolucra(Personas involucra) {
+        this.involucra = involucra;
+    }
+
+    public List<Personas> getListaPersonas() {
+        return listaPersonas;
+    }
+
+    public void setListaPersonas(List<Personas> listaPersonas) {
+        this.listaPersonas = listaPersonas;
     }
 
 }

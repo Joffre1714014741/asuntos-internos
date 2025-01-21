@@ -79,8 +79,8 @@
                                 <h:outputText value="#{itemcaso.lugardeincidente}" />
                             </p:column>
 
-                            <p:column headerText="Involucrado" sortBy="#{itemcaso.involucrado}" filterBy="#{itemcaso.involucrado}">
-                                <h:outputText value="#{itemcaso.involucrado.apellidos} #{itemcaso.involucrado.nombres}" />
+                            <p:column headerText="Involucrado" >
+                                <h:outputText value="#{itemcaso.nombreinvolucrado} #{itemcaso.apellidosinvloucrado}" />
                             </p:column>
 
                             <p:column headerText="Responsable" sortBy="#{itemcaso.responsable.nombreusuario}" filterBy="#{itemcaso.responsable.nombreusuario}">
@@ -147,19 +147,32 @@
                                         <span class="ui-float-label">
                                             <h5>Funcionario Involucrado</h5>
                                             <div class="field">
-                                                <span class="ui-float-label">
-                                                    <p:inputText id="involucradonom" value="#{atencionCasosBean.caso.involucrado.nombres}" />
-                                                    <p:outputLabel for="involucradonom" value="NOMBRES: " style="font-weight: bold;"/>
-                                                </span>
+                                                <p:outputLabel for="listaPersonas" value="Seleccionar Persona" />
+                                                <p:selectOneMenu id="listaPersonas" value="#{atencionCasosBean.involucra}" converter="personaConverter">
+                                                    <f:selectItem itemLabel="-- Seleccionar Persona --" itemValue="#{null}" />
+                                                    <f:selectItems value="#{usuariosBean.listaPersonas}" var="persona" itemValue="#{persona}" itemLabel="#{persona.nombres} #{persona.apellidos}" />
+                                                </p:selectOneMenu>
                                             </div>
-
+                                        </span>
+                                    </div>
+                                    <div class="field">
+                                        <span class="ui-float-label">
+                                            <p:inputText value="#{atencionCasosBean.caso.nombreinvolucrado}" />
+                                            <p:outputLabel  value="NOMBRES: " style="font-weight: bold;"/>
                                         </span>
                                     </div>
 
                                     <div class="field">
                                         <span class="ui-float-label"  >
-                                            <p:inputText id="involucradoape" value="#{atencionCasosBean.caso.involucrado.apellidos}" />
-                                            <p:outputLabel for="involucradoape" value="APELLIDOS: " style="font-weight: bold;"/>
+                                            <p:inputText  value="#{atencionCasosBean.caso.apellidosinvloucrado}" />
+                                            <p:outputLabel  value="APELLIDOS: " style="font-weight: bold;"/>
+                                        </span>
+                                    </div>
+
+                                    <div class="field">
+                                        <span class="ui-float-label"  >
+                                            <p:inputText id="incurrencia" value="#{atencionCasosBean.caso.incurrencia}" />
+                                            <p:outputLabel for="incurrencia" value="CAUSA: " style="font-weight: bold;"/>
                                         </span>
                                     </div>
 
@@ -192,6 +205,8 @@
                                             <f:selectItem itemLabel="Estación X-22" itemValue="Estación X-22" />
                                             <f:selectItem itemLabel="Estación X-23" itemValue="Estación X-23" />
                                             <f:selectItem itemLabel="Estación X-24" itemValue="Estación X-24" />
+                                            <f:selectItem itemLabel="Estación X-25" itemValue="Estación X-25" />
+                                            <f:selectItem itemLabel="Estación X-26" itemValue="Estación X-26" />
                                             <f:selectItem itemLabel="comandancia General" itemValue="Comandancia General" />
                                             <f:selectItem itemLabel="Dirección General Administrativa" itemValue="Dirección General Administrativa" />
                                             <f:selectItem itemLabel="Dirección Administrativa y Logística" itemValue="Dirección Administrativa y Logística" />
@@ -415,7 +430,7 @@
                                     <div class="field">
                                         <span class="ui-float-label">
                                             <p:inputTextarea id="actividades" value="#{atencionCasosBean.caso.actividadesrealizadas}"  />
-                                            <p:outputLabel for="actividades" value="Ingrese los antecedentes del caso:" />
+                                            <p:outputLabel for="actividades" value="Ingrese las actividades que :" />
                                         </span>
                                     </div>
                                 </div>
@@ -517,6 +532,13 @@
                                                          actionListener="#{casosBean.eliminarDocumento(documento)}"
                                                          update="documentosTable"/>
                                     </p:column>
+
+                                    <p:column headerText="Ver Anexos">
+                                        <p:commandButton value=" Ver Archivo"
+                                                         style="width: 30%"
+                                                         action="#{casosBean.downloadFile(documento.ruta)}"
+                                                         ajax="false" />
+                                    </p:column>
                                 </p:dataTable>
                             </div>
                         </div>
@@ -574,13 +596,13 @@
             <p:dialog header="Informe" showEffect="fade" modal="true" widgetVar="manageDialogpdf"
                       responsive="true"
                       fitViewport="true" 
-                      minHeight="200"
+                      minHeight="800"
                       width="1000"
                       >
                 <p:outputPanel id="manage-pdf-content" class="ui-fluid">
                     <p:outputPanel rendered="#{not empty atencionCasosBean.caso}">
                         <div class="card">
-                            <object data="#{atencionCasosBean.pathpdfSolicitud}" type="application/pdf" width="900" height="600"  ></object>
+                            <object data="#{atencionCasosBean.pathpdfSolicitud}" type="application/pdf" width="1000" height="800"  ></object>
                         </div>
                     </p:outputPanel>
                 </p:outputPanel>
