@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
@@ -33,6 +34,9 @@ public class RevisionCasosBean implements Serializable {
     private List<Casos> listaCasos = new ArrayList<>();
     private Casos caso;
     private Eventos evento;
+
+    @Inject
+    private SeguridadBean seguridadBean;
 
     @EJB
     private CasosFacade ejbCasos;
@@ -69,6 +73,7 @@ public class RevisionCasosBean implements Serializable {
         eventos.setFechahora(new Date());
         eventos.setAccionrealizada("Director retorna el informe al analista para que realice los cambios indicados " + caso.getId());
         eventos.setComentario(caso.getObservaciones());
+        eventos.setAccionante(seguridadBean.getUserLogueado().getTipo());
         ejbEventos.create(eventos);
         caso.setEstado("PENDIENTE REVISION");
         ejbCasos.edit(caso);
@@ -81,7 +86,7 @@ public class RevisionCasosBean implements Serializable {
     public void aprobarcaso() {
         // implementacion de tracking cuando se aprueba un caso
         if (caso.getObservaciones() == null || caso.getObservaciones().isEmpty()) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la observación"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Debes llenar la observación"));
             return;
         }
         Eventos eventos = new Eventos();
@@ -90,6 +95,7 @@ public class RevisionCasosBean implements Serializable {
         eventos.setFechahora(new Date());
         eventos.setAccionrealizada("Director aprueba el informe " + caso.getId());
         eventos.setComentario(caso.getObservaciones());
+        eventos.setAccionante(seguridadBean.getUserLogueado().getTipo());
         ejbEventos.create(eventos);
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);

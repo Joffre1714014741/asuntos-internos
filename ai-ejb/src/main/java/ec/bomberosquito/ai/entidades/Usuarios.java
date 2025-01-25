@@ -64,10 +64,6 @@ public class Usuarios implements Serializable {
     @Column(name = "fechaultimoingreso")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaultimoingreso;
-    @OneToMany(mappedBy = "director")
-    private List<Casos> casosList;
-    @OneToMany(mappedBy = "responsable")
-    private List<Casos> casosList2;
     @JoinColumn(name = "persona", referencedColumnName = "id")
     @ManyToOne
     private Personas persona;
@@ -123,25 +119,6 @@ public class Usuarios implements Serializable {
 
     public void setFechaultimoingreso(Date fechaultimoingreso) {
         this.fechaultimoingreso = fechaultimoingreso;
-    }
-
-    @XmlTransient
-    public List<Casos> getCasosList() {
-        return casosList;
-    }
-
-    public void setCasosList(List<Casos> casosList) {
-        this.casosList = casosList;
-    }
-
-    
-    @XmlTransient
-    public List<Casos> getCasosList2() {
-        return casosList2;
-    }
-
-    public void setCasosList2(List<Casos> casosList2) {
-        this.casosList2 = casosList2;
     }
 
     public Personas getPersona() {

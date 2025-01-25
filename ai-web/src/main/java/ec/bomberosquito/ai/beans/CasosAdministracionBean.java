@@ -21,6 +21,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
@@ -28,7 +29,6 @@ import org.primefaces.PrimeFaces;
  *
  * @author jpverdezoto
  */
-
 @Named(value = "casosAdministracionBean")
 @ViewScoped
 public class CasosAdministracionBean implements Serializable {
@@ -38,6 +38,9 @@ public class CasosAdministracionBean implements Serializable {
     private Usuarios user;
     private String estadoCasos;
     private String observacion = "";
+
+    @Inject
+    private SeguridadBean seguridadBean;
 
     public Usuarios getUsuarioSeleccionado() {
         return usuarioSeleccionado;
@@ -68,18 +71,18 @@ public class CasosAdministracionBean implements Serializable {
 
     @EJB
     private UsuariosFacade ejbUsuarios;
-    
+
     @EJB
     private EventosFacade ejbEventos;
 
     @PostConstruct
     public void init() {
-       cargarCasos();
+        cargarCasos();
 
     }
-    
-    public void cargarCasos(){
-       HashMap paremetros = new HashMap<>();
+
+    public void cargarCasos() {
+        HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.estado=:estado");
         paremetros.put("estado", "CREADO");
         try {
@@ -111,8 +114,6 @@ public class CasosAdministracionBean implements Serializable {
 
         return items;
     }
-    
-   
 
     public void asignarCaso() {
         System.out.println("obejto usuarios " + user);
@@ -185,6 +186,7 @@ public class CasosAdministracionBean implements Serializable {
         evento.setEstado(estadoCasos);
         evento.setAccionrealizada("Director Inicia el la Investigación");
         evento.setCaso(caso);
+        evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
         ejbEventos.create(evento);
         // finizaiza tracking
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso editado"));
@@ -192,12 +194,11 @@ public class CasosAdministracionBean implements Serializable {
         PrimeFaces.current().executeScript("PF('dialogoGestionCaso').hide()");
 
     }
-    
-    
+
     public void modificar(Casos casoparametro) {
         caso = casoparametro;
         PrimeFaces.current().executeScript("PF('dialogoGestionCaso').show()");
-        
+
     }
 
     public Casos getCaso() {

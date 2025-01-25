@@ -46,25 +46,25 @@ import org.primefaces.PrimeFaces;
 @Named(value = "atencionCasosBean")
 @ViewScoped
 public class atencionCasosBean implements Serializable {
+
     @Inject
     private SeguridadBean seguridadBean;
 
     private String pathpdfSolicitud;
     private List<Casos> listaCasos = new ArrayList<>();
     private Casos caso;
-   
+
     private Eventos evento;
     private File solicitudArchivo;
-     private List<Personas> listaPersonas;
-     private String selectedOption;
+    private List<Personas> listaPersonas;
+    private String selectedOption;
     private List<String> options;
-    
+
     private Personas involucra;
 
-    
-     @EJB
+    @EJB
     private PersonasFacade ejbPersonas;
-    
+
     @EJB
     private CasosFacade ejbCasos;
     @EJB
@@ -76,24 +76,19 @@ public class atencionCasosBean implements Serializable {
         cargarCasos();
         listaPersonas = buscarInvolucrados();
     }
-    
-    
-      
-    
-    public List<Personas> buscarInvolucrados(){
-         List<Personas>  per = new ArrayList<>();
+
+    public List<Personas> buscarInvolucrados() {
+        List<Personas> per = new ArrayList<>();
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "o.tipo=:'INVOLUCRADO'");
         paremetros.put("caso", caso);
         try {
-            per =  ejbPersonas.encontrarParametros(paremetros);
+            per = ejbPersonas.encontrarParametros(paremetros);
         } catch (ConsultarException e) {
         }
-             return per;   
+        return per;
     }
-  
-    
-    
+
     public String getSelectedOption() {
         return selectedOption;
     }
@@ -110,7 +105,6 @@ public class atencionCasosBean implements Serializable {
         // Lógica para manejar la opción seleccionada
         System.out.println("Opción seleccionada: " + selectedOption);
     }
-    
 
     public void cargarCasos() {
         System.out.println("usuario " + seguridadBean.getUsuarioLogeado());
@@ -137,6 +131,8 @@ public class atencionCasosBean implements Serializable {
         evento.setEstado("EN REVISIÓN");
         evento.setAccionrealizada("Director Ingresa Caso");
         evento.setCaso(caso);
+        evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
+
         ejbEventos.create(evento);
         // finizaiza tracking
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso editado"));
@@ -343,7 +339,7 @@ public class atencionCasosBean implements Serializable {
     }
 
     public String enviarInforme() { // si vale
-        if (caso.getId() == null)  {
+        if (caso.getId() == null) {
             System.out.println("NULO NULO");
             return null;
         }
@@ -357,6 +353,8 @@ public class atencionCasosBean implements Serializable {
         tracking.setAccionrealizada("Analista envía el informe al Director para su revisión");
         tracking.setCaso(caso);
         tracking.setComentario(caso.getObservaciones());
+        tracking.setAccionante(seguridadBean.getUserLogueado().getTipo());
+
         ejbEventos.create(tracking);
 
         caso.setEstado("PARA REVISION");
@@ -369,14 +367,11 @@ public class atencionCasosBean implements Serializable {
 
     }
 
-   
     public void concluirInforme() {
         caso.setEstado("APROBADO");
         ejbCasos.edit(caso);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("El Informe finalizó con éxito"));
     }
-
-    
 
     public void grabar() {
         if (caso.getId() == null) {

@@ -22,18 +22,22 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 
 @Named(value = "casosAsignacionBean")
 @ViewScoped
 public class CasosAsignacionBean implements Serializable {
-    
+
     private Casos caso;
     private Usuarios responsable;
     private List<Usuarios> listaResponsables;
     private List<Casos> listaCasos;
-    
+
+    @Inject
+    private SeguridadBean seguridadBean;
+
     @EJB
     private CasosFacade ejbCasos;
 
@@ -42,10 +46,10 @@ public class CasosAsignacionBean implements Serializable {
 
     @EJB
     private UsuariosFacade ejbUsuarios;
-    
+
     @EJB
     private EventosFacade ejbEventos;
-    
+
     @PostConstruct
     public void init() {
         try {
@@ -72,9 +76,10 @@ public class CasosAsignacionBean implements Serializable {
             evento.setCaso(caso);
             evento.setAccionrealizada("Director asigna el caso");
             evento.setEstado("ASIGNADO");
-            evento.setComentario("Caso asigando a " + (caso.getResponsable().getPersona().getApellidos() != null ? caso.getResponsable().getPersona().getApellidos() :""));
+            evento.setComentario("Caso asigando a " + (caso.getResponsable().getPersona().getApellidos() != null ? caso.getResponsable().getPersona().getApellidos() : ""));
+            evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
             ejbEventos.create(evento);
-            
+
             listaCasos.remove(caso);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso asignado correctamente."));
             caso = new Casos();
@@ -95,6 +100,7 @@ public class CasosAsignacionBean implements Serializable {
         evento.setCaso(caso);
         evento.setAccionrealizada("Director archiva el caso");
         evento.setEstado("ARCHIVADO");
+        evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
         ejbEventos.create(evento);
         listaCasos.remove(caso);
 
@@ -104,7 +110,6 @@ public class CasosAsignacionBean implements Serializable {
     }
 
     // Getters y Setters
-
     public Casos getCaso() {
         return caso;
     }
@@ -121,7 +126,7 @@ public class CasosAsignacionBean implements Serializable {
         this.responsable = responsable;
     }
 
-        public List<Usuarios> getListaResponsables() {
+    public List<Usuarios> getListaResponsables() {
         return listaResponsables;
     }
 

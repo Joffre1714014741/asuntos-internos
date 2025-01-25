@@ -4,6 +4,7 @@
  */
 package ec.bomberosquito.ai.beans;
 
+import ec.bomberosquito.ai.entidades.Personas;
 import ec.bomberosquito.ai.entidades.Usuarios;
 import ec.bomberosquito.ai.excepciones.ConsultarException;
 import ec.bomberosquito.ai.facades.SeguridadLogeoFacade;
@@ -44,6 +45,7 @@ public class SeguridadBean implements Serializable {
     private Usuarios usuarios = new Usuarios();
     private AuxiliarUsuario entidad;
     private String UsuarioLogeado = new String();
+    private Usuarios userLogueado;
 
     // Creación de método para logear al usuario
     public String probar() throws ConsultarException, IOException {
@@ -59,6 +61,7 @@ public class SeguridadBean implements Serializable {
         }
         usuarios = ejbSeguridad.logear(usuario, password);
         setUsuarioLogeado(usuarios.getNombreusuario());
+        setUserLogueado(usuarios);
                 
         if (usuarios == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No hay registros para ese usuario"));
@@ -122,5 +125,15 @@ public class SeguridadBean implements Serializable {
     public void setUsuarioLogeado(String UsuarioLogeado) {
         this.UsuarioLogeado = UsuarioLogeado;
     }
+
+    public Usuarios getUserLogueado() {
+        return userLogueado;
+    }
+
+    public void setUserLogueado(Usuarios userLogueado) {
+        this.userLogueado = userLogueado;
+    }
+
+
 
 }

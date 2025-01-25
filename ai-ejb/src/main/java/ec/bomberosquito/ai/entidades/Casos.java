@@ -109,20 +109,15 @@ public class Casos implements Serializable {
     @Size(max = 255)
     @Column(name = "numeroinforme")
     private String numeroinforme;
-    @OneToMany(mappedBy = "caso")
-    private List<Documentos> documentosList;
     @JoinColumn(name = "causa", referencedColumnName = "id")
     @ManyToOne
     private Causas causa;
     @JoinColumn(name = "director", referencedColumnName = "id")
     @ManyToOne
     private Usuarios director;
-    
     @JoinColumn(name = "responsable", referencedColumnName = "id")
     @ManyToOne
     private Usuarios responsable;
-    @OneToMany(mappedBy = "caso")
-    private List<Eventos> eventosList;
     @Size(max = 2147483647)
     @Column(name = "observaciones")
     private String observaciones;
@@ -258,15 +253,6 @@ public class Casos implements Serializable {
         this.numeroinforme = numeroinforme;
     }
 
-    @XmlTransient
-    public List<Documentos> getDocumentosList() {
-        return documentosList;
-    }
-
-    public void setDocumentosList(List<Documentos> documentosList) {
-        this.documentosList = documentosList;
-    }
-
     public Causas getCausa() {
         return causa;
     }
@@ -291,14 +277,6 @@ public class Casos implements Serializable {
         this.responsable = responsable;
     }
 
-    @XmlTransient
-    public List<Eventos> getEventosList() {
-        return eventosList;
-    }
-
-    public void setEventosList(List<Eventos> eventosList) {
-        this.eventosList = eventosList;
-    }
 
     @Override
     public int hashCode() {

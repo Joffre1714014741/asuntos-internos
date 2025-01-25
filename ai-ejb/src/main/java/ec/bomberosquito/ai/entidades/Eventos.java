@@ -59,6 +59,8 @@ public class Eventos implements Serializable {
     @JoinColumn(name = "caso", referencedColumnName = "id")
     @ManyToOne
     private Casos caso;
+    @Column(name = "accionante")
+    private String accionante;
 
     public Eventos() {
     }
@@ -106,6 +108,16 @@ public class Eventos implements Serializable {
     public void setCaso(Casos caso) {
         this.caso = caso;
     }
+
+    public String getAccionante() {
+        return accionante;
+    }
+
+    public void setAccionante(String accionante) {
+        this.accionante = accionante;
+    }
+    
+    
 
     @Override
     public int hashCode() {

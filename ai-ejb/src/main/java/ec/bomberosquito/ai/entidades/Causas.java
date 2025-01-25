@@ -45,8 +45,6 @@ public class Causas implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(mappedBy = "causa")
-    private List<Casos> casosList;
 
     public Causas() {
     }
@@ -74,15 +72,6 @@ public class Causas implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    @XmlTransient
-    public List<Casos> getCasosList() {
-        return casosList;
-    }
-
-    public void setCasosList(List<Casos> casosList) {
-        this.casosList = casosList;
     }
 
     @Override

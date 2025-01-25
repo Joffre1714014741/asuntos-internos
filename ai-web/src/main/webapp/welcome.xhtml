@@ -112,7 +112,7 @@
                                     <div class="field">
                                         <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                             <span class="ui-float-label">
-                                                <p:inputText id="nombres" value="#{casosBean.persona.nombres}"  />
+                                                <p:inputText id="nombres" value="#{casosBean.persona.nombres}" disabled="#{casosBean.editable}" />
                                                 <p:outputLabel for="nombres" value="Nombres:"/>
                                             </span>
                                         </h:panelGroup>
@@ -126,7 +126,7 @@
                                     <div class="field">
                                         <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                             <span class="ui-float-label">
-                                                <p:inputText id="apellidos" value="#{casosBean.persona.apellidos}" />
+                                                <p:inputText id="apellidos" value="#{casosBean.persona.apellidos}" disabled="#{casosBean.editable}"/>
                                                 <p:outputLabel for="apellidos" value="Apellidos:" />
                                             </span>
                                         </h:panelGroup>
@@ -258,7 +258,7 @@
 
                     <p:commandButton  value="Si, Guardar" icon="pi pi-check" actionListener="#{casosBean.insertarCaso()}"
                                       update="manage-caso-content form" process="manage-caso-content @this" />                
-                    <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogcaso').hide()"
+                    <p:commandButton value="No, Cancelar" icon="pi pi-times" onclick="PF('manageDialogcaso').hide()" actionListener="#{casosBean.limpiarCedula()}"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
