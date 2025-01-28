@@ -91,12 +91,12 @@
                                     <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                         <span class="ui-float-label">
                                             <p:inputText id="cedula" value="#{casosBean.cedula}" >
-                                             <f:validator  validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc"/>
-                                             <p:ajax event="blur" listener="#{casosBean.llenarDatos}" update="nombres apellidos Correo Contacto" />
-                                        
+                                                <f:validator  validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc"/>
+                                                <p:ajax event="blur" listener="#{casosBean.llenarDatos}" update="nombres apellidos Correo Contacto" />
+
                                             </p:inputText>
                                             <p:outputLabel for="cedula" value="Cédula:" />
-                                           
+
                                         </span>
                                     </h:panelGroup>
 
@@ -145,10 +145,13 @@
                                                 <p:outputLabel for="Correo" value="Correo Electronico: " />
                                             </span>
                                         </h:panelGroup>
+
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Correo Electrónico : "/>
-                                            <p:outputLabel  value="#{casosBean.persona.mail}"  />
+                                            <p:outputLabel value="#{casosBean.persona.mail}"  />
+
                                         </h:panelGroup>
+
                                     </div>
                                 </div>
 
@@ -160,10 +163,11 @@
                                                 <p:outputLabel for="Contacto" value="Número de contacto:" />
                                             </span>
                                         </h:panelGroup>
-                                        <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
-                                            <p:outputLabel value="Número de contacto : "/>
-                                            <p:outputLabel value="#{casosBean.persona.mail}"  />
+                                        <h:panelGroup rendered="#{casosBean.caso.id ne null}">
+                                            <p:outputLabel value="Contacto : " />
+                                            <p:outputLabel value="#{casosBean.persona.contacto}" />
                                         </h:panelGroup>
+                                        
                                     </div>
                                 </div>
                             </div>

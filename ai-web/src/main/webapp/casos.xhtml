@@ -158,9 +158,13 @@
                                 <div class="field">
                                     <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                         <span class="ui-float-label">
-                                            <p:inputText id="cedula" value="#{casosBean.persona.cedula}" >
+                                            <p:inputText id="cedula" value="#{casosBean.cedula}" >
+                                                <f:validator  validatorId="ec.bomberosquito.ai.auxiliares.ValidadorRuc"/>
+                                                <p:ajax event="blur" listener="#{casosBean.llenarDatos}" update="nombres apellidos Correo Contacto" />
+
                                             </p:inputText>
                                             <p:outputLabel for="cedula" value="Cédula:" />
+
                                         </span>
                                     </h:panelGroup>
 
@@ -176,7 +180,7 @@
                                     <div class="field">
                                         <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                             <span class="ui-float-label">
-                                                <p:inputText id="nombres" value="#{casosBean.persona.nombres}"  />
+                                                <p:inputText id="nombres" value="#{casosBean.persona.nombres}" disabled="#{casosBean.editable}" />
                                                 <p:outputLabel for="nombres" value="Nombres:"/>
                                             </span>
                                         </h:panelGroup>
@@ -190,7 +194,7 @@
                                     <div class="field">
                                         <h:panelGroup rendered="#{casosBean.caso.id eq null}" > 
                                             <span class="ui-float-label">
-                                                <p:inputText id="apellidos" value="#{casosBean.persona.apellidos}" />
+                                                <p:inputText id="apellidos" value="#{casosBean.persona.apellidos}" disabled="#{casosBean.editable}"/>
                                                 <p:outputLabel for="apellidos" value="Apellidos:" />
                                             </span>
                                         </h:panelGroup>
@@ -211,7 +215,7 @@
                                         </h:panelGroup>
                                         <h:panelGroup rendered="#{casosBean.caso.id ne null}" >
                                             <p:outputLabel value="Correo Electrónico : "/>
-                                            <p:outputLabel  value="#{casosBean.persona.mail}"  />
+                                            <p:outputLabel value="#{casosBean.persona.mail}"  />
                                         </h:panelGroup>
                                     </div>
                                 </div>
