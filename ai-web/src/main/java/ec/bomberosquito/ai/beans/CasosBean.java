@@ -122,13 +122,13 @@ public class CasosBean implements Serializable {
     }
 
     public void upload() {
-        System.out.println("paso archivo 1");
+        System.out.println("Cargo archivo seleccionado");
         try {
             if (file == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No se seleccionó ningún archivo", null));
                 return;
             }
-            System.out.println("paso archivo");
+            System.out.println("Subió el archivo argado");
             String filename = file.getFileName();
             Path folder = Paths.get("C:\\Users\\jpverdezoto\\Documents\\documentos");
             if (!Files.exists(folder)) {
@@ -294,41 +294,49 @@ public class CasosBean implements Serializable {
         }
     }
 
-//    private Personas verificarPersona(Personas personaParametro) {
-//        HashMap paremetros = new HashMap<>();
-//        paremetros.put(";where", "o.cedula=:cedula");
-//        paremetros.put("cedula", personaParametro.getCedula());
-//        try {
-//            List<Personas> lista = ejbPersonas.encontrarParametros(paremetros);
-//            if (lista.isEmpty()) {
-//                Personas personaDevolver = new Personas();
-//                personaDevolver.setApellidos(personaParametro.getApellidos());
-//                personaDevolver.setNombres(personaParametro.getNombres());
-//                personaDevolver.setCedula(cedula);
-//                personaDevolver.setMail(personaParametro.getMail());
-//                personaDevolver.setContacto(personaParametro.getContacto());
-//                personaDevolver.setTipo("DENUNCIANTE");
-//                try {
-//                    ejbPersonas.create(personaDevolver);
-//                } catch (javax.validation.ConstraintViolationException e) {
-//                    for (ConstraintViolation<?> violation : e.getConstraintViolations()) {
-//                        System.out.println("Propiedad: " + violation.getPropertyPath());
-//                        System.out.println("Mensaje: " + violation.getMessage());
-//                        System.out.println("Valor inválido: " + violation.getInvalidValue());
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace(); // Esto imprimirá cualquier otra excepción que no sea ConstraintViolationException.
-//                }
-//
-//                return personaDevolver;
-//            } else {
-//                return lista.get(0);
-//            }
-//        } catch (ConsultarException e) {
-//        }
-//        return null;
-//    }
+    
+    public void elegirCaso(){
+        //Método para seleccionar acción
+        if(estadoCasos.equals("INICIO"))        {
+            inicioCaso();
+        }
+        if(estadoCasos.equals("ARCHIVAR"))        {
+            archivarCaso();
+        }
+    }
+    //Fin metodo elegirCaso
+    
+     public void archivarCaso() {
+         System.out.println("estadoCasos " + estadoCasos);
+        if (estadoCasos == null) {
+            return;
+        }
+        if (caso.getObservaciones() == null || caso.getObservaciones().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ingrese la observación"));
+            return;
+        }
+        //Editar el caso
+        caso.setEstado("ARCHIVADO");
+        ejbCasos.edit(caso);
+        //Fien editar caso
 
+        // Crear evento para el tracking
+        Eventos evento = new Eventos();
+        evento.setFechahora(new Date());
+        evento.setCaso(caso);
+        evento.setAccionrealizada("Director archiva el caso");
+        evento.setEstado("ARCHIVADO");
+        evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
+        evento.setComentario(caso.getObservaciones());
+        ejbEventos.create(evento);
+        listaCasos.remove(caso);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso archivado correctamente."));
+        PrimeFaces.current().executeScript("PF('manageDialogcontinuar').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-casos");
+        caso = new Casos();
+    }
+    
     public void inicioCaso() {
         System.out.println("estadoCasos " + estadoCasos);
         if (estadoCasos == null) {
@@ -359,12 +367,16 @@ public class CasosBean implements Serializable {
         buscar();
 
     }
+    
 
+    
     public boolean validador() {
+        //Método para validad correo electrónico
         if (!validarCorreo(persona.getMail())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Correo electrónico inválido"));
             return false;
         }
+        //Método para validar número telefónico
         if (!validarTelefono(persona.getContacto())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Numero de teléfono incorrecto"));
             return false;
@@ -395,35 +407,9 @@ public class CasosBean implements Serializable {
         return Pattern.matches(phoneRegex, telefono);
     }
     
-    public void actualizarCorreo() {
-    if (persona != null && persona.getMail() != null) {
-        System.out.println("El correo está vacío o no es válido.");
-        return; // Salir del método si el correo es inválido
-    }
-
-    // Validar que el correo tenga un formato válido (opcional)
-    if (!persona.getMail().matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
-        System.out.println("El formato del correo no es válido.");
-        return;
-    }
-
-    // Lógica para actualizar el correo
-    System.out.println("Correo actualizado: " + persona.getMail());
-    // Aquí puedes llamar al servicio que persiste la información en la base de datos
-}
-
-    public void actualizarContacto() {
-    // Lógica para actualizar el contacto en la base de datos
-    if (persona != null && persona.getContacto() != null) {
-        System.out.println("Elnúmero de contacto es válido.");
-        return;
-    }
     
-    System.out.println("Correo actualizado: " + persona.getMail());
-    // Aquí puedes llamar al servicio que persiste la información en la base de datos
-        
-        // Código para actualizar el contacto en la base de datos
-    }
+    
+    
     
     
     public void limpiarCedula(){

@@ -110,9 +110,6 @@ public class atencionCasosBean implements Serializable {
         System.out.println("usuario " + seguridadBean.getUsuarioLogeado());
         HashMap paremetros = new HashMap<>();
         paremetros.put(";where", "(o.estado in ('ASIGNADO','PENDIENTE REVISION', 'APROBADO') ) and o.responsable.nombreusuario=:userid");
-//        paremetros.put(";where", "(o.estado=:estado or o.estado=:estado1) and o.responsable.nombreusuario=:userid");
-//        paremetros.put("estado", "ASIGNADO");
-//        paremetros.put("estado1", "PENDIENTE REVISION");
         paremetros.put("userid", seguridadBean.getUsuarioLogeado());
 
         try {
@@ -338,7 +335,7 @@ public class atencionCasosBean implements Serializable {
         return true;
     }
 
-    public String enviarInforme() { // si vale
+    public String enviarInforme() { 
         if (caso.getId() == null) {
             System.out.println("NULO NULO");
             return null;

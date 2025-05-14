@@ -120,15 +120,7 @@ public class CasosAdministracionBean implements Serializable {
 
         System.out.println("entro");
         System.out.println("caoso" + caso.getId());
-//        if (usuarioSeleccionado == null) {
-//            System.out.println("usuario null");
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("selecione investigador"));
-//        } else {
-//            System.out.println("usuasiro no null");
-//            caso.setResponsable(usuarioSeleccionado);
-//            ejbCasos.edit(caso);
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("caso asigando"));
-//        }
+
     }
 
     public void guardarCaso() {

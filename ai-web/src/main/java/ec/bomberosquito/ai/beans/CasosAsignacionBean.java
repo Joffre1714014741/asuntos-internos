@@ -76,12 +76,12 @@ public class CasosAsignacionBean implements Serializable {
             evento.setCaso(caso);
             evento.setAccionrealizada("Director asigna el caso");
             evento.setEstado("ASIGNADO");
-            evento.setComentario("Caso asigando a " + (caso.getResponsable().getPersona().getApellidos() != null ? caso.getResponsable().getPersona().getApellidos() : ""));
+            evento.setComentario("El caso fue asigando a: " + (caso.getResponsable().getPersona().getApellidos() != null ? caso.getResponsable().getPersona().getApellidos() : ""));
             evento.setAccionante(seguridadBean.getUserLogueado().getTipo());
             ejbEventos.create(evento);
 
             listaCasos.remove(caso);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso asignado correctamente."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso asignado correctamente"));
             caso = new Casos();
             PrimeFaces.current().executeScript("PF('dialogoGestionCaso').hide()");
             PrimeFaces.current().ajax().update("form:messages", "form:dt-casos");
@@ -105,6 +105,7 @@ public class CasosAsignacionBean implements Serializable {
         listaCasos.remove(caso);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Caso archivado correctamente."));
+        PrimeFaces.current().executeScript("PF('manageDialogcontinuar').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-casos");
         caso = new Casos();
     }

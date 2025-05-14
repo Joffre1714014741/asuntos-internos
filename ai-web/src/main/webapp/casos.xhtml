@@ -510,7 +510,7 @@
                     <p:outputPanel rendered="#{not empty casosBean.caso}">
                         <h:panelGrid columns="2"  style="text-align: justify">
 
-                            <h:outputText value="Estado de la revision" />
+                            <h:outputText value="Estado de la revisión" />
                             <p:selectOneMenu id="selectInvestigador" 
                                              value="#{casosBean.estadoCasos}">
                                 <f:selectItem itemValue="INICIO" itemLabel="INICIO" />
@@ -530,7 +530,7 @@
                     </p:outputPanel>
                 </p:outputPanel>
                 <f:facet name="footer">
-                    <p:commandButton value="Grabar" icon="pi pi-check" actionListener="#{casosBean.inicioCaso()}"
+                    <p:commandButton value="Grabar" icon="pi pi-check" actionListener="#{casosBean.elegirCaso()}"
                                      update="manage-continuar-content form" process="manage-continuar-content @this" />
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageDialogcontinuar').hide()"
                                      class="ui-button-secondary" type="button" />
